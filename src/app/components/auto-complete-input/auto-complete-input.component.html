@@ -1,0 +1,12 @@
+<div class="auto-complete-input">
+    <input type="text" [(ngModel)]="searchText" (input)="filterOptions()" placeholder="Search or create new..." />
+
+    <button *ngIf="searchText.trim()" (click)="createNewOption()">
+        Add "{{ searchText }}"
+    </button>
+    <select>
+        <option *ngFor="let option of filteredOptions" [value]="option.id" (click)="selectOption(option)">{{ option.name
+            }}</option>
+    </select>
+
+</div>
