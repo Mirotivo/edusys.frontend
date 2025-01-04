@@ -1,0 +1,104 @@
+<div class="signup-page">
+  <!-- Logo -->
+  <div class="logo" [routerLink]="'/'">
+    <span>S</span>
+  </div>
+
+  <!-- Sign-Up Form -->
+  <div class="signup-form">
+    <h3>Sign up</h3>
+    
+    <form (ngSubmit)="onSignup()" #signupForm="ngForm">
+      <div class="form-group">
+        <input
+          type="text"
+          id="Input_Email"
+          class="form-control"
+          placeholder="Email address"
+          name="email"
+          [(ngModel)]="signupModel.email"
+          #email="ngModel"
+          autocomplete="username"
+          required
+          pattern="^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+          [ngClass]="{ 'is-invalid': email.invalid && email.touched }"
+        />
+        <span class="text-danger" *ngIf="email.invalid && email.touched">
+          Invalid email format. Please enter a valid email address.
+        </span>
+      </div>
+            
+      <!-- Password Input -->
+      <div class="form-group">
+        <input
+          type="password"
+          id="Input_Password"
+          class="form-control"
+          placeholder="Password"
+          name="password"
+          [(ngModel)]="signupModel.password"
+          #password="ngModel"
+          autocomplete="new-password"
+          required
+          [ngClass]="{ 'is-invalid': password.invalid && password.touched }"
+        />
+        <span class="text-danger" *ngIf="password.invalid && password.touched">
+          Password is required.
+        </span>
+      </div>
+            
+      <!-- Verify Password Input -->
+      <div class="form-group">
+        <input
+          type="password"
+          id="Input_VerifyPassword"
+          class="form-control"
+          placeholder="Verify password"
+          name="verifyPassword"
+          [(ngModel)]="signupModel.verifyPassword"
+          #verifyPassword="ngModel"
+          autocomplete="new-password"
+          required
+          [ngClass]="{ 'is-invalid': passwordMismatch && verifyPassword.touched }"
+          (input)="passwordMismatch = signupModel.password !== signupModel.verifyPassword"
+        />
+        <span class="text-danger" *ngIf="passwordMismatch && verifyPassword.touched">
+          Passwords do not match. Please try again.
+        </span>
+      </div>
+            
+      <!-- Sign-Up Button -->
+      <button
+        type="submit"
+        class="btn signup-btn"
+        [disabled]="!isFormValid()"
+      >
+        Sign up by email
+      </button>
+    </form>
+
+    <!-- Error Message -->
+    <div *ngIf="signupError" class="alert alert-danger" role="alert">
+      <p>{{ signupError }}</p>
+    </div>
+        
+    <div class="or-divider">or</div>
+
+    <!-- Alternative Sign-Up Options -->
+    <button class="btn google-signup">
+      <i class="fab fa-google"></i> Sign up with Google
+    </button>
+    <button class="btn apple-signup">
+      <i class="fab fa-apple"></i> Sign up with Apple
+    </button>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <p>Already have an account? <a routerLink="/signin">Log in</a></p>
+      <p>
+        By registering by email or Facebook, you accept our
+        <a href="/terms" target="_blank">legal terms and conditions</a>.
+      </p>
+    </div>
+  </div>
+</div>
