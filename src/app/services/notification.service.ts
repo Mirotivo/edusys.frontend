@@ -17,7 +17,7 @@ export class NotificationService {
     }
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${environment.baseApiUrl}/api/notification`, {
+      .withUrl(`${environment.baseApiUrl}/notification`, {
         accessTokenFactory: () => token,
       })
       .build();
