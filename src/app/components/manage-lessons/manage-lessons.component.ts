@@ -111,7 +111,7 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
         <script>
           document.addEventListener('DOMContentLoaded', function () {
               const options = {
-                  roomName: "${lesson.topic}",
+                  roomName: "${lesson.meetingRoomName}",
                   parentNode: document.getElementById('jitsi-container'),
                   userInfo: {
                       displayName: "Your Username"

@@ -15,6 +15,7 @@ export interface Lesson {
     meetingToken: string;
     meetingDomain: string;
     meetingUrl: string;
+    meetingRoomName: string;
     meetingRoomUrl: string;
   }
   
