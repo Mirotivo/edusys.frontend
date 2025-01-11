@@ -30,7 +30,6 @@ jobs:
     # Build and push frontend Docker image
     - name: Build and push frontend Docker image
       run: |
-        cd Frontend.Angular
         docker build -t "mirotivo/avancira-frontend:latest" .
         docker push "mirotivo/avancira-frontend:latest"
 
