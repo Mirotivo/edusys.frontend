@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
 })
 export class PrivacyComponent {
   platformName = 'Avancira';
-  email = 'privacy@myplatform.com';
-  dpoEmail = 'dpo@myplatform.com';
-  address = '51 rue du Faubourg Saint-Denis, 75010 Paris, France';
-  lastUpdated = '23 July 2020';
+  email = 'privacy@avancira.com';
+  dpoEmail = 'dpo@avancira.com';
+  address = '35 Cave Rd, Strathfield, Sydney, Australia';
+  lastUpdated = '9 January 2025';
 }

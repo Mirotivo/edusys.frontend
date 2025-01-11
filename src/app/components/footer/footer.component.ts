@@ -23,14 +23,14 @@ export class FooterComponent {
       { label: 'Careers', route: '/careers' }
     ],
     subjects: [
-      { label: 'Arts & Hobbies', route: '/arts-hobbies' },
-      { label: 'Professional Development', route: '/professional-development' },
-      { label: 'Computer Sciences', route: '/computer-sciences' },
-      { label: 'Languages', route: '/languages' },
-      { label: 'Music', route: '/music' },
-      { label: 'Health & Well-being', route: '/health-wellbeing' },
-      { label: 'School Support', route: '/school-support' },
-      { label: 'Sports', route: '/sports' }
+      { label: 'Arts & Hobbies', route: '/category/arts-hobbies' },
+      { label: 'Professional Development', route: '/category/professional-development' },
+      { label: 'Computer Sciences', route: '/category/computer-sciences' },
+      { label: 'Languages', route: '/category/languages' },
+      { label: 'Music', route: '/category/music' },
+      { label: 'Health & Well-being', route: '/category/health-wellbeing' },
+      { label: 'School Support', route: '/category/school-support' },
+      { label: 'Sports', route: '/category/sports' }
     ],
     adventure: [
       { label: 'The Blog', route: '/blog' }

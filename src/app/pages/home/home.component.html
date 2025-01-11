@@ -9,7 +9,7 @@
     </div>
     <div class="categories">
       <div class="category" *ngFor="let category of lessonCategories">
-        <span>{{ category.name }}</span>
+        <span (click)="navigateToSearch(category.name)">{{ category.name }}</span>
       </div>
     </div>
   </div>

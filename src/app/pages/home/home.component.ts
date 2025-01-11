@@ -73,6 +73,11 @@ export class HomeComponent implements OnInit {
   }
 
 
+  navigateToSearch(item: string): void {
+    this.router.navigate(['/search-results'], { queryParams: { query: item } });
+  }
+
+
   testimonialList = [
     { name: 'Hector', subject: 'Physics', feedback: 'Excellent tutor!', reviewer: 'Vanessa' },
     { name: 'Farida', subject: 'Python', feedback: 'Highly engaging!', reviewer: 'Stacy' },

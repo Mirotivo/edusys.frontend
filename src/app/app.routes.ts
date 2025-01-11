@@ -19,11 +19,15 @@ import { GoodbyeComponent } from './pages/goodbye/goodbye.component';
 import { TermsComponent } from './pages/terms/terms.component';
 import { PremiumSubscriptionComponent } from './pages/premium-subscription/premium-subscription.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
+import { CategoriesComponent } from './components/categories/categories.component';
+import { AboutUsComponent } from './pages/about-us/about-us.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'search-results', component: SearchResultsComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
+    { path: 'category/:name', component: CategoriesComponent },
+    { path: 'about', component: AboutUsComponent },
     { path: 'terms', component: TermsComponent },
     { path: 'privacy-policy', component: PrivacyComponent },
     { path: 'signup', component: SignupComponent },
