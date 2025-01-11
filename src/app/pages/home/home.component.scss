@@ -1,5 +1,6 @@
 @use 'colors';
 
+
 .landing-page {
   animation: pageLoad 1.5s ease-in-out;
 
@@ -53,7 +54,10 @@
     .categories {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
+      /* Allows wrapping to multiple rows on smaller screens */
       gap: 20px;
+      /* Space between categories */
 
       .category {
         background: colors.$background-white; // Updated white background
@@ -70,6 +74,35 @@
         &:hover {
           transform: scale(1.05);
           background-color: colors.$primary-color-light; // Updated hover background color
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      .categories {
+        justify-content: space-between;
+        /* Adjust alignment for smaller screens */
+        gap: 10px;
+        /* Reduce gap for smaller screens */
+
+        .category {
+          font-size: 14px;
+          /* Adjust font size */
+          padding: 10px 15px;
+          /* Adjust padding */
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      .categories {
+        justify-content: center;
+        /* Center-align for very small screens */
+        gap: 8px;
+
+        .category {
+          font-size: 12px;
+          padding: 8px 12px;
         }
       }
     }
@@ -197,6 +230,7 @@
     opacity: 0;
     transform: translateY(50px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -204,10 +238,12 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     text-shadow: 0 0 5px colors.$highlight-color; // Updated highlight color
   }
+
   50% {
     text-shadow: 0 0 15px colors.$highlight-color; // Updated highlight color
   }

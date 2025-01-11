@@ -9,6 +9,7 @@
 }
 
 html, body {
-  height: 100%; /* Ensure full height for body */
-  overflow: hidden; /* Disable any global scrollbars */
+  height: 100%; /* Ensures the body can grow with content */
+  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-x: hidden; /* Optionally disables horizontal scrolling */
 }
