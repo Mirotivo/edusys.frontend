@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { SliderComponent } from '../../components/slider/slider.component';
 
 interface Testimonial {
   name: string;
@@ -26,22 +27,6 @@ export class HomeComponent implements OnInit {
   searchQuery: string = '';
   lessonCategories: LessonCategory[] = [];
   listings: Listing[] = [];
-  testimonialList: Testimonial[] = [
-    {
-      name: 'Hiruni',
-      subject: 'Maths',
-      feedback:
-        'Hiruni is great. She takes the time to understand where the problem areas are and is very patient and explains math concepts well.',
-      reviewer: 'Barry',
-    },
-    {
-      name: 'Jasmin',
-      subject: 'German',
-      feedback: 'Jasmin has helped me improve my language skills and is very engaging in her lessons.',
-      reviewer: 'Richard',
-    },
-    // Add more testimonials as needed...
-  ];
 
   constructor(
     private categoryService: CategoryService,
@@ -86,4 +71,33 @@ export class HomeComponent implements OnInit {
   navigateToPayment(listingId: number): void {
     this.router.navigate(['/payment', listingId]);
   }
+
+
+  testimonialList = [
+    { name: 'Hector', subject: 'Physics', feedback: 'Excellent tutor!', reviewer: 'Vanessa' },
+    { name: 'Farida', subject: 'Python', feedback: 'Highly engaging!', reviewer: 'Stacy' },
+    // Add more testimonials as needed
+  ];
+
+  currentSlide = 0;
+
+  slideRight() {
+    const totalSlides = this.testimonialList.length;
+    this.currentSlide = (this.currentSlide + 1) % totalSlides; // Loop to the beginning
+    this.updateSlider();
+  }
+
+  slideLeft() {
+    const totalSlides = this.testimonialList.length;
+    this.currentSlide = (this.currentSlide - 1 + totalSlides) % totalSlides; // Loop to the end
+    this.updateSlider();
+  }
+
+  updateSlider() {
+    const track = document.querySelector('.testimonial-track') as HTMLElement;
+    if (track) {
+      track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+    }
+  }
+
 }
