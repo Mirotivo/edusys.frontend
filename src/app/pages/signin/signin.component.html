@@ -57,9 +57,13 @@
     <div class="or-divider">or</div>
 
     <!-- Alternative Login Options -->
-    <button class="btn google-login">
+    <button class="btn facebook-login" (click)="loginWithFacebook()">
+      <i class="fab fa-facebook"></i> Log in with Facebook
+    </button>
+    <button id="google-login-button" class="btn google-login">
       <i class="fab fa-google"></i> Log in with Google
     </button>
+    <!-- <div id="google-login-button"></div> -->
     <button class="btn apple-login">
       <i class="fab fa-apple"></i> Log in with Apple
     </button>

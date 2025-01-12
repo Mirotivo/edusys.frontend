@@ -74,6 +74,31 @@ export class AuthService {
     }
   }
 
+  async socialLogin(provider: string, token: string): Promise<{ token: string; roles: string[] }> {
+    try {
+      const response = await fetch(`${this.apiUrl}/social-login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ provider, token }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return {
+          token: result.token,
+          roles: result.roles,
+        };
+      }
+
+      throw new Error('Social login failed');
+    } catch (error) {
+      console.error('Social login error:', error);
+      throw error;
+    }
+  }
+
   isLoggedIn() {
     return !!localStorage.getItem('token');
   }
