@@ -55,8 +55,8 @@ export class SigninComponent {
         client_id: this.configService.get('googleClientId'),
         callback: this.loginWithGoogle.bind(this),
         ux_mode: 'redirect',
-        login_uri: `${environment.frontendUrl}/signin-google`,
-        redirect_uri: `${environment.frontendUrl}/signin-google`
+        login_uri: `${environment.frontendUrl}/api/signin-google`,
+        redirect_uri: `${environment.frontendUrl}/api/signin-google`
       });
 
       // Display the One Tap prompt
