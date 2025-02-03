@@ -1,0 +1,19 @@
+<div class="messages-sidebar">
+  <div class="contacts-header">
+    <h3>All my contacts</h3>
+    <input type="text" placeholder="Search contacts..." class="search-bar" />
+  </div>
+  <ul class="contacts-list">
+    <li *ngFor="let contact of contacts" [class.active]="contact.id === selectedContact?.id"
+      (click)="selectContact(contact)">
+      <div class="contact-avatar">
+        <span>{{ contact.name[0] }}</span>
+      </div>
+      <div class="contact-info">
+        <h4>{{ contact.name }}</h4>
+        <p>{{ contact.lastMessage }}</p>
+      </div>
+      <span class="contact-timestamp">{{ contact.timestamp }}</span>
+    </li>
+  </ul>
+</div>

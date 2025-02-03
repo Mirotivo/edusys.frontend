@@ -1,0 +1,91 @@
+<div class="signup-page">
+  <!-- Logo -->
+  <div class="logo" [routerLink]="'/'">
+    <span>A</span>
+  </div>
+
+  <!-- Sign-Up Form -->
+  <div class="signup-form">
+    <h3>Sign up</h3>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+      <div class="form-group">
+        <input type="text" id="Input_Email" class="form-control" placeholder="Email address" formControlName="email"
+          autocomplete="username"
+          [ngClass]="{ 'is-invalid': signupForm.get('email')?.invalid && signupForm.get('email')?.touched }" />
+        <span class="text-danger" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+          Invalid email format. Please enter a valid email address.
+        </span>
+      </div>
+
+      <div class="form-group">
+        <input type="password" id="Input_Password" class="form-control" placeholder="Password"
+          formControlName="password" autocomplete="new-password"
+          [ngClass]="{ 'is-invalid': signupForm.get('password')?.touched && signupForm.get('password')?.errors }" />
+        <!-- Error messages for each validator -->
+        <span class="text-danger"
+          *ngIf="signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched">
+          Password is required.
+        </span>
+        <span class="text-danger"
+          *ngIf="signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched">
+          Password must be at least 6 characters long.
+        </span>
+        <span class="text-danger"
+          *ngIf="signupForm.get('password')?.errors?.['noNonAlphanumeric'] && signupForm.get('password')?.touched">
+          Password must contain at least one non-alphanumeric character.
+        </span>
+        <span class="text-danger"
+          *ngIf="signupForm.get('password')?.errors?.['noLowercase'] && signupForm.get('password')?.touched">
+          Password must contain at least one lowercase letter.
+        </span>
+        <span class="text-danger"
+          *ngIf="signupForm.get('password')?.errors?.['noUppercase'] && signupForm.get('password')?.touched">
+          Password must contain at least one uppercase letter.
+        </span>
+      </div>
+
+      <div class="form-group">
+        <input type="password" id="Input_VerifyPassword" class="form-control" placeholder="Verify password"
+          formControlName="verifyPassword" autocomplete="new-password"
+          [ngClass]="{ 'is-invalid': signupForm.get('verifyPassword')?.touched && signupForm.get('verifyPassword')?.errors }" />
+        <span class="text-danger"
+          *ngIf="signupForm.get('verifyPassword')?.errors?.['passwordsMismatch'] && signupForm.get('verifyPassword')?.touched">
+          Passwords do not match. Please try again.
+        </span>
+      </div>
+
+      <!-- Sign-Up Button -->
+      <button type="submit" class="btn signup-btn" [disabled]="signupForm.invalid">
+        Sign up by email
+      </button>
+
+      <!-- Error Message -->
+      <span *ngIf="signupError" class="alert alert-danger" role="alert">
+        <p class="text-danger">{{ signupError }}</p>
+      </span>
+    </form>
+
+    <div class="or-divider">or</div>
+
+    <!-- Alternative Sign-Up Options -->
+    <button class="btn apple-signup" (click)="signupWithFacebook()" >
+      <i class="fab fa-facebook"></i> Sign up with Facebook
+    </button>
+    <button class="btn google-signup" (click)="signupWithGoogle()" >
+      <i class="fab fa-google"></i> Sign up with Google
+    </button>
+    <!-- <button class="btn apple-signup">
+      <i class="fab fa-apple"></i> Sign up with Apple
+    </button> -->
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Already have an account? <a routerLink="/signin">Log in</a></p>
+      <p>
+        By registering by email or Facebook, you accept our
+        <a href="/terms" target="_blank">legal terms and conditions</a>.
+      </p>
+    </div>
+  </div>
+</div>

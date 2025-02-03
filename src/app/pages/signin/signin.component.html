@@ -1,0 +1,75 @@
+<div class="login-page">
+  <!-- Logo -->
+  <div class="logo" [routerLink]="'/'">
+    <span>A</span>
+  </div>
+
+  <!-- Login Form -->
+  <div class="login-form">
+    <h3>Log in</h3>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <!-- Email Input -->
+      <div class="form-group">
+        <input
+          type="email"
+          id="Input_Email"
+          class="form-control"
+          placeholder="Email address"
+          formControlName="email"
+          [ngClass]="{ 'is-invalid': loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty) }"
+          autocomplete="username"
+        />
+        <span class="text-danger" *ngIf="loginForm.get('email')?.errors?.['required'] && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)">
+          Email is required.
+        </span>
+        <span class="text-danger" *ngIf="loginForm.get('email')?.errors?.['email'] && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)">
+          Invalid email format. Please enter a valid email address.
+        </span>
+      </div>
+      
+      <!-- Password Input -->
+      <div class="form-group">
+        <input
+          type="password"
+          id="Input_Password"
+          class="form-control"
+          placeholder="Password"
+          formControlName="password"
+          [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty) }"
+          autocomplete="current-password"
+        />
+        <span class="text-danger" *ngIf="loginForm.get('password')?.errors?.['required'] && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)">
+          Password is required.
+        </span>
+      </div>
+      <!-- Login Button -->
+      <button type="submit" class="btn login-btn" [disabled]="loginForm.invalid">
+        Login
+      </button>
+    </form>
+      
+    <!-- Error Message -->
+    <div *ngIf="invalidLogin" class="alert alert-danger">
+      Invalid email or password. Please try again.
+    </div>
+
+
+    <div class="or-divider">or</div>
+
+    <!-- Alternative Login Options -->
+    <button class="btn facebook-login" (click)="loginWithFacebook()">
+      <i class="fab fa-facebook"></i> Log in with Facebook
+    </button>
+    <button class="btn google-login" (click)="loginWithGoogle()">
+      <i class="fab fa-google"></i> Log in with Google
+    </button>
+    <!-- <button class="btn apple-login">
+      <i class="fab fa-apple"></i> Log in with Apple
+    </button> -->
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Don't have an account? <a href="/signup">Sign up</a></p>
+    </div>
+  </div>
+</div>

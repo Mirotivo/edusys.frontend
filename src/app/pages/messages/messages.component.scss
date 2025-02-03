@@ -1,0 +1,63 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Full height for the viewport */
+  overflow: hidden; /* Prevent scrolling on the root */
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height of the viewport */
+}
+
+app-header {
+  flex: 0 0 auto; /* Header height is determined by its content */
+  background-color: #0288d1;
+  color: white;
+}
+
+app-navigation-bar {
+  flex: 0 0 auto; /* Navigation bar height is determined by its content */
+  background-color: #03a9f4;
+  color: white;
+}
+
+.messages-page {
+  flex: 1 1 auto; /* Take up the remaining space after header and navigation bar */
+  display: flex;
+  overflow: hidden; /* Prevent overflow within the messages page */
+  background-color: #e3f2fd;
+
+  /* Left Sidebar */
+  .sidebar-left {
+    flex: 0 0 300px; /* Fixed width for the left sidebar */
+    background-color: #f9fafb;
+    border-right: 1px solid #ddd;
+    overflow-y: auto; /* Allow scrolling for sidebar content if needed */
+  }
+
+  /* Main Content */
+  .main-content {
+    flex: 1; /* Takes up the remaining horizontal space */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Allow vertical scrolling for messages */
+    background-color: #ffffff;
+  }
+
+  /* Right Sidebar */
+  .sidebar-right {
+    flex: 0 0 300px; /* Fixed width for the right sidebar */
+    background-color: #f9fafb;
+    border-left: 1px solid #ddd;
+    overflow-y: auto; /* Allow scrolling for sidebar content if needed */
+  }
+}
+
+app-message-thread {
+  flex: 1 1 auto; /* Ensure the message thread fills the available space */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Enable scrolling for long messages */
+}

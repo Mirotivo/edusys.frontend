@@ -1,0 +1,76 @@
+<app-header></app-header>
+<app-navigation-bar></app-navigation-bar>
+<div class="listings-page">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <button class="create-listing-btn" (click)="openModal()">Create a Listing</button>
+    <ul class="listings">
+      <li *ngFor="let listing of listings" [class.active]="listing?.id === selectedListing?.id"
+        (click)="selectListing(listing)">
+        <div class="listing-info">
+          <app-profile-image [profileImagePath]="listing.listingImagePath" [firstName]="listing.title"
+            [lastName]=""></app-profile-image>
+          <div class="listing-details">
+            <h3>{{ listing.title }}</h3>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="sidebar-main-content" *ngIf="selectedListing">
+    <div class="header">
+      <h2>{{ selectedListing.title }}</h2>
+      <button class="premium-btn">Go premium</button>
+    </div>
+
+    <div class="listing-section">
+      <button class="edit-btn" (click)="editSection('lessonCategory')">Edit</button>
+      <h4>Lessons Category</h4>
+      <p>{{ selectedListing.lessonCategory }}</p>
+    </div>
+
+    <div class="listing-section">
+      <button class="edit-btn" (click)="editSection('location')">Edit</button>
+      <h4>Location</h4>
+      <div class="location-options">
+        <span *ngFor="let location of selectedListing.locations">{{ location }}</span>
+      </div>
+    </div>
+
+    <div class="listing-section">
+      <button class="edit-btn" (click)="editSection('aboutLesson')">Edit</button>
+      <h4>About the Lesson</h4>
+      <p>{{ selectedListing.aboutLesson }}</p>
+    </div>
+
+    <div class="listing-section">
+      <button class="edit-btn" (click)="editSection('aboutYou')">Edit</button>
+      <h4>About You</h4>
+      <p>{{ selectedListing.aboutYou }}</p>
+    </div>
+
+    <div class="listing-section">
+      <button class="edit-btn" (click)="editSection('rates')">Edit</button>
+      <h4>Rates</h4>
+      <ul>
+        <li>Hourly rate: {{ selectedListing.rates.hourly }}</li>
+        <li>5 hours: {{ selectedListing.rates.fiveHours }}</li>
+        <li>10 hours: {{ selectedListing.rates.tenHours }}</li>
+      </ul>
+    </div>
+
+    <div class="listing-section">
+      <button class="edit-btn" (click)="editSection('recommendations')">Edit</button>
+      <h4>Recommendations</h4>
+      <div class="recommendations">
+        <span *ngFor="let platform of selectedListing.socialPlatforms">{{ platform }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Create Listing -->
+  <app-modal *ngIf="isModalOpen" [isOpen]="isModalOpen" (onClose)="closeModal()">
+    <app-create-listing (onClose)="closeModal()"></app-create-listing>
+  </app-modal>

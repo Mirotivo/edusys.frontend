@@ -1,0 +1,143 @@
+@use "sass:color";
+@use 'colors';
+
+// SCSS for Create Listing Form
+.create-listing-form {
+  max-width: 1000px; // Increased width
+  margin: 0 auto;
+  background: linear-gradient(120deg, #ffffff, #f8f9fa);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 20px;
+
+    .form-group {
+      flex: 1; // Ensure equal width for all columns
+      margin-bottom: 20px;
+
+      label {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 5px;
+        display: block;
+      }
+
+      input,
+      textarea,
+      select {
+        font-size: 1rem;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        transition: border-color 0.3s;
+
+        &:focus {
+          border-color: #007bff;
+          outline: none;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+      }
+
+      textarea {
+        resize: none;
+        height: 100px;
+      }
+
+      select[multiple] {
+        height: auto;
+      }
+    }
+  }
+
+  fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+
+    legend {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .rate-fields {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+
+      label {
+        font-size: 1rem;
+        color: #495057;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.btn-primary {
+        background: #007bff;
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+
+        &:hover {
+          background: #0056b3;
+          box-shadow: 0 6px 10px rgba(0, 123, 255, 0.3);
+        }
+      }
+
+      &.btn-secondary {
+        background: #6c757d;
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(108, 117, 125, 0.2);
+
+        &:hover {
+          background: #5a6268;
+          box-shadow: 0 6px 10px rgba(108, 117, 125, 0.3);
+        }
+      }
+
+      &:disabled {
+        background: #cccccc; // Light gray background
+        color: #666666; // Dark gray text
+        cursor: not-allowed; // Change cursor to indicate disabled state
+        opacity: 0.6; // Slightly reduce opacity
+        box-shadow: none; // Remove shadow for disabled state
+      }
+    }
+  }
+}

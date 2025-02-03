@@ -1,0 +1,29 @@
+<div class="chat-section" *ngIf="selectedContact" #chatSection>
+    <div class="chat-header">
+      <div class="contact-details">
+        <h3>{{ selectedContact.name }}</h3>
+        <p>{{ selectedContact.details }}</p>
+      </div>
+      <div class="banner accepted-request">
+        <p>You have accepted the request</p>
+      </div>
+    </div>
+
+    <div class="chat-messages" #chatMessages>
+      <div *ngFor="let message of selectedContact.messages" [class.sent]="message.sentBy === 'me'"
+        [class.received]="message.sentBy !== 'me'" class="message">
+        <p>{{ message.text }}</p>
+        <span class="message-timestamp">{{ message.timestamp }}</span>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" placeholder="Write a message..." [(ngModel)]="newMessage" (keydown.enter)="sendMessage()" />
+      <button (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Placeholder when no contact is selected -->
+  <div class="no-contact-placeholder" *ngIf="!selectedContact">
+    <h3>Please select a contact to start chatting.</h3>
+  </div>

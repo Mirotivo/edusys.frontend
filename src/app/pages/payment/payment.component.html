@@ -1,0 +1,47 @@
+<app-header-center></app-header-center>
+<div class="payment-page">
+  <button class="back-button" (click)="goBack()">←</button>
+
+  <div *ngIf="loading" class="loading">Loading listing details...</div>
+  <div *ngIf="!loading && listing" class="payment-container">
+    <div class="tutor-section">
+      <app-profile-image
+        [profileImagePath]="listing.listingImagePath"
+        [firstName]="listing.tutorName"
+        [lastName]=""
+        sizeClass="large"
+        customClass="tutor-image">
+      </app-profile-image>
+      <div class="tutor-info">
+        <h2>{{ listing.tutorName }}</h2>
+        <p>★★★★★ ({{ listing.reviews }} reviews)</p>
+        <p class="contacted-info">
+          ❤️ {{ listing.tutorName }} has been contacted {{ listing.contactedCount }} times this month.
+        </p>
+      </div>
+    </div>
+
+    <div class="subscription-section">
+      <h2>{{ subscription.title }}</h2>
+      <p class="subtitle">{{ subscription.subtitle }}</p>
+      <div class="price"><span>${{ subscription.price }}</span></div>
+      <ul class="benefits">
+        <li *ngFor="let benefit of subscription.benefits">
+          <span><!--✔️--></span> {{ benefit }}
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="isLoggedIn; else notLoggedIn" class="cards-container">
+        <app-manage-cards [cardPurpose]="CardType" (cardSelected)="onCardSelected($event)"></app-manage-cards>
+        <button class="pay-button" [disabled]="!selectedCard" (click)="payWithSelectedCard()">
+          <i class="fa-solid fa-money-check-dollar"></i> Pay with Selected Card
+        </button>
+    </div>
+
+    <ng-template #notLoggedIn>
+      <p>You need to log in to proceed with payment.</p>
+      <button (click)="goToLogin()">Sign In</button>
+    </ng-template>
+  </div>
+</div>

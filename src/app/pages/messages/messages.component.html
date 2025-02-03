@@ -1,0 +1,20 @@
+<div class="app-layout">
+  <app-header></app-header>
+  <app-navigation-bar></app-navigation-bar>
+  <div class="messages-page">
+    <!-- Sidebar (Left) -->
+    <div class="sidebar-left">
+      <app-message-list [(selectedContact)]="selectedContact"></app-message-list>
+    </div>
+
+    <!-- Main Content (Message Thread) -->
+    <div class="main-content">
+      <app-message-thread [selectedContact]="selectedContact"></app-message-thread>
+    </div>
+
+    <!-- Sidebar (Right) -->
+    <div class="sidebar-right">
+      <app-manage-lessons [selectedContact]="selectedContact"></app-manage-lessons>
+    </div>
+  </div>
+</div>

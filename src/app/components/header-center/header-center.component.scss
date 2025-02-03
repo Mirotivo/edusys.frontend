@@ -1,0 +1,30 @@
+@use 'sass:color';
+@use 'colors';
+
+.fancy-header {
+  display: flex;
+  justify-content: center; /* Center the logo horizontally */
+  align-items: center;
+  height: 80px; /* Adjust height for visual balance */
+  background: linear-gradient(to right, #e3f2fd, #c1d6e1); //linear-gradient(90deg, colors.$primary-color, colors.$secondary-color); /* Gradient background */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  // position: fixed; /* Keep the header fixed at the top */
+  width: 100%; /* Full width */
+  z-index: 1000;
+
+  .fancy-logo {
+    text-decoration: none;
+    font-family: 'Cinzel', serif; /* Fancy serif font */
+    font-size: 2rem;
+    font-weight: bold;
+    color: colors.$background-white;
+    color: #1a237e;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Subtle shadow for a 3D effect */
+    transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+
+    &:hover {
+      color: color.adjust(#1a237e, $lightness: 20%);
+      text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Enhance shadow on hover */
+    }
+  }
+}

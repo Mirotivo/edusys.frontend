@@ -1,0 +1,34 @@
+<app-header-center></app-header-center>
+
+<div class="registration-container" *ngIf="!registrationCompleted && !errorMessage">
+  <div class="registration-form-wrapper">
+    <h2 class="registration-title">Complete Your Registration 😊</h2>
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <div class="form-group">
+        <label for="firstName" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstName" formControlName="firstName" required />
+        <div *ngIf="profileForm.get('firstName')?.invalid && (profileForm.get('firstName')?.dirty || profileForm.get('firstName')?.touched)" class="error-message">First name is required.</div>
+
+      </div>
+      <div class="form-group">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastName" formControlName="lastName" required />
+        <div *ngIf="profileForm.get('lastName')?.invalid && (profileForm.get('lastName')?.dirty || profileForm.get('lastName')?.touched)" class="error-message">Last name is required.</div>
+
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" id="dateOfBirth" formControlName="dob" />
+      </div>
+      <div class="form-group">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" formControlName="phone" required />
+        <div *ngIf="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.dirty || profileForm.get('phone')?.touched)" class="error-message">Phone number is required.</div>
+      </div>
+      <button type="submit" class="btn btn-primary registration-submit-btn">
+        Complete Registration
+      </button>
+    </form>
+  </div>
+</div>
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
