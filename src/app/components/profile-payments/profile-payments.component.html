@@ -1,0 +1,148 @@
+<div class="payment-page">
+    <!-- Left Tab Navigation -->
+    <div class="sidebar">
+      <ul>
+        <li [class.active]="activeSubTab === 'history'" (click)="onSubTabChange('history')">Payment History</li>
+        <li [class.active]="activeSubTab === 'method'" (click)="onSubTabChange('method')">Method of Payment</li>
+        <li [class.active]="activeSubTab === 'receiving'" (click)="onSubTabChange('receiving')">Receiving Payments</li>
+        <li [class.active]="activeSubTab === 'policy'" (click)="onSubTabChange('policy')">Cancellation Policy</li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="sidebar-main-content">
+      <div class="payment-history-container" *ngIf="activeSubTab === 'history'">
+        <!-- Balance Summary -->
+        <div class="balance-summary">
+          <div class="balance-card">
+            <h2>{{ payment?.walletBalance }}</h2>
+            <p>Balance</p>
+          </div>
+          <div class="balance-card">
+            <h2>{{ payment?.totalAmountCollected }}</h2>
+            <p>Total amount collected</p>
+          </div>
+        </div>
+
+        <!-- Payment Table -->
+        <div class="payment-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Fee</th>
+                <th>Net</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let payment of payment?.transactions">
+                <td>{{ payment.date }}</td>
+                <td class="payment-name">{{ payment.description }}</td>
+                <td class="amount" [ngClass]="{ negative: payment.amount < 0 }">${{ payment.amount }}</td>
+                <td>${{ payment.platformFee }}</td>
+                <td class="net">${{ payment.net }}</td>
+                <td>
+                  <span class="icon">{{ payment.type === 'transfer' ? '🐖' : '💰' }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="payment-methods-container" *ngIf="activeSubTab === 'method'">
+        <h2>Method of Payment</h2>
+        <p>In order to pay your tutors, you must register a means of payment.</p>
+        <app-manage-cards [cardPurpose]="CardType.Paying"></app-manage-cards>
+      </div>
+
+      <div class="payment-receiving-container" *ngIf="activeSubTab === 'receiving'">
+        <!-- Payment Method Section -->
+        <!-- <app-manage-cards [cardPurpose]="CardType.Receiving"></app-manage-cards> -->
+        <!-- <app-manage-banks></app-manage-banks> -->
+
+        <div class="stripe-connect-container">
+          <h2>Stripe Connect</h2>
+          <div class="connect-section">
+            <button *ngIf="!isConnected" (click)="connectStripe()">
+              Connect with Stripe
+            </button>
+            <div *ngIf="isConnected" class="connected-info">
+              <p>You are connected to Stripe</p>
+              <!-- <button class="disconnect-btn" (click)="disconnectStripe()">
+                Disconnect
+              </button> -->
+              <button class="reconnect-btn" (click)="connectStripe()">
+                Connect with a Different Account
+              </button>
+            </div>
+          </div>
+        
+          <!-- <h3>Create Payout</h3>
+          <div class="payout-section">
+            <input type="number" [(ngModel)]="amount" placeholder="Amount (in cents)" />
+            <select [(ngModel)]="currency">
+              <option value="aud">AUD</option>
+              <option value="usd">USD</option>
+              <option value="eur">EUR</option>
+            </select>
+            <button (click)="createPayout()" [disabled]="!isConnected">Submit Payout</button>
+          </div> -->
+        </div>
+        
+        <!-- Payment Preference Section -->
+        <div class="payment-preference-section">
+          <h3>I wish to be paid:</h3>
+          <div 
+            class="preference-option" 
+            [class.selected]="paymentPreference === PaymentSchedule.Monthly">
+            <input 
+              type="radio" 
+              id="endOfMonth" 
+              name="paymentPreference" 
+              [value]="PaymentSchedule.Monthly" 
+              [(ngModel)]="paymentPreference"
+              (change)="savePaymentPreference()" />
+            <label for="endOfMonth">
+              <span class="preference-title">At the end of the month</span>
+              <span class="preference-subtitle"></span>
+            </label>
+          </div>
+          <div 
+            class="preference-option" 
+            [class.selected]="paymentPreference === PaymentSchedule.PerLesson">
+            <input 
+              type="radio" 
+              id="afterEachLesson" 
+              name="paymentPreference" 
+              [value]="PaymentSchedule.PerLesson" 
+              [(ngModel)]="paymentPreference"
+              (change)="savePaymentPreference()" />
+            <label for="afterEachLesson">
+              <span class="preference-title">After each lesson</span>
+              <span class="preference-subtitle"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="compensation-container" *ngIf="activeSubTab === 'policy'">
+        <h3>Choose your level of compensation in case of student cancellation</h3>
+        <p>
+          Avancira authorises the student to cancel a lesson at least 24 hours in advance. In this case, it is
+          fully refunded. Within 24 hours before the lesson, you can decide on your level of compensation.
+        </p>
+
+        <div class="compensation-selector">
+          <button class="adjust-btn" (click)="adjustCompensation(-10)">-</button>
+          <span class="compensation-value">{{ compensationPercentage }}%</span>
+          <button class="adjust-btn" (click)="adjustCompensation(10)">+</button>
+        </div>
+
+        <button class="compensate-btn">Get compensated {{ compensationPercentage }}%</button>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,33 @@
+<div class="invoices-page">
+    <h2>My Invoices</h2>
+
+    <div class="invoice-table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice</th>
+            <th>Date</th>
+            <th>Offer</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of payment?.invoices">
+            <td>#{{ transaction.id }}</td>
+            <td>{{ transaction.date }}</td>
+            <td>{{ transaction.description }}</td>
+            <td class="price">{{ transaction.amount }} AUD</td>
+            <td>
+              <button class="download-btn" title="Download Invoice">💾</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- No Invoices Message -->
+    <div *ngIf="!(payment?.invoices?.length)" class="no-invoices-message">
+      No invoices available at the moment.
+    </div>
+  </div>

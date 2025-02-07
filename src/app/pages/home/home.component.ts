@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { SliderComponent } from '../../components/slider/slider.component';
+import { TestimonialsComponent } from '../../components/testimonials/testimonials.component';
 
 interface Testimonial {
   name: string;
@@ -19,7 +20,7 @@ interface Testimonial {
 }
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, ProfileImageComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, ProfileImageComponent, TestimonialsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -76,33 +77,4 @@ export class HomeComponent implements OnInit {
   navigateToSearch(item: string): void {
     this.router.navigate(['/search-results'], { queryParams: { query: item } });
   }
-
-
-  testimonialList = [
-    { name: 'Hector', subject: 'Physics', feedback: 'Excellent tutor!', reviewer: 'Vanessa' },
-    { name: 'Farida', subject: 'Python', feedback: 'Highly engaging!', reviewer: 'Stacy' },
-    // Add more testimonials as needed
-  ];
-
-  currentSlide = 0;
-
-  slideRight() {
-    const totalSlides = this.testimonialList.length;
-    this.currentSlide = (this.currentSlide + 1) % totalSlides; // Loop to the beginning
-    this.updateSlider();
-  }
-
-  slideLeft() {
-    const totalSlides = this.testimonialList.length;
-    this.currentSlide = (this.currentSlide - 1 + totalSlides) % totalSlides; // Loop to the end
-    this.updateSlider();
-  }
-
-  updateSlider() {
-    const track = document.querySelector('.testimonial-track') as HTMLElement;
-    if (track) {
-      track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
-    }
-  }
-
 }

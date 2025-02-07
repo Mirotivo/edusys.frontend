@@ -1,6 +1,6 @@
 export const environment = {
-  production: false,
-  baseApiUrl: 'http://localhost:9090',
-  apiUrl: 'http://localhost:9090/api',
-  frontendUrl: 'http://localhost:4200',
+  production: true,
+  baseApiUrl: 'https://www.avancira.com',
+  apiUrl: `https://www.avancira.com/api`,
+  frontendUrl: 'https://www.avancira.com',
 };
