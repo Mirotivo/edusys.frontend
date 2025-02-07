@@ -6,6 +6,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { httpInterceptorFn } from './interceptors/httpInterceptorFn';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,5 +30,7 @@ export const appConfig: ApplicationConfig = {
         preventDuplicates: true,
       })
     ),
+  
+    provideAnimationsAsync(),
   ]
 };
