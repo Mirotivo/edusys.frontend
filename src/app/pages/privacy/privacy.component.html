@@ -1,83 +1,120 @@
 <app-header-center></app-header-center>
+
 <div class="privacy-container">
-    <h1>Privacy Policy</h1>
-    <p>
-      Welcome to <strong>{{ platformName }}</strong>. Your privacy is important to us, and this policy outlines how we collect, use, and protect your data.
-    </p>
-  
-    <section>
-      <h2>1. General</h2>
+  <mat-card class="mat-elevation-z3">
+    <mat-card-title>Privacy Policy</mat-card-title>
+    <mat-card-content>
       <p>
-        <strong>{{ platformName }}</strong> is committed to protecting and respecting your privacy. We act as a data controller and ensure compliance with data protection laws. If you have any concerns, feel free to reach out to our Data Protection Officer at <a href="mailto:{{ dpoEmail }}">{{ dpoEmail }}</a>.
+        Welcome to <strong>{{ platformName }}</strong>. Your privacy is important to us, and this policy outlines how we collect, use, and protect your data.
       </p>
-    </section>
-  
-    <section>
-      <h2>2. Information We Collect</h2>
-      <h3>2.1 Information You Provide</h3>
-      <ul>
-        <li>Mandatory details like name, email, date of birth, and password.</li>
-        <li>Optional details like a photograph, postal address, or a mini-CV.</li>
-        <li>Records of correspondence, transactions, and lesson requests.</li>
-        <li>Surveys, reviews, and questionnaires.</li>
-      </ul>
-  
-      <h3>2.2 Information We Collect Automatically</h3>
-      <ul>
-        <li>Data from social media authentication (e.g., name, photo, email).</li>
-        <li>Technical information such as IP address, browser type, and device details.</li>
-      </ul>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="info-section">
+    <mat-card-title>1. General</mat-card-title>
+    <mat-card-content>
       <p>
-        Your data will be retained securely unless you explicitly request its deletion by emailing <a href="mailto:{{ email }}">{{ email }}</a>.
+        <strong>{{ platformName }}</strong> is committed to protecting and respecting your privacy. We act as a data controller and ensure compliance with data protection laws.
+        If you have any concerns, feel free to reach out to our Data Protection Officer at 
+        <a href="mailto:{{ dpoEmail }}">{{ dpoEmail }}</a>.
       </p>
-    </section>
-  
-    <section>
-      <h2>3. How We Use Your Information</h2>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="info-section">
+    <mat-card-title>2. Information We Collect</mat-card-title>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon color="primary">person</mat-icon>
+          <p>Mandatory details like name, email, date of birth, and password.</p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon color="primary">photo</mat-icon>
+          <p>Optional details like a photograph, postal address, or a mini-CV.</p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon color="primary">history</mat-icon>
+          <p>Records of correspondence, transactions, and lesson requests.</p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon color="primary">poll</mat-icon>
+          <p>Surveys, reviews, and questionnaires.</p>
+        </mat-list-item>
+      </mat-list>
+      <p>Your data will be retained securely unless you explicitly request its deletion by emailing <a href="mailto:{{ email }}">{{ email }}</a>.</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="info-section">
+    <mat-card-title>3. How We Use Your Information</mat-card-title>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon color="primary">work</mat-icon>
+          <p>To fulfill contractual obligations and provide requested services.</p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon color="primary">person_outline</mat-icon>
+          <p>To personalize your profile and improve user experience.</p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon color="primary">notifications</mat-icon>
+          <p>To notify you of changes, respond to queries, and ensure platform security.</p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon color="primary">trending_up</mat-icon>
+          <p>For marketing purposes, including targeted ads (with your consent).</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="info-section">
+    <mat-card-title>4. Sharing Your Information</mat-card-title>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon color="primary">group</mat-icon>
+          <p>Business partners like social media platforms for authentication.</p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon color="primary">credit_card</mat-icon>
+          <p>Service providers for payment processing and analytics.</p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon color="warn">gavel</mat-icon>
+          <p>Law enforcement, if legally required or in good faith for safety and compliance.</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="info-section">
+    <mat-card-title>5. Your Rights</mat-card-title>
+    <mat-card-content>
       <p>
-        <strong>{{ platformName }}</strong> uses your data for the following purposes:
+        You have the right to access, correct, delete, or restrict the processing of your personal data.
+        To exercise your rights, contact us at <a href="mailto:{{ dpoEmail }}">{{ dpoEmail }}</a>.
       </p>
-      <ul>
-        <li>To fulfill contractual obligations and provide requested services.</li>
-        <li>To personalize your profile and improve user experience.</li>
-        <li>To notify you of changes, respond to queries, and ensure platform security.</li>
-        <li>For marketing purposes, including targeted ads (with your consent).</li>
-      </ul>
-    </section>
-  
-    <section>
-      <h2>4. Sharing Your Information</h2>
-      <p>
-        We may share your data with trusted third parties, including:
-      </p>
-      <ul>
-        <li>Business partners like social media platforms for authentication.</li>
-        <li>Service providers for payment processing and analytics.</li>
-        <li>Law enforcement, if legally required or in good faith for safety and compliance.</li>
-      </ul>
-    </section>
-  
-    <section>
-      <h2>5. Your Rights</h2>
-      <p>
-        You have the right to access, correct, delete, or restrict the processing of your personal data. To exercise your rights, contact us at <a href="mailto:{{ dpoEmail }}">{{ dpoEmail }}</a>.
-      </p>
-    </section>
-  
-    <section>
-      <h2>6. Updates to This Policy</h2>
-      <p>
-        We may update this policy periodically. The latest update was made on {{ lastUpdated }}.
-      </p>
-    </section>
-  
-    <footer>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="info-section">
+    <mat-card-title>6. Updates to This Policy</mat-card-title>
+    <mat-card-content>
+      <p>We may update this policy periodically. The latest update was made on {{ lastUpdated }}.</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="footer-section mat-elevation-z1">
+    <mat-card-content>
       <p>
         For any inquiries, please contact our Data Protection Officer at <a href="mailto:{{ dpoEmail }}">{{ dpoEmail }}</a> or by mail at:
       </p>
       <address>
         {{ address }}
       </address>
-    </footer>
-  </div>
-  
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,15 +1,17 @@
 <div class="slider-container">
-    <div class="slider">
-      <button class="slider-btn left" (click)="slideLeft()">
-        ←
-      </button>
-      <div class="slider-track" #sliderTrack>
-        <div class="slider" *ngFor="let item of items">
-            <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
-        </div>
-      </div>
-      <button class="slider-btn right" (click)="slideRight()">
-        →
-      </button>
+  <div class="slider">
+    <button mat-icon-button class="slider-btn left" (click)="slideLeft()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <div class="slider-track" #sliderTrack>
+      <mat-card class="slider-item" *ngFor="let item of items">
+        <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+      </mat-card>
     </div>
+
+    <button mat-icon-button class="slider-btn right" (click)="slideRight()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
   </div>
+</div>

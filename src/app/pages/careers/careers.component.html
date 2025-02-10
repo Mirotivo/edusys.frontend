@@ -1,9 +1,15 @@
 <app-header-center></app-header-center>
+
 <div class="join-team-section">
-  <div class="join-team-content">
-    <h2>Want to join the team?</h2>
-    <p>Discover opportunities to be part of an amazing journey with us.</p>
-    <a href="/about" class="cta-button">Discover our story <span>&#8250;</span></a>
-  </div>
+  <mat-card class="join-team-content mat-elevation-z3">
+    <mat-card-title>Want to join the team?</mat-card-title>
+    <mat-card-content>
+      <p>Discover opportunities to be part of an amazing journey with us.</p>
+      <a mat-button color="primary" class="cta-button" routerLink="/about">
+        Discover our story <mat-icon>arrow_forward</mat-icon>
+      </a>
+    </mat-card-content>
+  </mat-card>
 </div>
+
 <app-footer></app-footer>

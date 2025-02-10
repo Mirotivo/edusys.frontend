@@ -1,21 +1,22 @@
 <app-header-center></app-header-center>
+
 <div class="states-section">
-    <h1>States and Territories</h1>
-    <div class="banner">
+  <mat-card class="mat-elevation-z3">
+    <mat-card-title>States and Territories</mat-card-title>
+    <mat-card-content>
       <p>Browse the range of courses available near you</p>
-      <i class="icon-globe"></i>
-    </div>
-    <div class="states-list">
-      <ul>
-        <li>New South Wales</li>
-        <li>Victoria</li>
-        <li>Queensland</li>
-        <li>Western Australia</li>
-        <li>South Australia</li>
-        <li>Tasmania</li>
-        <li>Northern Territory</li>
-        <li>Australian Capital Territory</li>
-      </ul>
-    </div>
-  </div>
-  <app-footer></app-footer>
+      <mat-icon class="globe-icon">public</mat-icon>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="states-list mat-elevation-z1">
+    <mat-list>
+      <mat-list-item *ngFor="let state of states">
+        <mat-icon color="primary">location_on</mat-icon>
+        <p>{{ state }}</p>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>
+
+<app-footer></app-footer>

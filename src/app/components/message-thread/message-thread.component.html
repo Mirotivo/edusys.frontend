@@ -1,29 +1,43 @@
-<div class="chat-section" *ngIf="selectedContact" #chatSection>
-    <div class="chat-header">
-      <div class="contact-details">
-        <h3>{{ selectedContact.name }}</h3>
-        <p>{{ selectedContact.details }}</p>
-      </div>
-      <div class="banner accepted-request">
-        <p>You have accepted the request</p>
-      </div>
-    </div>
+<mat-card class="chat-section" *ngIf="selectedContact" #chatSection>
+  <!-- Chat Header -->
+  <mat-card-header class="chat-header">
+    <mat-card-title>{{ selectedContact.name }}</mat-card-title>
+    <mat-card-subtitle>{{ selectedContact.details }}</mat-card-subtitle>
+  </mat-card-header>
 
-    <div class="chat-messages" #chatMessages>
-      <div *ngFor="let message of selectedContact.messages" [class.sent]="message.sentBy === 'me'"
-        [class.received]="message.sentBy !== 'me'" class="message">
+  <mat-toolbar class="banner accepted-request">
+    <span>You have accepted the request</span>
+  </mat-toolbar>
+
+  <!-- Chat Messages -->
+  <mat-card-content class="chat-messages" #chatMessages>
+    <mat-list>
+      <mat-list-item
+        *ngFor="let message of selectedContact.messages"
+        [class.sent]="message.sentBy === 'me'"
+        [class.received]="message.sentBy !== 'me'"
+      >
         <p>{{ message.text }}</p>
         <span class="message-timestamp">{{ message.timestamp }}</span>
-      </div>
-    </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
 
-    <div class="chat-input">
-      <input type="text" placeholder="Write a message..." [(ngModel)]="newMessage" (keydown.enter)="sendMessage()" />
-      <button (click)="sendMessage()">Send</button>
-    </div>
-  </div>
+  <!-- Chat Input -->
+  <mat-card-actions class="chat-input">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Write a message...</mat-label>
+      <input matInput [(ngModel)]="newMessage" (keydown.enter)="sendMessage()" />
+    </mat-form-field>
+    <button mat-icon-button color="primary" (click)="sendMessage()">
+      <mat-icon>send</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
 
-  <!-- Placeholder when no contact is selected -->
-  <div class="no-contact-placeholder" *ngIf="!selectedContact">
+<!-- Placeholder when no contact is selected -->
+<mat-card class="no-contact-placeholder" *ngIf="!selectedContact">
+  <mat-card-content>
     <h3>Please select a contact to start chatting.</h3>
-  </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,49 @@
+.bank-details-section {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+  
+    mat-card-title {
+      text-align: center;
+      font-size: 1.5rem;
+      color: #3f51b5;
+      margin-bottom: 10px;
+    }
+  
+    mat-form-field {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+  
+    #iban-element {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+    }
+  
+    mat-list {
+      margin-top: 20px;
+      mat-list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+  
+        button {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  

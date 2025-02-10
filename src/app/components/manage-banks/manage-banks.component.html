@@ -1,25 +1,35 @@
-<div class="bank-details-section">
-    <h3>Add Bank Account</h3>
-  
+<mat-card class="bank-details-section">
+  <mat-card-title>Add Bank Account</mat-card-title>
+  <mat-card-content>
     <form (ngSubmit)="saveBankAccount($event)">
-      <div>
-        <label for="accountHolderName">Account Holder Name:</label>
+      <!-- Account Holder Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Account Holder Name</mat-label>
         <input
+          matInput
           type="text"
           id="accountHolderName"
           [(ngModel)]="accountHolderName"
           name="accountHolderName"
           required
         />
-      </div>
+      </mat-form-field>
+
+      <!-- IBAN Stripe Element -->
       <div id="iban-element" class="stripe-element"></div>
-      <button type="submit">Save Bank Account</button>
+
+      <!-- Save Button -->
+      <button mat-raised-button color="primary" type="submit">
+        Save Bank Account
+      </button>
     </form>
-  
-    <ul *ngIf="savedBanks.length > 0">
-      <li *ngFor="let bank of savedBanks">
+
+    <!-- Saved Banks List -->
+    <mat-list *ngIf="savedBanks.length > 0">
+      <mat-list-item *ngFor="let bank of savedBanks">
         <span>{{ bank.accountHolderName }} (Ending in {{ bank.last4 }})</span>
-        <button (click)="removeBank(bank.id)">Remove</button>
-      </li>
-    </ul>
-  </div>
+        <button mat-button color="warn" (click)="removeBank(bank.id)">Remove</button>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

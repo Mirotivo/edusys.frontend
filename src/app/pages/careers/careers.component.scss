@@ -1,55 +1,46 @@
 .join-team-section {
-  background: linear-gradient(135deg, #6a11cb, #2575fc); // Gradient background
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  height: 60vh;
+  background: url('/assets/team-banner.jpg') center/cover no-repeat;
   text-align: center;
-  color: white;
-  font-family: 'Open Sans', sans-serif;
-  margin: 20px 0;
 
   .join-team-content {
-    max-width: 600px;
+    max-width: 500px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 
-    h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 15px;
+    mat-card-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
     }
 
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 25px;
-      line-height: 1.6;
+    mat-card-content {
+      font-size: 1rem;
+      color: #555;
+      margin-top: 10px;
     }
 
     .cta-button {
-      background: white;
-      color: #6a11cb;
-      font-size: 1rem;
-      font-weight: 600;
-      text-decoration: none;
-      padding: 12px 25px;
-      border-radius: 25px;
-      display: inline-flex;
+      margin-top: 15px;
+      display: flex;
       align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: #0277bd;
+      transition: color 0.3s ease;
 
-      span {
-        margin-left: 8px;
-        font-size: 1.2rem;
+      mat-icon {
+        margin-left: 5px;
       }
 
       &:hover {
-        background: #6a11cb;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        color: #01579b;
       }
     }
   }

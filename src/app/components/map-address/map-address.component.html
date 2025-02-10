@@ -1,12 +1,18 @@
-<div class="address-container">
-    <h3>Address 📍</h3>
-    <input
-      id="search-box"
-      type="text"
-      placeholder="Search for an address"
-      class="search-box"
-      [value]="initialAddress"
-    />
+<mat-card class="address-container">
+  <mat-card-title>Address 📍</mat-card-title>
+  <mat-card-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Search for an address</mat-label>
+      <input
+        matInput
+        id="search-box"
+        type="text"
+        placeholder="Enter address"
+        [(ngModel)]="initialAddress"
+      />
+      <mat-icon matSuffix>location_on</mat-icon>
+    </mat-form-field>
+
     <div id="map" class="map-container"></div>
-  </div>
-  
+  </mat-card-content>
+</mat-card>

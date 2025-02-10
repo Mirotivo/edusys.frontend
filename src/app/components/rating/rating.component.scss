@@ -1,25 +1,33 @@
 .stars {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+
+  .rating-group {
     display: flex;
-    justify-content: center;
     gap: 5px;
-  
-    input {
-      display: none; /* Hide radio buttons */
+  }
+
+  .star-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+  }
+
+  .star-icon {
+    font-size: 32px;
+    color: #bdbdbd;
+    transition: color 0.3s;
+
+    &.selected {
+      color: #ffca28;
     }
-  
-    label {
-      font-size: 2em;
-      color: #ccc;
-      cursor: pointer;
-      transition: color 0.2s;
-  
-      &.hovered {
-        color: #ffc107; /* Highlight stars on hover */
-      }
-  
-      &.selected {
-        color: #ffc107; /* Highlight stars when selected */
-      }
+
+    &.hovered {
+      color: #ffb300;
     }
   }
-  
+}

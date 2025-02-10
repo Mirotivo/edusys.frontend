@@ -1,16 +1,27 @@
 <div class="testimonials-section">
-    <h2>The Perfect Match</h2>
-    <p>More than a million students have given a score of 5 stars to their tutor</p>
-    <div class="testimonials-slider">
-      <button class="slider-btn left" (click)="slideLeft()">←</button>
-      <div class="testimonial-track" #testimonialTrack>
-        <div class="testimonial" *ngFor="let testimonial of testimonialList">
-          <h4>{{ testimonial.name }}</h4>
-          <p>{{ testimonial.subject }} tutor</p>
+  <h2>The Perfect Match</h2>
+  <p>More than a million students have given a score of 5 stars to their tutor</p>
+
+  <div class="testimonials-slider">
+    <button mat-icon-button class="slider-btn left" (click)="slideLeft()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <div class="testimonial-track" #testimonialTrack>
+      <mat-card class="testimonial" *ngFor="let testimonial of testimonialList">
+        <mat-card-header>
+          <mat-card-title>{{ testimonial.name }}</mat-card-title>
+          <mat-card-subtitle>{{ testimonial.subject }} tutor</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
           <p>{{ testimonial.feedback }}</p>
-          <p>— {{ testimonial.reviewer }} ★★★★★</p>
-        </div>
-      </div>
-      <button class="slider-btn right" (click)="slideRight()">→</button>
+          <p class="reviewer">— {{ testimonial.reviewer }} <span class="stars">★★★★★</span></p>
+        </mat-card-content>
+      </mat-card>
     </div>
+
+    <button mat-icon-button class="slider-btn right" (click)="slideRight()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
   </div>
+</div>

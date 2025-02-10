@@ -1,19 +1,27 @@
-<div class="messages-sidebar">
-  <div class="contacts-header">
-    <h3>All my contacts</h3>
-    <input type="text" placeholder="Search contacts..." class="search-bar" />
-  </div>
-  <ul class="contacts-list">
-    <li *ngFor="let contact of contacts" [class.active]="contact.id === selectedContact?.id"
-      (click)="selectContact(contact)">
-      <div class="contact-avatar">
-        <span>{{ contact.name[0] }}</span>
-      </div>
-      <div class="contact-info">
-        <h4>{{ contact.name }}</h4>
-        <p>{{ contact.lastMessage }}</p>
-      </div>
-      <span class="contact-timestamp">{{ contact.timestamp }}</span>
-    </li>
-  </ul>
-</div>
+<mat-card class="messages-sidebar">
+  <!-- Contacts Header -->
+  <mat-card-title>All my contacts</mat-card-title>
+  <mat-card-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Search contacts...</mat-label>
+      <input matInput type="text" [(ngModel)]="searchQuery" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Contacts List -->
+    <mat-list>
+      <mat-list-item 
+        *ngFor="let contact of getFilteredContacts()"
+        [class.active]="contact.id === selectedContact?.id"
+        (click)="selectContact(contact)"
+      >
+        <mat-icon class="contact-avatar">account_circle</mat-icon>
+        <div class="contact-info">
+          <h4>{{ contact.name }}</h4>
+          <p>{{ contact.lastMessage }}</p>
+        </div>
+        <span class="contact-timestamp">{{ contact.timestamp }}</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

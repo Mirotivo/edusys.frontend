@@ -1,13 +1,18 @@
-<div class="auto-complete-input">
-    <input type="text" [(ngModel)]="searchText" (input)="onInputChange()"
-        placeholder="Search or create new..." />
+<div class="auto-complete-input mat-elevation-z2">
+    <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search or create new...</mat-label>
+        <input matInput type="text" [(ngModel)]="searchText" (input)="onInputChange()" />
+        <button *ngIf="searchText.trim()" mat-button color="primary" (click)="createNewOption()">
+            Add "{{ searchText }}"
+        </button>
+    </mat-form-field>
 
-    <button *ngIf="searchText.trim()" (click)="createNewOption()">
-        Add "{{ searchText }}"
-    </button>
-    <select [(ngModel)]="selectedOptionId" (change)="onOptionChange($event)">
-        <option *ngFor="let option of filteredOptions" [value]="option.id">
-            {{ option.name }}
-        </option>
-    </select>
+    <mat-form-field appearance="outline" class="select-field">
+        <mat-label>Select an option</mat-label>
+        <mat-select [(value)]="selectedOptionId" (selectionChange)="onOptionChange($event)">
+            <mat-option *ngFor="let option of filteredOptions" [value]="option.id">
+                {{ option.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 </div>

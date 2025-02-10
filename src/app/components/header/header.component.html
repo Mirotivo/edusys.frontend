@@ -1,49 +1,32 @@
-<div class="header-container">
+<mat-toolbar color="primary" class="header-container">
   <!-- Logo -->
   <div class="logo">
-    <a href="/" class="logo-link">Avancira</a>
+    <a mat-button routerLink="/" class="logo-link">Avancira</a>
   </div>
 
   <!-- Right Side Menu -->
   <div class="header-menu">
     <ng-container *ngIf="isLoggedIn(); else guestMenu">
-      <!-- <div class="role-switcher" *ngIf="hasMultipleRoles()">
-        Logged in as:
-        <button
-          class="role-button"
-          [class.active]="currentRole === 'student'"
-          (click)="switchRole('student')">
-          Student
-        </button>
-        <button
-          class="role-button"
-          [class.active]="currentRole === 'tutor'"
-          (click)="switchRole('tutor')">
-          Tutor
-        </button>
-      </div> -->
-      
-      <button class="profile-btn" (click)="toggleMenu()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
-          <path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z" />
-        </svg>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
       </button>
-      <div *ngIf="isMenuOpen" class="dropdown-menu">
-        <a href="/dashboard">My Dashboard</a>
-        <a href="/messages">Messages</a>
-        <a href="/listings">My Listings</a>
-        <a href="/profile">My Profile</a>
-        <a href="/premium">Premium</a>
-        <a (click)="logout()">Log Out</a>
-      </div>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/dashboard">My Dashboard</button>
+        <button mat-menu-item routerLink="/messages">Messages</button>
+        <button mat-menu-item routerLink="/listings">My Listings</button>
+        <button mat-menu-item routerLink="/profile">My Profile</button>
+        <button mat-menu-item routerLink="/premium">Premium</button>
+        <button mat-menu-item (click)="logout()">Log Out</button>
+      </mat-menu>
     </ng-container>
 
     <!-- Guest Menu -->
     <ng-template #guestMenu>
       <div class="guest-menu">
-        <a href="/signup">Register</a>
-        <a href="/signin">Login</a>
+        <button mat-button [routerLink]="'/signup'">Register</button>
+        <button mat-button [routerLink]="'/signin'">Login</button>
       </div>
     </ng-template>
   </div>
-</div>
+</mat-toolbar>

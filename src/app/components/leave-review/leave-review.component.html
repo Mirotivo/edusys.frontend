@@ -1,39 +1,46 @@
-<div class="leave-review">
-  <h2>Leave a Review</h2>
-  <form #reviewForm="ngForm" (ngSubmit)="submitReview(reviewForm)">
-    <div class="form-group">
-      <label for="subject">Subject</label>
-      <input
-        type="text"
-        id="subject"
-        name="subject"
-        class="form-control"
-        [(ngModel)]="newReview.subject"
-        required
-        placeholder="Enter the subject of your review"
-      />
-    </div>
-    <div class="form-group">
-      <label for="feedback">Feedback</label>
-      <textarea
-        id="feedback"
-        name="feedback"
-        class="form-control"
-        [(ngModel)]="newReview.feedback"
-        rows="4"
-        required
-        placeholder="Share your thoughts about your experience"
-      ></textarea>
-    </div>
+<mat-card class="leave-review">
+  <mat-card-title>Leave a Review</mat-card-title>
+  <mat-card-content>
+    <form #reviewForm="ngForm" (ngSubmit)="submitReview(reviewForm)">
+      <!-- Subject Input -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Subject</mat-label>
+        <input
+          matInput
+          type="text"
+          name="subject"
+          [(ngModel)]="newReview.subject"
+          required
+          placeholder="Enter the subject of your review"
+        />
+      </mat-form-field>
 
-    <div class="form-group star-rating">
-      <label>Rating</label>
-      <app-rating [(rating)]="newReview.rating"></app-rating>
-    </div>
+      <!-- Feedback Textarea -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Feedback</mat-label>
+        <textarea
+          matInput
+          name="feedback"
+          [(ngModel)]="newReview.feedback"
+          rows="4"
+          required
+          placeholder="Share your thoughts about your experience"
+        ></textarea>
+      </mat-form-field>
 
-    <button type="submit" class="btn btn-primary">Submit Review</button>
-  </form>
-  <div *ngIf="responseMessage" class="response-message">
-    {{ responseMessage }}
-  </div>
-</div>
+      <!-- Star Rating Component -->
+      <div class="form-group star-rating">
+        <mat-label>Rating</mat-label>
+        <app-rating [(rating)]="newReview.rating"></app-rating>
+      </div>
+
+      <!-- Submit Button -->
+      <button mat-raised-button color="primary" type="submit">Submit Review</button>
+    </form>
+
+    <!-- Response Message -->
+    <div *ngIf="responseMessage" class="response-message">
+      {{ responseMessage }}
+    </div>
+  </mat-card-content>
+</mat-card>

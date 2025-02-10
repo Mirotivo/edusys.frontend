@@ -1,3 +1,5 @@
+<app-header-center></app-header-center>
+
 <div class="signup-page">
   <!-- Logo -->
   <div class="logo" [routerLink]="'/'">
@@ -5,87 +7,82 @@
   </div>
 
   <!-- Sign-Up Form -->
-  <div class="signup-form">
-    <h3>Sign up</h3>
+  <mat-card class="signup-form mat-elevation-z3">
+    <mat-card-title>Sign Up</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+        <!-- Email Input -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email address</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="username" />
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-error *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+            Invalid email format. Please enter a valid email address.
+          </mat-error>
+        </mat-form-field>
 
-    <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
-      <div class="form-group">
-        <input type="text" id="Input_Email" class="form-control" placeholder="Email address" formControlName="email"
-          autocomplete="username"
-          [ngClass]="{ 'is-invalid': signupForm.get('email')?.invalid && signupForm.get('email')?.touched }" />
-        <span class="text-danger" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
-          Invalid email format. Please enter a valid email address.
-        </span>
-      </div>
+        <!-- Password Input -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" autocomplete="new-password" />
+          <mat-icon matSuffix>lock</mat-icon>
+          <mat-error *ngIf="signupForm.get('password')?.errors?.['required']">
+            Password is required.
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('password')?.errors?.['minlength']">
+            Password must be at least 6 characters long.
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('password')?.errors?.['noNonAlphanumeric']">
+            Password must contain at least one non-alphanumeric character.
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('password')?.errors?.['noLowercase']">
+            Password must contain at least one lowercase letter.
+          </mat-error>
+          <mat-error *ngIf="signupForm.get('password')?.errors?.['noUppercase']">
+            Password must contain at least one uppercase letter.
+          </mat-error>
+        </mat-form-field>
 
-      <div class="form-group">
-        <input type="password" id="Input_Password" class="form-control" placeholder="Password"
-          formControlName="password" autocomplete="new-password"
-          [ngClass]="{ 'is-invalid': signupForm.get('password')?.touched && signupForm.get('password')?.errors }" />
-        <!-- Error messages for each validator -->
-        <span class="text-danger"
-          *ngIf="signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched">
-          Password is required.
-        </span>
-        <span class="text-danger"
-          *ngIf="signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched">
-          Password must be at least 6 characters long.
-        </span>
-        <span class="text-danger"
-          *ngIf="signupForm.get('password')?.errors?.['noNonAlphanumeric'] && signupForm.get('password')?.touched">
-          Password must contain at least one non-alphanumeric character.
-        </span>
-        <span class="text-danger"
-          *ngIf="signupForm.get('password')?.errors?.['noLowercase'] && signupForm.get('password')?.touched">
-          Password must contain at least one lowercase letter.
-        </span>
-        <span class="text-danger"
-          *ngIf="signupForm.get('password')?.errors?.['noUppercase'] && signupForm.get('password')?.touched">
-          Password must contain at least one uppercase letter.
-        </span>
-      </div>
+        <!-- Verify Password Input -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Verify Password</mat-label>
+          <input matInput type="password" formControlName="verifyPassword" autocomplete="new-password" />
+          <mat-icon matSuffix>lock</mat-icon>
+          <mat-error *ngIf="signupForm.get('verifyPassword')?.errors?.['passwordsMismatch']">
+            Passwords do not match. Please try again.
+          </mat-error>
+        </mat-form-field>
 
-      <div class="form-group">
-        <input type="password" id="Input_VerifyPassword" class="form-control" placeholder="Verify password"
-          formControlName="verifyPassword" autocomplete="new-password"
-          [ngClass]="{ 'is-invalid': signupForm.get('verifyPassword')?.touched && signupForm.get('verifyPassword')?.errors }" />
-        <span class="text-danger"
-          *ngIf="signupForm.get('verifyPassword')?.errors?.['passwordsMismatch'] && signupForm.get('verifyPassword')?.touched">
-          Passwords do not match. Please try again.
-        </span>
-      </div>
-
-      <!-- Sign-Up Button -->
-      <button type="submit" class="btn signup-btn" [disabled]="signupForm.invalid">
-        Sign up by email
-      </button>
+        <!-- Sign-Up Button -->
+        <button mat-raised-button color="primary" class="full-width signup-btn" [disabled]="signupForm.invalid">
+          Sign up by email
+        </button>
+      </form>
 
       <!-- Error Message -->
-      <span *ngIf="signupError" class="alert alert-danger" role="alert">
-        <p class="text-danger">{{ signupError }}</p>
-      </span>
-    </form>
+      <mat-card *ngIf="signupError" class="error-message mat-elevation-z2">
+        <mat-icon color="warn">error</mat-icon>
+        {{ signupError }}
+      </mat-card>
 
-    <div class="or-divider">or</div>
+      <div class="or-divider">or</div>
 
-    <!-- Alternative Sign-Up Options -->
-    <button class="btn apple-signup" (click)="signupWithFacebook()" >
-      <i class="fab fa-facebook"></i> Sign up with Facebook
-    </button>
-    <button class="btn google-signup" (click)="signupWithGoogle()" >
-      <i class="fab fa-google"></i> Sign up with Google
-    </button>
-    <!-- <button class="btn apple-signup">
-      <i class="fab fa-apple"></i> Sign up with Apple
-    </button> -->
+      <!-- Alternative Sign-Up Options -->
+      <button mat-flat-button color="primary" class="full-width social-signup facebook-signup" (click)="signupWithFacebook()">
+        <mat-icon class="social-icon">facebook</mat-icon> Sign up with Facebook
+      </button>
+      <button mat-flat-button color="warn" class="full-width social-signup google-signup" (click)="signupWithGoogle()">
+        <mat-icon class="social-icon">google</mat-icon> Sign up with Google
+      </button>
 
-    <!-- Footer -->
-    <div class="footer">
-      <p>Already have an account? <a routerLink="/signin">Log in</a></p>
-      <p>
-        By registering by email or Facebook, you accept our
-        <a href="/terms" target="_blank">legal terms and conditions</a>.
-      </p>
-    </div>
-  </div>
+      <!-- Footer -->
+      <div class="footer">
+        <p>Already have an account? <a routerLink="/signin">Log in</a></p>
+        <p>
+          By registering by email or Facebook, you accept our
+          <a href="/terms" target="_blank">legal terms and conditions</a>.
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

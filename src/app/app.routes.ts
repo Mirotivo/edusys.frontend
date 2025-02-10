@@ -27,6 +27,7 @@ import { CareersComponent } from './pages/careers/careers.component';
 import { OnlineCoursesComponent } from './pages/online-courses/online-courses.component';
 import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
 import { CompleteRegistrationComponent } from './pages/complete-registration/complete-registration.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -44,6 +45,7 @@ export const routes: Routes = [
     { path: 'help-centre', loadComponent: () => import('./pages/help-center/help-center.component').then(m => m.HelpCenterComponent) },
     { path: 'signup', component: SignupComponent },
     { path: 'signin', component: SigninComponent },
+    { path: 'login', component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'payment/:id', component: PaymentComponent },
     { path: 'payment-result', component: PaymentResultComponent , canActivate: [AuthGuard] },

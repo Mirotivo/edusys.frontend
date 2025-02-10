@@ -1,113 +1,118 @@
-<!-- General Information -->
-<div class="profile-page" *ngIf="profile">
-    <div class="profile-section">
-        <h4>General Information 😊</h4>
+<mat-card class="profile-page" *ngIf="profile">
+    <!-- General Information -->
+    <mat-card class="profile-section">
+      <mat-card-title>General Information 😊</mat-card-title>
+      <mat-card-content>
         <form>
-            <!-- <div class="form-group">
-            <label>Gender</label>
-            <select [(ngModel)]="profile.gender" name="gender">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div> -->
-            <div class="form-group">
-                <label>First Name</label>
-                <input type="text" [(ngModel)]="profile.firstName" name="firstName" />
-            </div>
-            <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" [(ngModel)]="profile.lastName" name="lastName" />
-            </div>
-            <div class="form-group">
-                <label>Date of Birth</label>
-                <input type="date" [(ngModel)]="profile.dob" name="dob" />
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" [(ngModel)]="profile.email" name="email" disabled />
-            </div>
-            <div class="form-group">
-                <label>Phone</label>
-                <input type="text" [(ngModel)]="profile.phoneNumber" name="phone" />
-            </div>
-            <div class="form-group">
-                <label>Skype ID</label>
-                <input type="text" [(ngModel)]="profile.skypeId" name="skypeId" />
-            </div>
-            <div class="form-group">
-                <label>Hangout ID</label>
-                <input type="text" [(ngModel)]="profile.hangoutId" name="hangoutId" />
-            </div>
-            <button type="button" class="btn validate-btn" (click)="saveProfile()">Validate</button>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>First Name</mat-label>
+            <input matInput type="text" [(ngModel)]="profile.firstName" name="firstName" />
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Last Name</mat-label>
+            <input matInput type="text" [(ngModel)]="profile.lastName" name="lastName" />
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput type="date" [(ngModel)]="profile.dob" name="dob" />
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" [(ngModel)]="profile.email" name="email" disabled />
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Phone</mat-label>
+            <input matInput type="text" [(ngModel)]="profile.phoneNumber" name="phone" />
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Skype ID</mat-label>
+            <input matInput type="text" [(ngModel)]="profile.skypeId" name="skypeId" />
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Hangout ID</mat-label>
+            <input matInput type="text" [(ngModel)]="profile.hangoutId" name="hangoutId" />
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" (click)="saveProfile()">Validate</button>
         </form>
-
-    </div>
-
+      </mat-card-content>
+    </mat-card>
+  
     <!-- Address -->
-    <div class="profile-section">
-        <app-map-address [initialAddress]="profile.address" (addressSelected)="updateAddress($event)"></app-map-address>
-    </div>
-
+    <mat-card class="profile-section">
+      <app-map-address [initialAddress]="profile.address" (addressSelected)="updateAddress($event)"></app-map-address>
+    </mat-card>
+  
     <!-- Profile Photo -->
-    <div class="profile-section">
-        <h4>Profile Photo 📸</h4>
+    <mat-card class="profile-section">
+      <mat-card-title>Profile Photo 📸</mat-card-title>
+      <mat-card-content>
         <app-profile-image [profileImagePath]="profile.profileImagePath" [firstName]="profile.firstName"
-            [lastName]="profile.lastName" sizeClass="large"></app-profile-image>
-
-        <button class="upload-btn" (click)="onProfilePictureUpload()">📤</button>
-        <button type="button" class="btn change-password-btn" (click)="changePassword()">Change Password</button>
-    </div>
-
-    <!-- Qualification -->
-    <div class="profile-section">
-        <h4>Qualification 📜</h4>
-        <div *ngIf="diplomaStatus === DiplomaStatus.NotSubmitted" class="qualification-status">
-            <p>Your diploma has not been submitted yet.</p>
-            <input type="file" (change)="onFileSelected($event)" />
-            <button class="btn submit-btn" (click)="submitDiploma()">Submit Diploma</button>
-        </div>
-        <div *ngIf="diplomaStatus === DiplomaStatus.UnderReview" class="qualification-status">
-            <p>Your diploma is currently under review.</p>
-            <button class="btn under-review-btn" disabled>Under Review</button>
-        </div>
-        <div *ngIf="diplomaStatus === DiplomaStatus.Verified" class="qualification-status">
-            <p>Your diploma has been verified.</p>
-            <button class="btn verified-btn" disabled>Verified</button>
-        </div>
-    </div>
-
-    <!-- Notifications -->
-    <div class="profile-section">
-        <h4>Notifications 💬</h4>
-        <div class="notifications">
-            <div>
-                <h5>SMS</h5>
-                <div *ngFor="let sms of notifications.sms" class="notification-item">
-                    <label>
-                        <input type="checkbox" [(ngModel)]="sms.enabled" /> {{ sms.label }}
-                    </label>
-                </div>
-            </div>
-            <div>
-                <h5>EMAIL</h5>
-                <div *ngFor="let email of notifications.email" class="notification-item">
-                    <label>
-                        <input type="checkbox" [(ngModel)]="email.enabled" /> {{ email.label }}
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Account -->
-    <div class="profile-section">
-        <h4>Delete Account ☠️</h4>
-        <p>ATTENTION! All of your data will be definitively and irreversibly deleted.</p>
-        <label>
-            <input type="checkbox" [(ngModel)]="deleteConfirmation" /> Delete my Account
-        </label>
-        <button type="button" class="btn delete-account-btn" (click)="confirmAndDeleteAccount()">
-            Delete my Account
+          [lastName]="profile.lastName" sizeClass="large"></app-profile-image>
+  
+        <button mat-icon-button (click)="onProfilePictureUpload()">
+          <mat-icon>cloud_upload</mat-icon>
         </button>
-    </div>
-</div>
+        <button mat-stroked-button color="primary" (click)="changePassword()">Change Password</button>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Qualification -->
+    <mat-card class="profile-section">
+      <mat-card-title>Qualification 📜</mat-card-title>
+      <mat-card-content>
+        <div *ngIf="diplomaStatus === DiplomaStatus.NotSubmitted">
+          <p>Your diploma has not been submitted yet.</p>
+          <input type="file" (change)="onFileSelected($event)" />
+          <button mat-raised-button color="primary" (click)="submitDiploma()">Submit Diploma</button>
+        </div>
+  
+        <div *ngIf="diplomaStatus === DiplomaStatus.UnderReview">
+          <p>Your diploma is currently under review.</p>
+          <button mat-stroked-button disabled>Under Review</button>
+        </div>
+  
+        <div *ngIf="diplomaStatus === DiplomaStatus.Verified">
+          <p>Your diploma has been verified.</p>
+          <button mat-stroked-button color="primary" disabled>Verified</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Notifications -->
+    <mat-card class="profile-section">
+      <mat-card-title>Notifications 💬</mat-card-title>
+      <mat-card-content>
+        <div>
+          <h5>SMS</h5>
+          <mat-checkbox *ngFor="let sms of notifications.sms" [(ngModel)]="sms.enabled">
+            {{ sms.label }}
+          </mat-checkbox>
+        </div>
+  
+        <div>
+          <h5>EMAIL</h5>
+          <mat-checkbox *ngFor="let email of notifications.email" [(ngModel)]="email.enabled">
+            {{ email.label }}
+          </mat-checkbox>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Delete Account -->
+    <mat-card class="profile-section">
+      <mat-card-title>Delete Account ☠️</mat-card-title>
+      <mat-card-content>
+        <p>ATTENTION! All of your data will be definitively and irreversibly deleted.</p>
+        <mat-checkbox [(ngModel)]="deleteConfirmation">Delete my Account</mat-checkbox>
+        <button mat-raised-button color="warn" (click)="confirmAndDeleteAccount()">Delete my Account</button>
+      </mat-card-content>
+    </mat-card>
+  </mat-card>
+  

@@ -1,8 +1,7 @@
-<div class="nav-bar">
-    <ul>
-      <li *ngFor="let link of navLinks" [class.active]="isActive(link.path)">
-        <a [routerLink]="link.path">{{ link.label }}</a>
-      </li>
-    </ul>
-  </div>
-  
+<mat-toolbar class="nav-bar" color="primary">
+  <mat-list class="nav-list">
+    <mat-list-item *ngFor="let link of navLinks" [class.active]="isActive(link.path)">
+      <a mat-button [routerLink]="link.path">{{ link.label }}</a>
+    </mat-list-item>
+  </mat-list>
+</mat-toolbar>

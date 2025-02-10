@@ -1,24 +1,20 @@
 <div class="stars">
+  <mat-radio-group [(ngModel)]="rating" class="rating-group">
     <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-      <input
-        type="radio"
-        [id]="'star' + star"
-        name="rating"
+      <mat-radio-button
+        class="star-button"
         [value]="star"
-        [(ngModel)]="rating"
         (change)="onRatingChange(star)"
-        required
-      />
-      <label
-        [for]="'star' + star"
-        class="star"
-        [class.selected]="star <= (rating ?? 0)"
-        [class.hovered]="star <= hoveredStar"
         (mouseover)="onHover(star)"
         (mouseout)="onHover(0)"
       >
-        &#9733;
-      </label>
+        <mat-icon
+          class="star-icon"
+          [ngClass]="{ selected: star <= (rating ?? 0), hovered: star <= hoveredStar }"
+        >
+          star
+        </mat-icon>
+      </mat-radio-button>
     </ng-container>
-  </div>
-  
+  </mat-radio-group>
+</div>
