@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Card, CardType } from '../../models/card';
 import { SubscriptionService } from '../../services/subscription.service';
-import { SubscriptionType } from '../../models/subscription-type';
+import { PaymentType } from '../../models/payment-type';
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
 import { ConfigService } from '../../services/config.service';
 
@@ -126,7 +126,7 @@ export class PremiumSubscriptionComponent implements OnInit {
     const subscriptionRequest = {
       amount: this.subscription.price, // Use the subscription price dynamically
       paymentMethod: `Card ending in ${this.selectedCard.last4}`, // Describe the payment method,
-      subscriptionType: SubscriptionType.Tutor
+      paymentType: PaymentType.TutorMembership
     };
 
     // Call the subscription service to create a subscription
@@ -138,7 +138,7 @@ export class PremiumSubscriptionComponent implements OnInit {
             success: true,
             listingId: 0,
             gateway: 'Stripe',
-            subscriptionType: SubscriptionType.Tutor
+            paymentType: PaymentType.TutorMembership
           }
         });
       },
@@ -149,7 +149,7 @@ export class PremiumSubscriptionComponent implements OnInit {
             success: false,
             listingId: 0,
             gateway: 'Stripe',
-            subscriptionType: SubscriptionType.Tutor
+            paymentType: PaymentType.TutorMembership
           }
         });
       },

@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { SigninComponent } from './pages/signin/signin.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MessagesComponent } from './pages/messages/messages.component';
 import { ListingsComponent } from './pages/listings/listings.component';
@@ -27,34 +26,35 @@ import { CareersComponent } from './pages/careers/careers.component';
 import { OnlineCoursesComponent } from './pages/online-courses/online-courses.component';
 import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
 import { CompleteRegistrationComponent } from './pages/complete-registration/complete-registration.component';
+import { HomeComponent } from './pages/home-new/home.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'search-results', component: SearchResultsComponent },
-    { path: 'reset-password', component: ResetPasswordComponent },
-    { path: 'category/:name', component: CategoriesComponent },
-    { path: 'confirm-email', component: ConfirmEmailComponent },
-    { path: 'complete-registration', component: CompleteRegistrationComponent },
-    { path: 'about', component: AboutUsComponent },
-    { path: 'terms', component: TermsComponent },
-    { path: 'states', component: StatesComponent },
-    { path: 'careers', component: CareersComponent },
-    { path: 'online-courses', component: OnlineCoursesComponent },
-    { path: 'privacy-policy', component: PrivacyComponent },
-    { path: 'help-centre', loadComponent: () => import('./pages/help-center/help-center.component').then(m => m.HelpCenterComponent) },
     { path: 'signup', component: SignupComponent },
     { path: 'signin', component: SigninComponent },
-    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-    { path: 'payment/:id', component: PaymentComponent },
-    { path: 'payment-result', component: PaymentResultComponent , canActivate: [AuthGuard] },
-    { path: 'booking/:id', component: BookingComponent, canActivate: [AuthGuard] },
+    { path: 'reset-password', component: ResetPasswordComponent },
+    { path: 'confirm-email', component: ConfirmEmailComponent },
+    { path: 'complete-registration', component: CompleteRegistrationComponent },
+    { path: 'terms', component: TermsComponent },
+    { path: 'privacy-policy', component: PrivacyComponent },
+    { path: 'goodbye', component: GoodbyeComponent },
+
+    { path: 'search-results', loadComponent: () => import('./pages/search-results/search-results.component').then(m => m.SearchResultsComponent) },
+    { path: 'category/:name', loadComponent: () => import('./components/categories/categories.component').then(m => m.CategoriesComponent) },
+    { path: 'about', loadComponent: () => import('./pages/about-us/about-us.component').then(m => m.AboutUsComponent) },
+    { path: 'states', loadComponent: () => import('./pages/states/states.component').then(m => m.StatesComponent) },
+    { path: 'careers', loadComponent: () => import('./pages/careers/careers.component').then(m => m.CareersComponent) },
+    { path: 'online-courses', loadComponent: () => import('./pages/online-courses/online-courses.component').then(m => m.OnlineCoursesComponent) },
+    { path: 'help-centre', loadComponent: () => import('./pages/help-center/help-center.component').then(m => m.HelpCenterComponent) },
+    { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent), canActivate: [AuthGuard] },
+    { path: 'payment/:id', loadComponent: () => import('./pages/payment/payment.component').then(m => m.PaymentComponent), canActivate: [AuthGuard] },
+    { path: 'payment-result', loadComponent: () => import('./pages/payment-result/payment-result.component').then(m => m.PaymentResultComponent), canActivate: [AuthGuard] },
+    { path: 'booking/:id', loadComponent: () => import('./pages/booking/booking.component').then(m => m.BookingComponent), canActivate: [AuthGuard] },
     { path: 'messages', loadComponent: () => import('./pages/messages/messages.component').then(m => m.MessagesComponent), canActivate: [AuthGuard] },
-    { path: 'listings', component: ListingsComponent, canActivate: [AuthGuard] },
-    { path: 'evaluations', component: EvaluationsComponent, canActivate: [AuthGuard] },
+    { path: 'listings', loadComponent: () => import('./pages/listings/listings.component').then(m => m.ListingsComponent), canActivate: [AuthGuard] },
     { path: 'evaluations', loadComponent: () => import('./pages/evaluations/evaluations.component').then(m => m.EvaluationsComponent), canActivate: [AuthGuard] },
     { path: 'recommendation/:tokenId', loadComponent: () => import('./pages/recommendation-submission/recommendation-submission.component').then(m => m.RecommendationSubmissionComponent), canActivate: [AuthGuard] },
     { path: 'profile', loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent), canActivate: [AuthGuard] },
-    { path: 'premium', component: PremiumComponent, canActivate: [AuthGuard] },
-    { path: 'subscribe-premium', component: PremiumSubscriptionComponent, canActivate: [AuthGuard] },
-    { path: 'goodbye', component: GoodbyeComponent },
-];
+    { path: 'premium', loadComponent: () => import('./pages/premium/premium.component').then(m => m.PremiumComponent), canActivate: [AuthGuard] },
+    { path: 'subscribe-premium', loadComponent: () => import('./pages/premium-subscription/premium-subscription.component').then(m => m.PremiumSubscriptionComponent), canActivate: [AuthGuard] }
+  ];

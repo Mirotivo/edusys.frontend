@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SubscriptionService {
-
   private apiUrl = `${environment.apiUrl}/subscriptions`;
 
   constructor(private http: HttpClient) { }
@@ -24,16 +23,27 @@ export class SubscriptionService {
     });
   }
 
-  
+
   checkActiveSubscription(): Observable<{ isActive: boolean }> {
     return this.http.get<{ isActive: boolean }>(`${this.apiUrl}/check-active`, {
       headers: this.getAuthHeaders(),
     });
   }
-  
+
+  validatePromoCode(promoCode: string): Observable<any> {
+    return this.http.get<{
+      promoCode: string;
+      discountAmount: number;
+      discountPercentage: number;
+    }>(`${this.apiUrl}/validate-promo`, {
+      params: { promoCode },
+      headers: this.getAuthHeaders(),
+    });
+  }
+
   createSubscription(request: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/create`, request, {
       headers: this.getAuthHeaders(),
     });
-  }  
+  }
 }

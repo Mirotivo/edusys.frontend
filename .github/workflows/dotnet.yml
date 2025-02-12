@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - master
+      - themeforest-template
   pull_request:
     branches:
       - master
+      - themeforest-template
 
 jobs:
 

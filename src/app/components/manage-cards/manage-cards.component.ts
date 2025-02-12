@@ -70,30 +70,31 @@ export class ManageCardsComponent implements OnInit {
     if (this.cardInitialized) {
       return; // Avoid reinitializing
     }
-
-    this.stripe = await loadStripe(this.configService.get('stripePublishableKey'));
-    if (!this.stripe) {
-      console.error('Stripe could not be initialized');
-      return;
-    }
-
-    // const elements = this.stripe.elements();
-    // this.cardElement = elements.create('card');
-    // const retryMounting = setInterval(() => {
-    //   const cardElementContainer = document.getElementById('card-element');
-    //   if (cardElementContainer) {
-    //     this.cardElement.mount('#card-element');
-    //     this.cardInitialized = true;
-    //     clearInterval(retryMounting);
-    //   }
-    // }, 500);
-    const elements = this.stripe?.elements();
-    this.cardNumber = elements?.create('cardNumber');
-    this.cardNumber?.mount('#card-number');
-    this.cardExpiry = elements?.create('cardExpiry');
-    this.cardExpiry?.mount('#card-expiry');
-    this.cardCvc = elements?.create('cardCvc');
-    this.cardCvc?.mount('#card-cvc');
+    this.configService.loadConfig().then(async () => {
+      this.stripe = await loadStripe(this.configService.get('stripePublishableKey'));
+      if (!this.stripe) {
+        console.error('Stripe could not be initialized');
+        return;
+      }
+  
+      // const elements = this.stripe.elements();
+      // this.cardElement = elements.create('card');
+      // const retryMounting = setInterval(() => {
+      //   const cardElementContainer = document.getElementById('card-element');
+      //   if (cardElementContainer) {
+      //     this.cardElement.mount('#card-element');
+      //     this.cardInitialized = true;
+      //     clearInterval(retryMounting);
+      //   }
+      // }, 500);
+      const elements = this.stripe?.elements();
+      this.cardNumber = elements?.create('cardNumber');
+      this.cardNumber?.mount('#card-number');
+      this.cardExpiry = elements?.create('cardExpiry');
+      this.cardExpiry?.mount('#card-expiry');
+      this.cardCvc = elements?.create('cardCvc');
+      this.cardCvc?.mount('#card-cvc');  
+    });
   }
 
   async saveCard(event: Event) {
@@ -114,6 +115,7 @@ export class ManageCardsComponent implements OnInit {
     this.paymentService.saveCard(token.id, this.cardPurpose).subscribe({
       next: () => {
         this.loadSavedCards();
+        this.showAddCardSection = false;
       },
       error: (err) => {
         console.error('Error saving card:', err);

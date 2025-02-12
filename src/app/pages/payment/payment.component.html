@@ -1,47 +1,137 @@
 <app-header-center></app-header-center>
-<div class="payment-page">
-  <button class="back-button" (click)="goBack()">←</button>
+<div class="content" style="transform: none; min-height: 181px;">
+    <div class="container-fluid" style="transform: none;">
+        <div class="row" style="transform: none;">
+            <div class="col-md-7 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Why Subscribe?</h4>
+                        <p>
+                            Subscribing to our platform gives you access to premium features designed to enhance your
+                            learning experience:
+                        </p>
+                        <ul>
+                            <li>💬 **Direct Contact with Tutors** – Reach out to expert tutors for guidance and
+                                personalized learning.</li>
+                            <li>⭐ **Review & Rating System** – Leave reviews and read ratings to find the best tutors.
+                            </li>
+                            <li>📈 **Platform Growth & Expansion** – Your subscription helps us onboard more tutors and
+                                expand course offerings.</li>
+                            <li>📚 **Exclusive Learning Resources** – Get access to additional learning materials and
+                                special insights.</li>
+                        </ul>
+                        <p>
+                            <strong>Note:</strong> The subscription covers access to the platform features, but each
+                            course may have its own separate fee.
+                        </p>
+                    </div>
+                </div>
 
-  <div *ngIf="loading" class="loading">Loading listing details...</div>
-  <div *ngIf="!loading && listing" class="payment-container">
-    <div class="tutor-section">
-      <app-profile-image
-        [profileImagePath]="listing.listingImagePath"
-        [firstName]="listing.tutorName"
-        [lastName]=""
-        sizeClass="large"
-        customClass="tutor-image">
-      </app-profile-image>
-      <div class="tutor-info">
-        <h2>{{ listing.tutorName }}</h2>
-        <p>★★★★★ ({{ listing.reviews }} reviews)</p>
-        <p class="contacted-info">
-          ❤️ {{ listing.tutorName }} has been contacted {{ listing.contactedCount }} times this month.
-        </p>
-      </div>
+                <div class="card" *ngIf="isLoggedIn; else notLoggedIn">
+                    <div class="card-body">
+                        <!-- Subscription Form -->
+                        <div class="payment-widget">
+                            <h4 class="card-title">Choose Your Subscription Plan</h4>
+                            <p>Select a subscription plan that best fits your needs. Please note that the
+                                subscription fee is separate from course fees.</p>
+
+                            <!-- Subscription Options -->
+                            <div class="d-flex justify-content-between">
+                                <label *ngFor="let plan of planOptions" class="subscription-option">
+                                    <input type="radio" name="subscription-plan" [value]="plan.key"
+                                        [(ngModel)]="selectedPlan" (change)="updatePlan()">
+                                    <strong>{{ plan.label }}:</strong> ${{ plan.price }} per {{ plan.period }}
+                                    <p>{{ plan.description }}</p>
+                                </label>
+                            </div>
+                            <!-- /Subscription Options -->
+
+                            <!-- Stripe Payment -->
+                            <div class="payment-list">
+                                <label class="payment-radio stripe-option">
+
+
+                                    Pay with Credit/Debit Card
+                                    <img src="https://e7.pngegg.com/pngimages/633/870/png-clipart-powerd-by-stripe-payment-methods-credit-cards-tech-companies-payments-thumbnail.png"
+                                        alt="Stripe Logo" style="height: 24px;"></label>
+
+                                <app-manage-cards [cardPurpose]="CardType"
+                                    (cardSelected)="onCardSelected($event)"></app-manage-cards>
+                            </div>
+                            <!-- /Stripe Payment -->
+
+                            <!-- Terms Accept -->
+                            <div class="terms-accept">
+                                <div class="custom-checkbox">
+                                    <input type="checkbox" id="terms_accept">
+                                    <label for="terms_accept">I have read and accepted <a href="terms">Terms &amp;
+                                            Conditions</a></label>
+                                </div>
+                            </div>
+                            <!-- /Terms Accept -->
+
+                            <!-- Submit Section -->
+                            <div class="submit-section mt-4">
+                                <button type="submit" class="btn btn-primary submit-btn" [disabled]="!selectedCard"
+                                    (click)="payWithSelectedCard()">Subscribe Now</button>
+                            </div>
+                            <!-- /Submit Section -->
+                        </div>
+                        <!-- /Subscription Form -->
+                    </div>
+                </div>
+
+                <!-- Not Logged In Card -->
+                <ng-template #notLoggedIn>
+                    <div class="card mt-4">
+                        <div class="card-body text-center">
+                            <p class="text-danger">You need to log in to proceed with payment.</p>
+                            <button class="btn btn-primary" (click)="goToLogin()">Sign In</button>
+                        </div>
+                    </div>
+                </ng-template>
+
+            </div>
+
+            <div class="col-md-5 col-lg-4 theiaStickySidebar"
+                style="position: relative; overflow: visible; box-sizing: border-box; min-height: 503.854px;">
+                <!-- Subscription Summary -->
+                <div class="card booking-card">
+                    <div class="card-header">
+                        <h4 class="card-title">Subscription Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="booking-summary">
+                            <div class="booking-item-wrap">
+                                <!-- Subscription Summary -->
+                                <ul class="booking-fee">
+                                    <li>Plan <span>{{ getSelectedPlan().label }}</span></li>
+                                    <li>Subscription Fee <span>${{ getSelectedPlan().price.toFixed(2) }}</span></li>
+                                    <li>Discount <span>${{ discountAmount.toFixed(2) }}</span></li>
+                                </ul>
+                                <!-- Promo Code Section -->
+                                <div class="form-group mt-3 d-flex align-items-center">
+                                    <input class="form-control w-75" [(ngModel)]="promoCode" type="text"
+                                        placeholder="Enter promo code">
+                                    <button class="btn btn-secondary ml-2" (click)="applyPromoCode()">Apply</button>
+                                </div>
+                                <p class="text-success mt-1">{{ promoMessage }}</p>
+
+                                <div class="booking-total">
+                                    <ul class="booking-total-list">
+                                        <li><span>Total</span><span class="total-cost">${{ finalPrice.toFixed(2)
+                                                }}</span></li>
+                                    </ul>
+                                </div>
+
+                                <p><strong>Note:</strong> The subscription covers membership benefits only. Each course
+                                    has its own separate fee.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Subscription Summary -->
+            </div>
+        </div>
     </div>
-
-    <div class="subscription-section">
-      <h2>{{ subscription.title }}</h2>
-      <p class="subtitle">{{ subscription.subtitle }}</p>
-      <div class="price"><span>${{ subscription.price }}</span></div>
-      <ul class="benefits">
-        <li *ngFor="let benefit of subscription.benefits">
-          <span><!--✔️--></span> {{ benefit }}
-        </li>
-      </ul>
-    </div>
-
-    <div *ngIf="isLoggedIn; else notLoggedIn" class="cards-container">
-        <app-manage-cards [cardPurpose]="CardType" (cardSelected)="onCardSelected($event)"></app-manage-cards>
-        <button class="pay-button" [disabled]="!selectedCard" (click)="payWithSelectedCard()">
-          <i class="fa-solid fa-money-check-dollar"></i> Pay with Selected Card
-        </button>
-    </div>
-
-    <ng-template #notLoggedIn>
-      <p>You need to log in to proceed with payment.</p>
-      <button (click)="goToLogin()">Sign In</button>
-    </ng-template>
-  </div>
 </div>

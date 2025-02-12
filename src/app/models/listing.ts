@@ -18,6 +18,7 @@
       fiveHours: number;
       tenHours: number;
     };
+    rating: number | null;
     socialPlatforms: string[];
   }
   

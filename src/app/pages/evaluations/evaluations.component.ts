@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../components/header/header.component';
+import { HeaderComponent } from '../../layout/landing/header/header.component';
 import { NavigationBarComponent } from '../../components/navigation-bar/navigation-bar.component';
 import { Review } from '../../models/review';
 import { EvaluationService } from '../../services/evaluation.service';
@@ -14,7 +14,7 @@ import { User } from '../../models/user';
 
 @Component({
   selector: 'app-evaluations',
-  imports: [CommonModule, FormsModule, HeaderComponent, NavigationBarComponent, ModalComponent, LeaveReviewComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, ModalComponent, LeaveReviewComponent],
   templateUrl: './evaluations.component.html',
   styleUrl: './evaluations.component.scss'
 })

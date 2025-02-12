@@ -8,7 +8,7 @@ import { ChatService } from '../../services/chat.service';
 import { PropositionService } from '../../services/proposition.service';
 import { Proposition } from '../../models/proposition';
 import { ProposeLessonComponent } from '../../components/propose-lesson/propose-lesson.component';
-import { HeaderCenterComponent } from '../../components/header-center/header-center.component';
+import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 
 @Component({
   selector: 'app-booking',

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../components/header/header.component';
+import { HeaderComponent } from '../../layout/landing/header/header.component';
 import { NavigationBarComponent } from '../../components/navigation-bar/navigation-bar.component';
 import { Listing } from '../../models/listing';
 import { LessonCategory } from '../../models/lesson-category';
@@ -13,7 +13,7 @@ import { ProfileImageComponent } from '../../components/profile-image/profile-im
 
 @Component({
   selector: 'app-listings',
-  imports: [CommonModule, FormsModule, HeaderComponent, NavigationBarComponent, ModalComponent, CreateListingComponent, ProfileImageComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, ModalComponent, CreateListingComponent, ProfileImageComponent],
   templateUrl: './listings.component.html',
   styleUrl: './listings.component.scss'
 })

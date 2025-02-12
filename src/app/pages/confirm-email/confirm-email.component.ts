@@ -5,7 +5,7 @@ import { delay, Subject, takeUntil, timer } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HeaderCenterComponent } from '../../components/header-center/header-center.component';
+import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 
 @Component({
   selector: 'app-confirm-email',

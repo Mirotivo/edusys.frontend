@@ -4,7 +4,7 @@ import { PaymentService } from '../../services/payment.service';
 import { SubscriptionService } from '../../services/subscription.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SubscriptionType } from '../../models/subscription-type';
+import { PaymentType } from '../../models/payment-type';
 
 @Component({
   selector: 'app-payment-result',
@@ -16,7 +16,7 @@ export class PaymentResultComponent implements OnInit {
   success: boolean = false;
   listingId!: number;
   gateway!: string;
-  subscriptionType!: number;
+  paymentType!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,9 +30,9 @@ export class PaymentResultComponent implements OnInit {
       this.success = params['success'] === 'true';
       this.listingId = Number(params['listingId']);
       this.gateway = params['gateway'];
-      this.subscriptionType = Number(params['subscriptionType']);
+      this.paymentType = Number(params['paymentType']);
 
-      if (this.gateway && this.subscriptionType) {
+      if (this.gateway && this.paymentType) {
         if (this.success) {
           this.handlePaymentSuccess();
         } else {
@@ -46,7 +46,7 @@ export class PaymentResultComponent implements OnInit {
   }
 
   handlePaymentSuccess(): void {
-    if (this.subscriptionType == SubscriptionType.Student){
+    if (this.paymentType == PaymentType.StudentMembership){
       if (this.gateway === 'PayPal') {
         const paymentId = this.route.snapshot.queryParams['paymentId'] || '0';
   

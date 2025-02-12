@@ -12,7 +12,7 @@ export class ListingService {
 
   constructor(private http: HttpClient) { }
 
-  searchListings(query: string, page: number = 1, pageSize: number = 10): Observable<any> {
+  searchListings(query: string, selectedCategories: string[], page: number = 1, pageSize: number = 10): Observable<any> {
     const token = localStorage.getItem('token');
   
     const headers = new HttpHeaders({
@@ -26,16 +26,6 @@ export class ListingService {
     };
   
     return this.http.get<any>(`${this.apiUrl}/search`, { headers, params });
-  }
-  
-  getRandomListings(): Observable<Listing[]> {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get<Listing[]>(`${this.apiUrl}/dashboard`, { headers });
   }
 
   getListing(listingId: number): Observable<Listing> {

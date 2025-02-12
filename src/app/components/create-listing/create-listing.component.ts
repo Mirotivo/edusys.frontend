@@ -128,6 +128,7 @@ export class CreateListingComponent implements OnInit {
       tutorName: "",
       contactedCount: 0,
       reviews: 0,
+      rating: null,
       lessonCategory: "",
       listingImagePath: "",
     };

@@ -12,10 +12,6 @@ export class CategoryService {
 
   constructor(private http: HttpClient) {}
 
-  getCategories(): Observable<LessonCategory[]> {
-    return this.http.get<LessonCategory[]>(`${this.apiUrl}/dashboard`);
-  }
-
   getFilteredCategories(searchText: string): Observable<LessonCategory[]> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
