@@ -42,27 +42,29 @@
             <div class="text-end">
               <a class="forgot-link" href="forgot-password">Forgot Password ?</a>
             </div>
-            <button class="btn btn-primary login-btn" type="submit" [disabled]="loginForm.invalid">Login</button> 
+            <button class="btn btn-primary login-btn" type="submit" [disabled]="loginForm.invalid">Login</button>
             <!-- Error Message -->
             <div *ngIf="invalidLogin" class="alert alert-danger">
               Invalid email or password. Please try again.
             </div>
 
-            <div class="or-divider">or</div>
+            <div class="login-or">
+              <span class="or-line"></span>
+              <span class="span-or">or</span>
+            </div>
+            <div class="row form-row social-login">
+              <div class="col-6">
+                <button class="btn btn-facebook btn-block w-100" (click)="loginWithFacebook()">
+                  <i class="fab fa-facebook-f me-1"></i> Login with Facebook
+                </button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-google btn-block w-100" (click)="loginWithGoogle()">
+                  <i class="fab fa-google me-1"></i> Login with Google
+                </button>
+              </div>
+            </div>
 
-            <!-- Alternative Login Options -->
-            <button class="btn facebook-login" (click)="loginWithFacebook()">
-              <i class="fab fa-facebook"></i> Log in with Facebook
-            </button>
-            <button class="btn google-login" (click)="loginWithGoogle()">
-              <i class="fab fa-google"></i> Log in with Google
-            </button>
-            <!-- <button class="btn apple-login">
-              <i class="fab fa-apple"></i> Log in with Apple
-            </button> -->
-
-            
-            
             <div class="text-center dont-have">Don’t have an account? <a href="/signup">Register</a></div>
           </form>
         </div>
