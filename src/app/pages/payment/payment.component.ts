@@ -93,7 +93,7 @@ export class PaymentComponent implements OnInit {
 
     this.subscriptionService.createSubscription(subscriptionRequest).subscribe({
       next: (response) => {
-        this.router.navigate(['/payment-result'], {
+        this.router.navigate(['/booking', this.listingId], {
           queryParams: {
             success: true,
             listingId: this.listingId,
@@ -104,7 +104,7 @@ export class PaymentComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error creating subscription:', err);
-        this.router.navigate(['/payment-result'], {
+        this.router.navigate(['/booking', this.listingId], {
           queryParams: {
             success: false,
             listingId: this.listingId,

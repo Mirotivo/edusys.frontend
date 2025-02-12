@@ -141,8 +141,8 @@ export class HomeComponent {
     this.router.navigate(['/search-results'], { queryParams: { query: this.searchQuery } });
   }
 
-  navigateToPayment(listingId: number): void {
-    this.router.navigate(['/payment', listingId]);
+  navigateToListing(listingId: number): void {
+    this.router.navigate(['/listing', listingId]);
   }
 
   navigateToSearch(item: string): void {

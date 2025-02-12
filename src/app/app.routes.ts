@@ -9,7 +9,7 @@ import { PremiumComponent } from './pages/premium/premium.component';
 import { EvaluationsComponent } from './pages/evaluations/evaluations.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { PaymentComponent } from './pages/payment/payment.component';
-import { BookingComponent } from './pages/booking/booking.component';
+import { ListingComponent } from './pages/listing/listing.component';
 import { SearchResultsComponent } from './pages/search-results/search-results.component';
 import { PaymentResultComponent } from './pages/payment-result/payment-result.component';
 import { RecommendationSubmissionComponent } from './pages/recommendation-submission/recommendation-submission.component';
@@ -26,7 +26,7 @@ import { CareersComponent } from './pages/careers/careers.component';
 import { OnlineCoursesComponent } from './pages/online-courses/online-courses.component';
 import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
 import { CompleteRegistrationComponent } from './pages/complete-registration/complete-registration.component';
-import { HomeComponent } from './pages/home-new/home.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -49,7 +49,8 @@ export const routes: Routes = [
     { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent), canActivate: [AuthGuard] },
     { path: 'payment/:id', loadComponent: () => import('./pages/payment/payment.component').then(m => m.PaymentComponent), canActivate: [AuthGuard] },
     { path: 'payment-result', loadComponent: () => import('./pages/payment-result/payment-result.component').then(m => m.PaymentResultComponent), canActivate: [AuthGuard] },
-    { path: 'booking/:id', loadComponent: () => import('./pages/booking/booking.component').then(m => m.BookingComponent), canActivate: [AuthGuard] },
+    { path: 'listing/:id', loadComponent: () => import('./pages/listing/listing.component').then(m => m.ListingComponent) },
+    { path: 'booking/:id', loadComponent: () => import('./pages/booking/booking.component').then(m => m.BookingComponent) },
     { path: 'messages', loadComponent: () => import('./pages/messages/messages.component').then(m => m.MessagesComponent), canActivate: [AuthGuard] },
     { path: 'listings', loadComponent: () => import('./pages/listings/listings.component').then(m => m.ListingsComponent), canActivate: [AuthGuard] },
     { path: 'evaluations', loadComponent: () => import('./pages/evaluations/evaluations.component').then(m => m.EvaluationsComponent), canActivate: [AuthGuard] },

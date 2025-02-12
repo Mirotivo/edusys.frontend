@@ -103,7 +103,7 @@
                             <div class="course-box" data-aos="fade-up">
                                 <div class="product">
                                     <div class="product-img trend-course">
-                                        <a [href]="'/payment/' + course.listingId">
+                                        <a [href]="'/listing/' + course.listingId">
                                             <img class="img-fluid" [src]="course.img" [alt]="course.title" width="600"
                                                 height="300">
                                         </a>
@@ -116,14 +116,14 @@
                                             <span><img src="assets/img/icon/user-06.svg" alt="">{{ course.students }}
                                                 Students</span>
                                         </div>
-                                        <h3 class="title"><a [href]="'/payment/' + course.listingId">{{ course.title
+                                        <h3 class="title"><a [href]="'/listing/' + course.listingId">{{ course.title
                                                 }}</a></h3>
                                         <p>{{ course.description }}</p>
                                         <div class="rating rating-star rating-two align-items-center">
                                             <div class="rating-img">
                                                 <img [src]="course.instructorImg" [alt]="course.instructor">
                                             </div>
-                                            <h5><a [href]="'/payment/' + course.listingId">{{ course.instructor }}</a>
+                                            <h5><a [href]="'/listing/' + course.listingId">{{ course.instructor }}</a>
                                             </h5>
                                             <div class="course-btn">
                                                 <span>{{ course.price }}</span>
@@ -206,7 +206,7 @@
                                     <div class="course-box">
                                         <div class="product">
                                             <div class="product-img trend-course">
-                                                <a [href]="'/payment/' + course.listingId">
+                                                <a [href]="'/listing/' + course.listingId">
                                                     <img class="img-fluid" [src]="course.img" [alt]="course.title"
                                                         width="600" height="300">
                                                 </a>
@@ -216,13 +216,13 @@
                                                     <div class="rating-img">
                                                         <img [src]="course.instructorImg" [alt]="course.instructor">
                                                     </div>
-                                                    <h5><a [href]="'/payment/' + course.listingId">{{ course.instructor
+                                                    <h5><a [href]="'/listing/' + course.listingId">{{ course.instructor
                                                             }}</a></h5>
                                                     <div class="course-btn">
                                                         <span>{{ course.price }}</span>
                                                     </div>
                                                 </div>
-                                                <h3 class="title"><a [href]="'/payment/' + course.listingId">{{
+                                                <h3 class="title"><a [href]="'/listing/' + course.listingId">{{
                                                         course.title }}</a></h3>
                                                 <p>{{ course.description }}</p>
                                                 <div class="rating rate-star">
