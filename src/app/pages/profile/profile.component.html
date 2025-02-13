@@ -1,27 +1,2 @@
 <app-header></app-header>
-<!-- Tab Navigation -->
-<div class="tabs">
-  <button class="tab" [class.active]="activeTab === 'profile'" (click)="activeTab = 'profile'">
-    My Profile
-  </button>
-  <button class="tab" [class.active]="activeTab === 'invoices'" (click)="activeTab = 'invoices'">
-    My Invoices
-  </button>
-  <button class="tab" [class.active]="activeTab === 'payments'" (click)="activeTab = 'payments'">
-    My Payments
-  </button>
-</div>
-
-<div>
-  <div *ngIf="activeTab === 'profile'">
-    <app-profile-details></app-profile-details>
-  </div>
-
-  <div *ngIf="activeTab === 'invoices'">
-    <app-profile-invoices></app-profile-invoices>
-  </div>
-
-  <div *ngIf="activeTab === 'payments'">
-    <app-profile-payments></app-profile-payments>
-  </div>
-</div>
+<app-profile-payments></app-profile-payments>

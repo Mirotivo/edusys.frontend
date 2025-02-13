@@ -29,6 +29,7 @@ import { CompleteRegistrationComponent } from './pages/complete-registration/com
 import { HomeComponent } from './pages/home/home.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
 import { NewProfileComponent } from './pages/new-profile/new-profile.component';
+import { NewInvoicesComponent } from './new-invoices/new-invoices.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -68,7 +69,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: DashboardComponent, data: { title: 'Dashboard' } },
-      { path: 'profile', component: NewProfileComponent, data: { title: 'profile' } },
+      { path: 'invoices', component: NewInvoicesComponent, data: { title: 'Invoices' } },
+      { path: 'profile', component: NewProfileComponent, data: { title: 'Profile' } },
     ]
   }
 ]

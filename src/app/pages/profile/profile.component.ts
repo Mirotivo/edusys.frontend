@@ -15,20 +15,7 @@ import { ProfilePaymentsComponent } from '../../components/profile-payments/prof
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
-  // States
-  activeTab: string = 'profile';
-  activeSubTab: string = 'history';
-
-  constructor(
-    private route: ActivatedRoute
-  ) {  }
-
-  // 1. Lifecycle Hooks
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.activeTab = params['section'] || 'profile';
-      this.activeSubTab = params['detail'] || 'history';
-    });
-  }
 
+  }
 }
