@@ -29,7 +29,9 @@ import { CompleteRegistrationComponent } from './pages/complete-registration/com
 import { HomeComponent } from './pages/home/home.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
 import { NewProfileComponent } from './pages/new-profile/new-profile.component';
-import { NewInvoicesComponent } from './new-invoices/new-invoices.component';
+import { NewInvoicesComponent } from './pages/new-invoices/new-invoices.component';
+import { NewPaymentsComponent } from './pages/new-payments/new-payments.component';
+import { NewEvaluationsComponent } from './pages/new-evaluations/new-evaluations.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -69,6 +71,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: DashboardComponent, data: { title: 'Dashboard' } },
+      { path: 'evaluations', component: NewEvaluationsComponent, data: { title: 'Evaluations' } },
+      { path: 'payments', component: NewPaymentsComponent, data: { title: 'Payments' } },
       { path: 'invoices', component: NewInvoicesComponent, data: { title: 'Invoices' } },
       { path: 'profile', component: NewProfileComponent, data: { title: 'Profile' } },
     ]

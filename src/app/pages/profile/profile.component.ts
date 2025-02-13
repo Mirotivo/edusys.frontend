@@ -10,7 +10,7 @@ import { ProfilePaymentsComponent } from '../../components/profile-payments/prof
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, HeaderComponent, ProfileDetailsComponent, ProfileInvoicesComponent, ProfilePaymentsComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, HeaderComponent, ProfilePaymentsComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { PaymentHistory } from '../models/payment-history';
-import { PaymentService } from '../services/payment.service';
-import { Transaction } from '../models/transaction';
+import { PaymentHistory } from '../../models/payment-history';
+import { PaymentService } from '../../services/payment.service';
+import { Transaction } from '../../models/transaction';
 import { CommonModule } from '@angular/common';
 
 @Component({
