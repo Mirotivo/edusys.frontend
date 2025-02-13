@@ -3,17 +3,27 @@ import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs/operators';
+import { HeaderCenterComponent } from '../customer/header-center/header-center.component';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user';
+import { HeaderComponent } from '../landing/header/header.component';
+import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 
 @Component({
   selector: 'app-dashboard-layout',
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule, HeaderComponent, ProfileImageComponent],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss'
 })
 export class DashboardLayoutComponent implements OnInit {
   currentPage: string = 'Home'; // Default breadcrumb title
+  user!: User;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(
+      private userService: UserService,
+      private router: Router,
+      private activatedRoute: ActivatedRoute
+    ) { }
 
 
   ngOnInit() {
@@ -32,6 +42,11 @@ export class DashboardLayoutComponent implements OnInit {
         this.currentPage = route.snapshot.data['title']; // Get title from route data
         console.log('Updated Current Page:', this.currentPage); // Debugging log
       }
+    });
+
+    this.userService.getUser().subscribe({
+      next: (userData) => (this.user = userData),
+      error: (err) => console.error('Failed to load user data:', err),
     });
   }
 }

@@ -13,6 +13,7 @@ export enum PaymentSchedule
 export interface User {
   firstName: string;
   lastName: string;
+  aboutMe: string|null;
   address: string;
   dob: string;
   email: string;
@@ -26,6 +27,7 @@ export interface User {
   profileImage: File; // Path or URL to the profile image
   recommendationToken: string;
   paymentDetailsAvailable: boolean;
+  profileCompletion: number;
 }
 export interface CompleteProfile {
   firstName: string;

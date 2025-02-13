@@ -71,10 +71,11 @@ export class UserService {
   
     if (user.firstName) formData.append('firstName', user.firstName);
     if (user.lastName) formData.append('lastName', user.lastName);
+    if (user.aboutMe) formData.append('aboutMe', user.aboutMe);
+    if (user.email) formData.append('email', user.email);
     if (user.address) formData.append('address', user.address);
     if (user.dob) formData.append('dob', user.dob);
-    if (user.email) formData.append('email', user.email);
-    if (user.phoneNumber) formData.append('phone', user.phoneNumber);
+    if (user.phoneNumber) formData.append('phoneNumber', user.phoneNumber);
     if (user.skypeId) formData.append('skypeId', user.skypeId);
     if (user.hangoutId) formData.append('hangoutId', user.hangoutId);
   
@@ -101,6 +102,21 @@ export class UserService {
     return this.http.put<void>(`${this.apiUrl}/me`, formData, { headers });
   }
 
+  changePassword(oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<void> {
+    const token = localStorage.getItem('token');
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    return this.http.post<void>(`${this.apiUrl}/change-password`, {
+      oldPassword,
+      newPassword,
+      confirmNewPassword
+    }, { headers });
+  }
+  
   requestPasswordReset(resetPasswordRequest: { email: string }): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/request-reset-password`, resetPasswordRequest);
   }

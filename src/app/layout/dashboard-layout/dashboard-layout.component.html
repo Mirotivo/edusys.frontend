@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="main-wrapper" style="transform: none;">
     <div class="breadcrumb-bar">
         <div class="container-fluid">
@@ -14,89 +15,72 @@
             </div>
         </div>
     </div>
-    <div class="content" style="transform: none; min-height: 181px;">
-        <div class="container-fluid" style="transform: none;">
+    <!-- Page Content -->
+    <div class="content">
+        <div class="container-fluid">
 
-            <div class="row" style="transform: none;">
+            <div class="row">
+                <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
 
-                <!-- Sidebar -->
-                <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar"
-                    style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
-
-                    <div class="theiaStickySidebar"
-                        style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none; top: 0px; left: 30px;">
-                        <div class="profile-sidebar">
-                            <div class="user-widget">
-                                <div class="pro-avatar">JD</div>
-                                <div class="rating">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <div class="user-info-cont">
-                                    <h4 class="usr-name">Jonathan Doe</h4>
-                                    <p class="mentor-type">English Literature (M.A)</p>
-                                </div>
+                    <!-- Sidebar -->
+                    <div class="profile-sidebar">
+                        <div class="user-widget">
+                            <app-profile-image class="pro-avatar" [profileImagePath]="user.profileImagePath"
+                                [firstName]="user.firstName" [lastName]="user.lastName"></app-profile-image>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
                             </div>
-                            <div class="progress-bar-custom">
-                                <h6>Complete your profiles &gt;</h6>
-                                <div class="pro-progress">
-                                    <div class="tooltip-toggle" tabindex="0"></div>
-                                    <div class="tooltip">80%</div>
+                            <div class="user-info-cont">
+                                <h4 class="usr-name">{{ user.firstName }} {{ user.lastName }}</h4>
+                                <p>{{ user.address }}</p>
+                                <div class="profile-status">
+                                    <p><strong>Profile Verified:</strong>
+                                        {{ user.profileVerified && user.profileVerified.length > 0 ?
+                                        user.profileVerified.join(', ') : 'Not Verified' }}
+                                    </p>
+                                    <p><strong>Lessons Completed:</strong> {{ user.lessonsCompleted }}</p>
+                                    <p><strong>Evaluations:</strong> {{ user.evaluations }}</p>
                                 </div>
-                            </div>
-                            <div class="custom-sidebar-nav">
-                                <ul>
-                                    <li><a href="dashboard.html"><i class="fas fa-home"></i>Dashboard <span><i
-                                                    class="fas fa-chevron-right"></i></span></a></li>
-                                    <li><a href="bookings.html" class="active"><i class="fas fa-clock"></i>Bookings
-                                            <span><i class="fas fa-chevron-right"></i></span></a></li>
-                                    <li><a href="schedule-timings.html"><i class="fas fa-hourglass-start"></i>Schedule
-                                            Timings <span><i class="fas fa-chevron-right"></i></span></a></li>
-                                    <li><a href="chat.html"><i class="fas fa-comments"></i>Messages <span><i
-                                                    class="fas fa-chevron-right"></i></span></a></li>
-                                    <li><a href="invoices.html"><i class="fas fa-file-invoice"></i>Invoices <span><i
-                                                    class="fas fa-chevron-right"></i></span></a></li>
-                                    <li><a href="reviews.html"><i class="fas fa-eye"></i>Reviews <span><i
-                                                    class="fas fa-chevron-right"></i></span></a></li>
-                                    <li><a href="blog.html"><i class="fab fa-blogger-b"></i>Blog <span><i
-                                                    class="fas fa-chevron-right"></i></span></a></li>
-                                    <li>
-                                        <a routerLink="/dashboard/new-profile" routerLinkActive="active">
-                                            <i class="fas fa-user-cog"></i> Profile
-                                            <span><i class="fas fa-chevron-right"></i></span>
-                                        </a>
-                                    </li>
-
-                                    <li><a href="login.html"><i class="fas fa-sign-out-alt"></i>Logout <span><i
-                                                    class="fas fa-chevron-right"></i></span></a></li>
-                                </ul>
                             </div>
                         </div>
-                        <div class="resize-sensor"
-                            style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
-                            <div class="resize-sensor-expand"
-                                style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
-                                <div
-                                    style="position: absolute; left: 0px; top: 0px; transition: all; width: 317px; height: 802px;">
-                                </div>
+                        <div class="progress-bar-custom">
+                            <h6>Complete your profiles ></h6>
+                            <div class="pro-progress">
+                                <div class="tooltip-toggle" tabindex="0"></div>
+                                <div class="tooltip">{{ user.profileCompletion }}</div>
                             </div>
-                            <div class="resize-sensor-shrink"
-                                style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
-                                <div
-                                    style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%">
-                                </div>
-                            </div>
+                        </div>
+                        <div class="custom-sidebar-nav">
+                            <ul>
+                                <li><a href="dashboard" class="active"><i class="fas fa-home"></i>Dashboard <span><i
+                                                class="fas fa-chevron-right"></i></span></a></li>
+                                <li><a href="messages"><i class="fas fa-comments"></i>Messages <span><i
+                                                class="fas fa-chevron-right"></i></span></a></li>
+                                <li><a href="profile"><i class="fas fa-file-invoice"></i>Invoices <span><i
+                                                class="fas fa-chevron-right"></i></span></a></li>
+                                <li><a href="evaluations"><i class="fas fa-eye"></i>Reviews <span><i
+                                                class="fas fa-chevron-right"></i></span></a></li>
+                                <li><a href="listings"><i class="fab fa-blogger-b"></i>My Listings <span><i
+                                                class="fas fa-chevron-right"></i></span></a></li>
+                                <li><a href="dashboard/profile"><i class="fas fa-user-cog"></i>Profile <span><i
+                                                class="fas fa-chevron-right"></i></span></a></li>
+                            </ul>
                         </div>
                     </div>
+                    <!-- /Sidebar -->
                 </div>
-                <!-- /Sidebar -->
+
                 <div class="col-md-7 col-lg-8 col-xl-9">
                     <router-outlet></router-outlet>
                 </div>
             </div>
+
         </div>
+
     </div>
+    <!-- /Page Content -->
 </div>

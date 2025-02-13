@@ -24,12 +24,11 @@ import { ProfileImageComponent } from '../../components/profile-image/profile-im
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, FormsModule, HeaderComponent, ModalComponent, LeaveReviewComponent, ProfileImageComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, LeaveReviewComponent, ProfileImageComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  user!: User;
   messages: any[] = [];
   reviewsPending: Review[] = [];
   payments: Transaction[] = [];
@@ -37,7 +36,6 @@ export class DashboardComponent implements OnInit {
   selectedRevieweeId!: number;
 
   constructor(
-    private userService: UserService,
     private chatService: ChatService,
     private paymentService: PaymentService,
     private evaluationService: EvaluationService,
@@ -49,10 +47,6 @@ export class DashboardComponent implements OnInit {
   }
 
   loadDashboardData(): void {
-    this.userService.getUser().subscribe({
-      next: (userData) => (this.user = userData),
-      error: (err) => console.error('Failed to load user data:', err),
-    });
     this.chatService.getMessages().subscribe({
       next: (data) => (this.messages = data),
       error: (err) => console.error('Failed to load chat messages:', err),

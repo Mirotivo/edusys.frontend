@@ -14,7 +14,7 @@ import { PaymentService } from '../../services/payment.service';
 
 @Component({
   selector: 'app-new-profile',
-  imports: [CommonModule, FormsModule, MapAddressComponent, ProfileImageComponent],
+  imports: [CommonModule, FormsModule, MapAddressComponent],
   templateUrl: './new-profile.component.html',
   styleUrl: './new-profile.component.scss'
 })
@@ -154,5 +154,31 @@ export class NewProfileComponent implements OnInit {
         error: (err) => console.error('Failed to delete account:', err)
       });
     }
+  }
+
+  changePasswordData = {
+    oldPassword: '',
+    newPassword: '',
+    confirmNewPassword: ''
+  };
+  changeOldPassword(): void {
+    if (this.changePasswordData.newPassword !== this.changePasswordData.confirmNewPassword) {
+      alert("New password and confirmation do not match.");
+      return;
+    }
+
+    this.userService.changePassword(
+      this.changePasswordData.oldPassword,
+      this.changePasswordData.newPassword,
+      this.changePasswordData.confirmNewPassword
+    ).subscribe({
+      next: () => {
+        alert('Password updated successfully.');
+        this.changePasswordData = { oldPassword: '', newPassword: '', confirmNewPassword: '' };
+      },
+      error: (err) => {
+        alert('Failed to update password: ' + (err.error?.message || 'Unknown error'));
+      }
+    });
   }
 }

@@ -1,141 +1,72 @@
-<app-header></app-header>
 <app-modal *ngIf="isModalOpen" [isOpen]="isModalOpen" (onClose)="closeModal()">
   <app-leave-review [revieweeId]="selectedRevieweeId" (onClose)="closeModal()"></app-leave-review>
 </app-modal>
 
 <!-- Page Content -->
-<div class="content">
-  <div class="container-fluid">
+<div class="row">
+  <div class="dashboard-container">
 
-    <div class="row">
-      <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
-
-        <!-- Sidebar -->
-        <div class="profile-sidebar">
-          <div class="user-widget">
-            <app-profile-image class="pro-avatar" [profileImagePath]="user.profileImagePath"
-              [firstName]="user.firstName" [lastName]="user.lastName"></app-profile-image>
-            <div class="rating">
-              <i class="fas fa-star filled"></i>
-              <i class="fas fa-star filled"></i>
-              <i class="fas fa-star filled"></i>
-              <i class="fas fa-star filled"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <div class="user-info-cont">
-              <h4 class="usr-name">{{ user.firstName }} {{ user.lastName }}</h4>
-              <p>{{ user.address }}</p>
-              <div class="profile-status">
-                <p><strong>Profile Verified:</strong>
-                  {{ user.profileVerified && user.profileVerified.length > 0 ? user.profileVerified.join(', ') : 'Not
-                  Verified' }}
-                </p>
-                <p><strong>Lessons Completed:</strong> {{ user.lessonsCompleted }}</p>
-                <p><strong>Evaluations:</strong> {{ user.evaluations }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="progress-bar-custom">
-            <h6>Complete your profiles ></h6>
-            <div class="pro-progress">
-              <div class="tooltip-toggle" tabindex="0"></div>
-              <div class="tooltip">80%</div>
-            </div>
-          </div>
-          <div class="custom-sidebar-nav">
-            <ul>
-              <li><a href="dashboard" class="active"><i class="fas fa-home"></i>Dashboard <span><i
-                      class="fas fa-chevron-right"></i></span></a></li>
-              <li><a href="messages"><i class="fas fa-comments"></i>Messages <span><i
-                      class="fas fa-chevron-right"></i></span></a></li>
-              <li><a href="profile"><i class="fas fa-file-invoice"></i>Invoices <span><i
-                      class="fas fa-chevron-right"></i></span></a></li>
-              <li><a href="evaluations"><i class="fas fa-eye"></i>Reviews <span><i
-                      class="fas fa-chevron-right"></i></span></a></li>
-              <li><a href="listings"><i class="fab fa-blogger-b"></i>My Listings <span><i
-                      class="fas fa-chevron-right"></i></span></a></li>
-              <li><a href="profile"><i class="fas fa-user-cog"></i>Profile <span><i
-                      class="fas fa-chevron-right"></i></span></a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- /Sidebar -->
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Messages Section -->
+      <div class="messages-section">
+        <h3>My Messages</h3>
+        <ul>
+          <li *ngFor="let message of messages">
+            <p><strong>{{ message.sender }}</strong> - {{ message.content }}</p>
+            <span>{{ message.time }}</span>
+          </li>
+        </ul>
+        <a href="/messages" class="view-all">See all messages</a>
       </div>
 
-      <div class="col-md-7 col-lg-8 col-xl-9">
+      <!-- Reviews Pending Section -->
+      <div class="reviews-section">
+        <h3>Reviews Pending</h3>
+        <ul>
+          <li *ngFor="let review of reviewsPending">
+            <p><strong>{{ review.name }}</strong> - {{ review.feedback }}</p>
+            <button class="btn btn-warning" (click)="openModal(review.revieweeId)">Leave a Review</button>
+          </li>
+        </ul>
+        <a href="/evaluations" class="view-all">See all pending reviews</a>
+      </div>
 
-        <div class="row">
-          <div class="dashboard-container">
+      <!-- Payments Section -->
+      <div class="payments-section">
+        <h3>My Payments</h3>
+        <ul>
+          <li *ngFor="let payment of payments">
+            <p>{{ payment.date }} - {{ payment.description }}</p>
+            <span [ngClass]="{ 'text-success': payment.amount > 0, 'text-danger': payment.amount < 0 }">
+              {{ payment.amount | currency:'AUD' }}
+            </span>
+          </li>
+        </ul>
+        <a href="/profile" class="view-all">See all payments</a>
+      </div>
 
-            <!-- Main Content -->
-            <div class="main-content">
-              <!-- Messages Section -->
-              <div class="messages-section">
-                <h3>My Messages</h3>
-                <ul>
-                  <li *ngFor="let message of messages">
-                    <p><strong>{{ message.sender }}</strong> - {{ message.content }}</p>
-                    <span>{{ message.time }}</span>
-                  </li>
-                </ul>
-                <a href="/messages" class="view-all">See all messages</a>
-              </div>
+      <!-- Listings Section -->
+      <div class="listings-section">
+        <h3>My Listings</h3>
+        <ul>
+          <li *ngFor="let listing of listings">
+            <div class="listing">
+              <app-profile-image [profileImagePath]="listing.listingImagePath" [firstName]="listing.tutorName"
+                [lastName]=""></app-profile-image>
 
-              <!-- Reviews Pending Section -->
-              <div class="reviews-section">
-                <h3>Reviews Pending</h3>
-                <ul>
-                  <li *ngFor="let review of reviewsPending">
-                    <p><strong>{{ review.name }}</strong> - {{ review.feedback }}</p>
-                    <button class="btn btn-warning" (click)="openModal(review.revieweeId)">Leave a Review</button>
-                  </li>
-                </ul>
-                <a href="/evaluations" class="view-all">See all pending reviews</a>
-              </div>
-
-              <!-- Payments Section -->
-              <div class="payments-section">
-                <h3>My Payments</h3>
-                <ul>
-                  <li *ngFor="let payment of payments">
-                    <p>{{ payment.date }} - {{ payment.description }}</p>
-                    <span [ngClass]="{ 'text-success': payment.amount > 0, 'text-danger': payment.amount < 0 }">
-                      {{ payment.amount | currency:'AUD' }}
-                    </span>
-                  </li>
-                </ul>
-                <a href="/profile" class="view-all">See all payments</a>
-              </div>
-
-              <!-- Listings Section -->
-              <div class="listings-section">
-                <h3>My Listings</h3>
-                <ul>
-                  <li *ngFor="let listing of listings">
-                    <div class="listing">
-                      <app-profile-image [profileImagePath]="listing.listingImagePath" [firstName]="listing.tutorName"
-                        [lastName]=""></app-profile-image>
-
-                      <div>
-                        <h4>{{ listing.title }}</h4>
-                        <p>{{ listing.lessonCategory }}</p>
-                        <p>{{ listing.rates.hourly| currency:'AUD' }}</p>
-                        <button class="btn btn-secondary">Edit</button>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <a href="/listings" class="view-all">See all listings</a>
+              <div>
+                <h4>{{ listing.title }}</h4>
+                <p>{{ listing.lessonCategory }}</p>
+                <p>{{ listing.rates.hourly| currency:'AUD' }}</p>
+                <button class="btn btn-secondary">Edit</button>
               </div>
             </div>
-          </div>
-
-        </div>
-
-
+          </li>
+        </ul>
+        <a href="/listings" class="view-all">See all listings</a>
       </div>
     </div>
-
   </div>
 
 </div>
