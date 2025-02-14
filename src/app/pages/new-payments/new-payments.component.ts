@@ -4,10 +4,11 @@ import { PaymentSchedule, User } from '../../models/user';
 import { PaymentHistory } from '../../models/payment-history';
 import { UserService } from '../../services/user.service';
 import { PaymentService } from '../../services/payment.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
+import { SubscriptionService } from '../../services/subscription.service';
 
 @Component({
   selector: 'app-new-payments',
@@ -32,10 +33,15 @@ export class NewPaymentsComponent {
   paymentPreference: PaymentSchedule = PaymentSchedule.PerLesson;
   compensationPercentage: number = 50;
 
+  // Subscription Management
+  subscriptionDetails: any = null;
+
   constructor(
     private userService: UserService,
     private paymentService: PaymentService,
-    private route: ActivatedRoute
+    private subscriptionService: SubscriptionService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
 
   }
@@ -50,6 +56,7 @@ export class NewPaymentsComponent {
     this.loadPaymentPreference();
     this.loadUserProfile();
     this.loadPaymentHistory();
+    this.loadSubscriptionDetails();
   }
 
   // 2. User Profile Management
@@ -94,6 +101,51 @@ export class NewPaymentsComponent {
       error: (err) => console.error('Failed to load payment preference', err),
     });
   }
+
+  // Subscription Management
+  loadSubscriptionDetails(): void {
+    this.subscriptionService.getSubscriptionDetails().subscribe({
+      next: (details) => { 
+        debugger
+        this.subscriptionDetails = details; },
+      error: (err) => console.error('Failed to load subscription details', err)
+    });
+  }
+
+  subscribeNow() {
+    this.router.navigate(['/payment', 1]);
+  }
+
+  updateSubscription(): void {
+    this.subscriptionService.updateSubscription().subscribe({
+      next: () => alert('Subscription updated successfully!'),
+      error: (err) => console.error('Failed to update subscription', err),
+    });
+  }
+
+  cancelSubscription(): void {
+    this.subscriptionService.cancelSubscription().subscribe({
+      next: () => alert('Subscription cancelled successfully!'),
+      error: (err) => console.error('Failed to cancel subscription', err),
+    });
+  }
+
+  editBillingFrequency() {
+    throw new Error('Method not implemented.');
+  }
+  cancelPlan() {
+    this.subscriptionService.cancelSubscription().subscribe({
+      next: () => alert('Subscription cancelled successfully!'),
+      error: (err) => console.error('Failed to cancel subscription', err),
+    });
+  }
+  switchPlans() {
+    throw new Error('Method not implemented.');
+  }
+  changePaymentMethod() {
+    throw new Error('Method not implemented.');
+  }
+
 
   savePaymentPreference(): void {
     this.userService.updatePaymentPreference(this.paymentPreference).subscribe({

@@ -30,6 +30,22 @@ export class SubscriptionService {
     });
   }
 
+  getSubscriptionDetails(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/details`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
+  cancelSubscription(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/cancel`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
+  updateSubscription(): Observable<any> {
+    throw new Error('Method not implemented.');
+  }
+
   validatePromoCode(promoCode: string): Observable<any> {
     return this.http.get<{
       promoCode: string;

@@ -88,7 +88,7 @@ export class PaymentComponent implements OnInit {
       amount: this.finalPrice,
       paymentMethod: `Card ending in ${this.selectedCard.last4}`,
       paymentType: PaymentType.StudentMembership,
-      planType: this.selectedPlan
+      billingFrequency: this.selectedPlan
     };
 
     this.subscriptionService.createSubscription(subscriptionRequest).subscribe({

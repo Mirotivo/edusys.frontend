@@ -9,6 +9,8 @@
           aria-selected="false" tabindex="-1" role="tab">Receiving Payments</a></li>
       <li class="nav-item" role="presentation"><a class="nav-link" href="#bottom-tab4" data-bs-toggle="tab"
           aria-selected="false" tabindex="-1" role="tab">Cancellation Policy</a></li>
+      <li class="nav-item" role="presentation"><a class="nav-link" href="#bottom-tab5" data-bs-toggle="tab"
+          aria-selected="false" tabindex="-1" role="tab">Subscription Settings</a></li>
     </ul>
 
     <div class="tab-content">
@@ -138,6 +140,101 @@
           </button>
         </div>
       </div>
+
+      <div class="tab-pane" id="bottom-tab5" role="tabpanel">
+        <h3 class="mb-4 fw-bold">Subscription Settings</h3>
+
+        <div *ngIf="subscriptionDetails; else noSubscription">
+          <!-- General Information -->
+          <div class="card shadow-sm p-4 mb-4">
+            <h5 class="mb-3 text-primary">Subscription Details</h5>
+            <p class="mb-2">
+              <strong>Status:</strong>
+              <span class="badge bg-success">{{ subscriptionDetails.status }}</span>
+            </p>
+            <p class="mb-2">
+              <strong>Start Date:</strong> {{ subscriptionDetails.startDate | date: 'longDate' }}
+            </p>
+            <p class="mb-2">
+              <strong>Next Billing Date:</strong> {{ subscriptionDetails.nextBillingDate | date: 'longDate' }}
+            </p>
+            <p class="mb-2">
+              <strong>Billing Frequency:</strong> {{ subscriptionDetails.billingFrequency }}
+              <a href="#" (click)="editBillingFrequency()" class="ms-2 text-decoration-none text-primary">Edit</a>
+            </p>
+            <p class="mb-2">
+              <strong>Next Billing Amount:</strong>
+              {{ subscriptionDetails.nextBillingAmount | currency: 'AUD':'symbol':'1.2-2' }}
+            </p>
+          </div>
+
+          <!-- Actions -->
+          <div class="card shadow-sm p-4 mb-4">
+            <h5 class="mb-3 text-primary">Actions</h5>
+            <div class="d-flex flex-wrap gap-2">
+
+              <!-- If user has an active subscription, show "Switch Plans" & "Cancel Plan" -->
+              <ng-container *ngIf="subscriptionDetails?.status === 'Active'; else showSubscribeButton">
+                <button class="btn btn-outline-secondary" (click)="switchPlans()">Switch Plans</button>
+                <button class="btn btn-outline-danger" (click)="cancelPlan()">Cancel Plan</button>
+              </ng-container>
+
+              <!-- If no active subscription, show "Subscribe Now" -->
+              <ng-template #showSubscribeButton>
+                <button class="btn btn-primary px-4 py-2" (click)="subscribeNow()">Subscribe Now</button>
+              </ng-template>
+
+            </div>
+          </div>
+        </div>
+
+
+        <!-- No Active Subscription Message -->
+        <ng-template #noSubscription>
+          <div class="card shadow-sm p-4 text-center">
+            <h5 class="mb-3 text-danger">No Active Subscription</h5>
+            <p class="text-muted mb-4">You don't have an active subscription at the moment.</p>
+            <button class="btn btn-primary px-4 py-2" (click)="subscribeNow()">Subscribe Now</button>
+          </div>
+        </ng-template>
+
+        <!-- Show Subscription History Even if No Active Subscription -->
+        <div *ngIf="subscriptionDetails?.subscriptionHistory?.length > 0; else noHistory">
+          <div class="card shadow-sm p-4 mb-4">
+            <h5 class="mb-3 text-primary">Subscription History</h5>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>Status</th>
+                  <th>Change Date</th>
+                  <th>Billing Frequency</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let history of subscriptionDetails.subscriptionHistory">
+                  <td>{{ history.action }}</td>
+                  <td><span class="badge bg-info">{{ history.status }}</span></td>
+                  <td>{{ history.changeDate | date: 'longDate' }}</td>
+                  <td>{{ history.billingFrequency }}</td>
+                  <td>{{ history.amount | currency: 'AUD':'symbol':'1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- No History Message -->
+        <ng-template #noHistory>
+          <div class="card shadow-sm p-4 text-center">
+            <h5 class="mb-3 text-muted">No Subscription History</h5>
+            <p class="text-muted mb-4">You haven't had any subscriptions yet.</p>
+          </div>
+        </ng-template>
+      </div>
+
+
     </div>
   </div>
 </div>
