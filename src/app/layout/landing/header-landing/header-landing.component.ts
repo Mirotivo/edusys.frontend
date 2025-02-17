@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header-landing',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header-landing.component.html',
   styleUrl: './header-landing.component.scss'
 })

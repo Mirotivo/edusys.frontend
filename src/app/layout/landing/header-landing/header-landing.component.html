@@ -26,23 +26,23 @@
                 </div>
                 <ul class="main-nav" *ngIf="isLoggedIn();">
                     <li>
-                        <a href="dashboard" target="_blank">My Dashboard</a>
+                        <a [routerLink]="'dashboard'">My Dashboard</a>
                     </li>
                     <li>
-                        <a href="messages" target="_blank">Messages</a>
+                        <a [routerLink]="'messages'">Messages</a>
                     </li>
                     <li>
-                        <a href="listings" target="_blank">My Listings</a>
+                        <a [routerLink]="'listings'">My Listings</a>
                     </li>
                     <li>
-                        <a href="profile" target="_blank">My Profile</a>
+                        <a [routerLink]="'dashboard/profile'">My Profile</a>
                     </li>
                     <li>
-                        <a href="premium" target="_blank">Premium</a>
+                        <a [routerLink]="'premium'">Premium</a>
                     </li>
 
                     <li class="login-link">
-                        <a href="signin">Login / Signup</a>
+                        <a [routerLink]="'signin'">Login / Signup</a>
                     </li>
                 </ul>				 
             </div>		 
