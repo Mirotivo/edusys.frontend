@@ -96,11 +96,11 @@
         </div>
 
         <div class="row align-items-center">
-            <div class="col-md-12">
+            <div class="col-md-12 most-trend-two owl-carousel owl-loaded owl-drag">
                 <owl-carousel-o [options]="customOptions">
                     <ng-container *ngFor="let course of trendingCourses">
                         <ng-template carouselSlide>
-                            <div class="course-box" data-aos="fade-up">
+                            <div class="course-box aos-init aos-animate" data-aos="fade-up">
                                 <div class="product">
                                     <div class="product-img trend-course">
                                         <a [href]="'/listing/' + course.listingId">
@@ -118,7 +118,7 @@
                                         </div>
                                         <h3 class="title"><a [href]="'/listing/' + course.listingId">{{ course.title
                                                 }}</a></h3>
-                                        <p>{{ course.description }}</p>
+                                        <p class="description">{{ course.description }}</p>
                                         <div class="rating rating-star rating-two align-items-center">
                                             <div class="rating-img">
                                                 <img [src]="course.instructorImg" [alt]="course.instructor">
@@ -199,7 +199,7 @@
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active">
                 <div class="row align-items-center">
-                    <div class="col-md-12">
+                    <div class="col-md-12 most-trend-two">
                         <owl-carousel-o [options]="customOptions">
                             <ng-container *ngFor="let course of filteredCourses">
                                 <ng-template carouselSlide>
@@ -224,7 +224,7 @@
                                                 </div>
                                                 <h3 class="title"><a [href]="'/listing/' + course.listingId">{{
                                                         course.title }}</a></h3>
-                                                <p>{{ course.description }}</p>
+                                                <p class="description">{{ course.description }}</p>
                                                 <div class="rating rate-star">
                                                     <span class="average-rating rate-point">
                                                         <i class="fas fa-star"></i>
