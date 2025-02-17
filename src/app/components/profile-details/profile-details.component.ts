@@ -80,8 +80,12 @@ export class ProfileDetailsComponent implements OnInit {
     }
   }
   
-  updateAddress(newAddress: string): void {
-    if (this.profile) this.profile.address = newAddress;
+  updateAddress(location: { address: string; lat: number; lng: number }) {
+    if (this.profile) {
+      this.profile.address = location.address;
+      this.profile.latitude = location.lat;
+      this.profile.longitude = location.lng;
+    }
   }
 
   onProfilePictureUpload(): void {

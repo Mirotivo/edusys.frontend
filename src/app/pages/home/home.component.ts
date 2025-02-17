@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HeaderLandingComponent } from '../../layout/landing/header-landing/header-landing.component';
 import { FooterLandingComponent } from '../../layout/landing/footer-landing/footer-landing.component';
 import * as AOS from 'aos';
@@ -13,14 +13,14 @@ import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../../layout/landing/footer/footer.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { LandingService } from '../../services/landing.service';
-
+import { GoogleMapsService } from '../../services/google-maps.service';
 @Component({
   selector: 'app-home',
   imports: [CommonModule, FormsModule, CarouselModule, HeaderLandingComponent, FooterComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, AfterViewInit {
   categories: LessonCategory[] = [];
   courses: any[] = [];
   trendingCourses: any[] = [];
@@ -28,6 +28,7 @@ export class HomeComponent {
   jobLocations: any[] = [];
   studentReviews: any[] = [];
   searchQuery: string = '';
+  selectedLocation: { lat: number; lng: number } | null = null;
   selectedCategory: string = "All";
   filteredCourses: any[] = [];
   courseCategories: LessonCategory[] = [];
@@ -53,6 +54,7 @@ export class HomeComponent {
   };
 
   constructor(
+    private googleMapsService: GoogleMapsService,
     private landingService: LandingService,
     private router: Router
   ) { }
@@ -66,6 +68,31 @@ export class HomeComponent {
     this.loadInstructors();
     this.loadJobLocations();
     this.loadStudentReviews();
+  }
+
+  ngAfterViewInit(): void {
+    this.googleMapsService.loadGoogleMaps()
+    .then(() => this.initializeAutocomplete())
+    .catch((error) => console.error(error));
+  }
+
+  initializeAutocomplete(): void {
+    const input = document.getElementById('city-search') as HTMLInputElement;
+    const autocomplete = new google.maps.places.Autocomplete(input, {
+      types: ['(regions)'],
+      componentRestrictions: { country: 'AU' }
+    });
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      if (place.geometry && place.geometry.location) {
+        this.selectedLocation = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        };
+        console.log('Selected location:', this.selectedLocation);
+      }
+    });
   }
 
   loadCategories(): void {

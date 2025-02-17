@@ -74,6 +74,8 @@ export class UserService {
     if (user.aboutMe) formData.append('aboutMe', user.aboutMe);
     if (user.email) formData.append('email', user.email);
     if (user.address) formData.append('address', user.address);
+    if (user.latitude) formData.append('latitude', user.latitude.toString());
+    if (user.longitude) formData.append('longitude', user.longitude.toString());
     if (user.dob) formData.append('dob', user.dob);
     if (user.phoneNumber) formData.append('phoneNumber', user.phoneNumber);
     if (user.skypeId) formData.append('skypeId', user.skypeId);

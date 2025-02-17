@@ -18,7 +18,7 @@ export class GoogleMapsService {
         resolve();
         return;
       }
-
+      
       this.configService.loadConfig().then(() => {
         const script = document.createElement('script');
         script.src = `https://maps.googleapis.com/maps/api/js?key=${this.configService.get('googleMapsApiKey')}&libraries=places`;

@@ -15,6 +15,8 @@ export interface User {
   lastName: string;
   aboutMe: string|null;
   address: string;
+  latitude: number;
+  longitude: number;
   dob: string;
   email: string;
   phoneNumber: string;

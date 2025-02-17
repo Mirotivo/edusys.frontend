@@ -12,7 +12,7 @@ import { GoogleMapsService } from '../../services/google-maps.service';
 })
 export class MapAddressComponent implements AfterViewInit {
   @Input() initialAddress: string | null = null;
-  @Output() addressSelected = new EventEmitter<string>();
+  @Output() addressSelected = new EventEmitter<{ address: string; lat: number; lng: number }>();
   selectedAddress: string | null = null;
 
   constructor(private googleMapsService: GoogleMapsService) { }
@@ -63,7 +63,9 @@ export class MapAddressComponent implements AfterViewInit {
         );
 
         this.selectedAddress = place.formatted_address || place.name || 'Unknown Address';
-        this.addressSelected.emit(this.selectedAddress);
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        this.addressSelected.emit({ address: this.selectedAddress, lat, lng });
 
         if (place.geometry.viewport) {
           bounds.union(place.geometry.viewport);
@@ -91,7 +93,9 @@ export class MapAddressComponent implements AfterViewInit {
         });
   
         this.selectedAddress = results[0].formatted_address || address;
-        this.addressSelected.emit(this.selectedAddress);
+        const lat = results[0].geometry.location.lat();
+        const lng = results[0].geometry.location.lng();
+        this.addressSelected.emit({ address: this.selectedAddress, lat, lng });
       } else if (!results) {
         console.warn('No results found for the provided address.');
       } else {
