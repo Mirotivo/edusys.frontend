@@ -6,10 +6,12 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { LessonCategory } from '../../models/lesson-category';
 import { CategoryService } from '../../services/category.service';
 import { AutoCompleteInputComponent } from '../auto-complete-input/auto-complete-input.component';
+import { ModalComponent } from '../modal/modal.component';
+import { MultiStepModalComponent } from '../multi-step-modal/multi-step-modal.component';
 
 @Component({
   selector: 'app-create-listing',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, AutoCompleteInputComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, AutoCompleteInputComponent, MultiStepModalComponent],
   templateUrl: './create-listing.component.html',
   styleUrl: './create-listing.component.scss'
 })
@@ -87,7 +89,7 @@ export class CreateListingComponent implements OnInit {
         // this.lessonCategories.push(createdCategory);
         this.lessonCategories = [...this.lessonCategories, createdCategory];
         this.createListingForm.get('lessonCategoryId')?.patchValue(createdCategory.id);
-    
+
       },
       error: (err) => {
         console.error('Failed to create new lesson category:', err);
@@ -106,9 +108,9 @@ export class CreateListingComponent implements OnInit {
     if (this.createListingForm.invalid) {
       return;
     }
-  
+
     const formValues = this.createListingForm.value;
-    
+
     const processedListing: Listing = {
       title: formValues.title,
       listingImage: this.selectedImageFile,
@@ -124,15 +126,18 @@ export class CreateListingComponent implements OnInit {
       socialPlatforms: formValues.socialPlatforms || [],
 
       id: -1,
+      isVisible: true,
       tutorId: "",
       tutorName: "",
+      tutorBio: "",
+      tutorAddress: null,
       contactedCount: 0,
       reviews: 0,
       rating: null,
       lessonCategory: "",
       listingImagePath: "",
     };
-  
+
 
     this.listingService.createListing(processedListing).subscribe({
       next: (newListing) => {
@@ -144,6 +149,33 @@ export class CreateListingComponent implements OnInit {
     });
   }
 
+  stepLabels: string[] = [
+    'Title & Image',
+    'Lesson & Location',
+    'About the Lesson & You',
+    'Rates',
+    'Social Platforms'
+  ];
+  step: number = 1;
+  totalSteps = this.stepLabels.length;
+
+  isStepValid = (): boolean => {
+    switch (this.step) {
+      case 1:
+        return !!this.createListingForm.get('title')?.valid;
+      case 2:
+        return !!this.createListingForm.get('lessonCategoryId')?.valid && !!this.createListingForm.get('locations')?.valid;
+      case 3:
+        return !!this.createListingForm.get('aboutLesson')?.valid && !!this.createListingForm.get('aboutYou')?.valid;
+      case 4:
+        return !!this.createListingForm.get('rates.hourly')?.valid;
+      case 5:
+        return true; // No validation for step 5
+      default:
+        return false;
+    }
+  };
+  
   closeModal(): void {
     this.onClose.emit();
   }

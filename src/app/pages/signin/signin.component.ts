@@ -42,51 +42,56 @@ export class SigninComponent {
     });
 
     // Initialize the Facebook SDK with your App ID
-    this.configService.loadConfig().then(async () => {
-      const initParams: InitParams = {
-        appId: this.configService.get('facebookAppId'),
-        cookie: true,
-        xfbml: true,
-        version: 'v21.0',
-      };
-      this.fb.init(initParams);
+    this.configService.loadConfig().subscribe({
+      next: async () => {
 
-      await loadGapiInsideDOM();
-      gapi.load('auth2', () => {
-        gapi.auth2.init({
-          client_id: this.configService.get('googleClientId'),
-          scope: 'profile email',
+        const initParams: InitParams = {
+          appId: this.configService.get('facebookAppId'),
+          cookie: true,
+          xfbml: true,
+          version: 'v21.0',
+        };
+        this.fb.init(initParams);
+
+        await loadGapiInsideDOM();
+        gapi.load('auth2', () => {
+          gapi.auth2.init({
+            client_id: this.configService.get('googleClientId'),
+            scope: 'profile email',
+          });
         });
-      });
+      },
+      error: (err) => {
+        console.error('Failed to load configuration:', err.message);
+      },
     });
   }
 
+
   // Handle the login form submission
-  async onLogin(): Promise<void> {
+  onLogin(): void {
     if (this.loginForm.invalid) {
       return;
     }
 
-    try {
-      const result = await this.authService.login(
-        this.loginForm.value.email,
-        this.loginForm.value.password
-      );
+    this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe({
+      next: (result) => {
+        if (result) {
+          this.authService.saveToken(result.token);
+          this.authService.saveRoles(result.roles);
+          this.authService.saveEmail(this.loginForm.value.email);
 
-      if (result) {
-        this.authService.saveToken(result.token);
-        this.authService.saveRoles(result.roles);
-        this.authService.saveEmail(this.loginForm.value.email);
-
-        // Redirect to returnUrl or dashboard
-        this.router.navigateByUrl(this.returnUrl);
-      } else {
+          // Redirect to returnUrl or dashboard
+          this.router.navigateByUrl(this.returnUrl);
+        } else {
+          this.invalidLogin = true; // Invalid credentials
+        }
+      },
+      error: (error) => {
+        console.error(error);
         this.invalidLogin = true;
-      }
-    } catch (error) {
-      console.error(error);
-      this.invalidLogin = true;
-    }
+      },
+    });
   }
 
   /** ✅ Facebook Login */
@@ -122,15 +127,17 @@ export class SigninComponent {
   }
 
   /** ✅ Handle Social Login */
-  private async handleSocialLogin(provider: string, token: string): Promise<void> {
-    try {
-      const result = await this.authService.socialLogin(provider, token);
-      this.authService.saveToken(result.token);
-      this.authService.saveRoles(result.roles);
-      this.router.navigateByUrl(this.returnUrl);
-    } catch (error) {
-      console.error(`❌ ${provider} login verification failed:`, error);
-      this.invalidLogin = true;
-    }
+  handleSocialLogin(provider: string, token: string): void {
+    this.authService.socialLogin(provider, token).subscribe({
+      next: (result) => {
+        this.authService.saveToken(result.token);
+        this.authService.saveRoles(result.roles);
+        this.router.navigateByUrl(this.returnUrl);
+      },
+      error: (error) => {
+        console.error(`❌ ${provider} login verification failed:`, error.message);
+        this.invalidLogin = true;
+      },
+    });
   }
 }

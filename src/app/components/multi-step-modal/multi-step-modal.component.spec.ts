@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProfileComponent } from './profile.component';
+import { MultiStepModalComponent } from './multi-step-modal.component';
 
-describe('ProfileComponent', () => {
-  let component: ProfileComponent;
-  let fixture: ComponentFixture<ProfileComponent>;
+describe('MultiStepModalComponent', () => {
+  let component: MultiStepModalComponent;
+  let fixture: ComponentFixture<MultiStepModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProfileComponent]
+      imports: [MultiStepModalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProfileComponent);
+    fixture = TestBed.createComponent(MultiStepModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -13,27 +13,17 @@ export class PropositionService {
   constructor(private http: HttpClient) {}
 
   proposeLesson(lesson: Proposition): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
     // Ensure duration is in "HH:mm:ss" format
     const formattedLesson = {
       ...lesson,
       duration: this.formatDuration(lesson.duration),
     };
 
-    return this.http.post(`${this.apiUrl}/proposeLesson`, formattedLesson, { headers });
+    return this.http.post(`${this.apiUrl}/proposeLesson`, formattedLesson);
   }
 
   respondToProposition(propositionId: number, accept: boolean) {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.post(`${this.apiUrl}/respondToProposition/${propositionId}`, accept, { headers });
+    return this.http.post(`${this.apiUrl}/respondToProposition/${propositionId}`, accept);
   }
 
   private formatDuration(hours: number): string {
@@ -47,21 +37,11 @@ export class PropositionService {
   }
 
   getPropositions(contactId: string, listingId: number): Observable<{ propositions: any[]; lessons: any[] }> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-  
-    return this.http.get<{ propositions: any[]; lessons: any[] }>(`${this.apiUrl}/${contactId}/${listingId}`, { headers });
+    return this.http.get<{ propositions: any[]; lessons: any[] }>(`${this.apiUrl}/${contactId}/${listingId}`);
   }
   
 
   cancelLesson(lessonId: number) {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-  
-    return this.http.delete<void>(`${this.apiUrl}/${lessonId}/cancel`, { headers });
+    return this.http.delete<void>(`${this.apiUrl}/${lessonId}/cancel`);
   }
 }

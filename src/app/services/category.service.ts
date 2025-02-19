@@ -13,17 +13,12 @@ export class CategoryService {
   constructor(private http: HttpClient) {}
 
   getFilteredCategories(searchText: string): Observable<LessonCategory[]> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-  
     let url = this.apiUrl;
     if (searchText && searchText.trim() !== '') {
       url += `?query=${encodeURIComponent(searchText.trim())}`;
     }
 
-    return this.http.get<LessonCategory[]>(url, { headers });
+    return this.http.get<LessonCategory[]>(url);
   }
 
   createCategory(category: { name: string }): Observable<LessonCategory> {

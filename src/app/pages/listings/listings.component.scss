@@ -1,218 +1,146 @@
-@use 'colors';
+.profile-sidebar {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 15px;
 
-.listings-page {
-  display: flex;
-  gap: 30px;
-  padding: 20px;
-  background: linear-gradient(135deg, #f5f7fa, #e6ebf3); // Subtle gradient
-  font-family: 'Inter', sans-serif;
+    .sidebar-title {
+        font-size: 1rem;
+        font-weight: 600;
+    }
 
-  // Sidebar
-  .sidebar {
-    width: 25%;
-    background: colors.$background-white;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: transform 0.3s ease;
+    .custom-sidebar-nav {
+        // max-height: 450px;
+        overflow-y: auto;
+        padding: 0;
+
+        .listing-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            position: relative;
+
+            &:hover,
+            &.active {
+                background: #f3f4f6;
+            }
+
+            .listing-image-container {
+                width: 50px;
+                height: 50px;
+                flex-shrink: 0;
+                border-radius: 50%;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #e9ecef;
+            }
+
+            .listing-title {
+                font-size: 0.9rem;
+                font-weight: 600;
+                max-width: 140px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .listing-info {
+                font-size: 0.75rem;
+            }
+
+            .btn {
+                padding: 4px 6px;
+                font-size: 0.75rem;
+            }
+        }
+    }
+
+    .empty-state {
+        img {
+            width: 100px;
+            height: auto;
+        }
+    }
+}
+
+.listing-card {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease-in-out;
 
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
     }
 
-    .create-listing-btn {
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: #fff;
-      font-weight: bold;
-      padding: 12px 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-
-      &:hover {
-        background: linear-gradient(135deg, #5b0ecb, #1e60d9);
-        transform: translateY(-2px) scale(1.05);
-      }
+    .listing-profile-img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #ddd;
     }
 
-    .listings {
-      margin-top: 20px;
-      padding: 0;
-
-      li {
-        margin-bottom: 10px;
-        background: linear-gradient(135deg, #ffffff, #f8f9fb);
-        border-radius: 10px;
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-        cursor: pointer;
-
-        &:hover {
-          box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-          transform: translateY(-3px);
-        }
-
-        &.active {
-          background: linear-gradient(135deg, #2575fc, #6a11cb);
-          color: #fff;
-
-          h3 {
-            color: #fff;
-          }
-        }
-
-        .listing-info {
-          display: flex;
-          align-items: center;
-          gap: 15px;
-          padding: 10px;
-
-          app-profile-image {
-            flex: 0 0 60px;
-            height: 60px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          }
-
-          .listing-details {
-            h3 {
-              margin: 0;
-              font-size: 1.2rem;
-              font-weight: bold;
-              color: #333;
-              transition: color 0.3s ease;
-
-              &:hover {
-                color: #2575fc;
-              }
-            }
-          }
-        }
-      }
+    .card-header {
+        background: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+        padding: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
     }
-  }
 
-  // Main Content
-  .sidebar-main-content {
-    flex: 1;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    animation: fadeIn 1s ease-in-out;
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-
-      h2 {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #333;
-      }
-
-      .premium-btn {
-        background: linear-gradient(135deg, #ff416c, #ff4b2b);
-        color: #fff;
+    .section-title {
         font-size: 1rem;
-        font-weight: bold;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-
-        &:hover {
-          background: linear-gradient(135deg, #e03c5b, #e03a21);
-          transform: scale(1.05);
-        }
-      }
+        font-weight: 600;
+        color: #333;
     }
 
     .listing-section {
-      background: linear-gradient(135deg, #f9f9f9, #ffffff);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      position: relative;
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
 
-      h4 {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #2575fc;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        &::before {
-          font-family: 'Font Awesome 5 Free';
-          font-weight: 900;
-          font-size: 1.5rem;
-          color: #6a11cb;
-          content: '\f10d'; // Example default icon
+        &:last-child {
+            border-bottom: none;
         }
-      }
 
-      // Specific Icons
-      &.lessons-taught h4::before {
-        content: '\f51d';
-      }
-      &.location h4::before {
-        content: '\f3c5';
-      }
-      &.about-you h4::before {
-        content: '\f2bb';
-      }
-      &.rates h4::before {
-        content: '\f155';
-      }
-      &.recommendations h4::before {
-        content: '\f086';
-      }
-
-      p,
-      ul {
-        font-size: 1rem;
-        color: #555;
-        line-height: 1.6;
-      }
-
-      .edit-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: #2575fc;
-        color: #fff;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-
-        &:hover {
-          background: #1e60d9;
-          transform: scale(1.05);
+        .listing-text {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
         }
-      }
+
+        .listing-rates {
+            font-size: 0.9rem;
+            color: #333;
+            li {
+                margin-bottom: 5px;
+            }
+        }
+
+        .badge {
+            font-size: 0.85rem;
+            padding: 6px 12px;
+        }
+
+        .btn {
+            font-size: 0.8rem;
+            padding: 5px 8px;
+        }
     }
-  }
-}
 
-// Animations
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    .card-footer {
+        background: #f8f9fa;
+        padding: 15px;
+        border-top: 1px solid #ddd;
+
+        .btn {
+            font-size: 0.85rem;
+            padding: 8px 12px;
+        }
+    }
 }

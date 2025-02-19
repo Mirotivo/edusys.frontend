@@ -55,70 +55,79 @@ export class SignupComponent implements OnInit {
       this.returnUrl = params['returnUrl'] || '/';
     });
 
-    
-    // Initialize Google Authentication
-    this.configService.loadConfig().then(async () => {
-      const initParams: InitParams = {
-        appId: this.configService.get('facebookAppId'),
-        cookie: true,
-        xfbml: true,
-        version: 'v21.0',
-      };
-      this.fb.init(initParams);
 
-      await loadGapiInsideDOM();
-      gapi.load('auth2', () => {
-        gapi.auth2.init({
-          client_id: this.configService.get('googleClientId'),
-          scope: 'profile email',
+    // Initialize Google Authentication
+    this.configService.loadConfig().subscribe({
+      next: async () => {
+
+        const initParams: InitParams = {
+          appId: this.configService.get('facebookAppId'),
+          cookie: true,
+          xfbml: true,
+          version: 'v21.0',
+        };
+        this.fb.init(initParams);
+
+        await loadGapiInsideDOM();
+        gapi.load('auth2', () => {
+          gapi.auth2.init({
+            client_id: this.configService.get('googleClientId'),
+            scope: 'profile email',
+          });
         });
-      });
+      },
+      error: (err) => {
+        console.error('Failed to load configuration:', err.message);
+      },
     });
   }
 
   // Handle form submission
-  async onSignup(): Promise<void> {
+  onSignup(): void {
     if (this.signupForm.invalid) {
       return;
     }
 
-    try {
-      const errorMessage = await this.authService.register(
+    this.authService
+      .register(
         this.signupForm.value.email,
         this.signupForm.value.password,
         this.signupForm.value.verifyPassword,
         this.referralToken
-      );
-
-      if (!errorMessage) {
-        await this.loginUser();
-      } else {
-        this.signupError = errorMessage;
-      }
-    } catch (error: any) {
-      this.signupError =
-        error?.error?.message ||
-        error?.message ||
-        'An unexpected error occurred. Please try again.';
-    }
+      )
+      .subscribe({
+        next: (errorMessage: string | null) => {
+          if (!errorMessage) {
+            this.loginUser(); // Continue with login on successful registration
+          } else {
+            this.signupError = errorMessage; // Handle registration error
+          }
+        },
+        error: (error: any) => {
+          this.signupError =
+            error?.message || 'An unexpected error occurred. Please try again.';
+        },
+      });
   }
 
   // Handle user login after successful signup
-  private async loginUser(): Promise<void> {
-    const loginResult = await this.authService.login(
-      this.signupForm.value.email,
-      this.signupForm.value.password
-    );
+  loginUser(): void {
+    this.authService.login(this.signupForm.value.email, this.signupForm.value.password).subscribe({
+      next: (loginResult) => {
+        if (loginResult) {
+          this.authService.saveToken(loginResult.token);
+          this.authService.saveRoles(loginResult.roles);
+          this.authService.saveEmail(this.signupForm.value.email);
 
-    if (loginResult) {
-      this.authService.saveToken(loginResult.token);
-      this.authService.saveRoles(loginResult.roles);
-      this.authService.saveEmail(this.signupForm.value.email);
-
-      this.router.navigate(['/complete-registration']);
-    } else {
-      this.signupError = 'Signup succeeded, but automatic login failed.';
-    }
+          this.router.navigate(['/complete-registration']);
+        } else {
+          this.signupError = 'Signup succeeded, but automatic login failed.';
+        }
+      },
+      error: () => {
+        this.signupError = 'Signup succeeded, but automatic login failed.';
+      },
+    });
   }
 
   /** ✅ Facebook Login */
@@ -153,20 +162,22 @@ export class SignupComponent implements OnInit {
   }
 
   /** ✅ Handle Social Signup */
-  private async handleSocialSignup(provider: string, token: string): Promise<void> {
-    try {
-      const result = await this.authService.socialLogin(provider, token);
-      this.authService.saveToken(result.token);
-      this.authService.saveRoles(result.roles);
-      if (result.isRegistered) {
-        this.router.navigateByUrl(this.returnUrl);
-      }
-      else {
-        this.router.navigate(['/complete-registration']);
-      }
-    } catch (error) {
-      console.error(`❌ ${provider} signup verification failed:`, error);
-      this.signupError = `Failed to sign up with ${provider}.`;
-    }
+  private handleSocialSignup(provider: string, token: string): void {
+    this.authService.socialLogin(provider, token).subscribe({
+      next: (result) => {
+        this.authService.saveToken(result.token);
+        this.authService.saveRoles(result.roles);
+
+        if (result.isRegistered) {
+          this.router.navigateByUrl(this.returnUrl);
+        } else {
+          this.router.navigate(['/complete-registration']);
+        }
+      },
+      error: (error) => {
+        console.error(`❌ ${provider} signup verification failed:`, error.message);
+        this.signupError = `Failed to sign up with ${provider}.`;
+      },
+    });
   }
 }

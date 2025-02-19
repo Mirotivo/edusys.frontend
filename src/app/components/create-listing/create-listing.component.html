@@ -1,18 +1,19 @@
-<div class="create-listing-form-container">
-  <h2>Create a New Listing</h2>
-  <form class="create-listing-form" [formGroup]="createListingForm" (ngSubmit)="submitCreateListing()">
-    <!-- Title and Image -->
-    <div class="form-row">
+<app-multi-step-modal [size]="'lg'" [title]="'Create a New Listing'" [isOpen]="true" [totalSteps]="totalSteps" [(step)]="step"
+  [stepLabels]="stepLabels" [isStepValid]="isStepValid" (onSubmit)="submitCreateListing()" (onClose)="closeModal()">
+  <form [formGroup]="createListingForm" (ngSubmit)="submitCreateListing()">
+
+    <div *ngIf="step === 1">
       <div class="form-group">
         <label for="title">Title:</label>
-        <input id="title" formControlName="title" />
-        <div *ngIf="createListingForm.get('title')?.invalid && createListingForm.get('title')?.touched" class="error">
+        <input id="title" formControlName="title" class="form-control" />
+        <div *ngIf="createListingForm.get('title')?.invalid && createListingForm.get('title')?.touched"
+          class="text-danger">
           Title is required and must be at least 3 characters.
         </div>
       </div>
       <div class="form-group">
         <label for="image">Upload Image:</label>
-        <input id="image" type="file" (change)="onImageSelected($event)" />
+        <input id="image" type="file" class="form-control" (change)="onImageSelected($event)" />
         <div *ngIf="createListingForm.get('listingImage')?.invalid && createListingForm.get('listingImage')?.touched"
           class="error">
           Image is required.
@@ -20,78 +21,71 @@
       </div>
     </div>
 
-    <!-- Lessons Taught and Locations -->
-    <div class="form-row">
+    <div *ngIf="step === 2">
       <div class="form-group">
         <label for="lessonCategory">Lesson Category:</label>
-        <app-auto-complete-input
-          [options]="lessonCategories"
-          (searchTextChanged)="loadLessonCategories($event)"
-          (selectedOption)="selectOption($event)"
-          (newOptionCreated)="addNewLessonCategory($event)"></app-auto-complete-input>
+        <app-auto-complete-input [options]="lessonCategories" (searchTextChanged)="loadLessonCategories($event)"
+          (selectedOption)="selectOption($event)" (newOptionCreated)="addNewLessonCategory($event)">
+        </app-auto-complete-input>
       </div>
       <div class="form-group">
         <label for="locations">Locations:</label>
-        <select id="locations" formControlName="locations" multiple>
+        <select id="locations" class="form-control" formControlName="locations" multiple>
           <option *ngFor="let location of locationOptions" [value]="location">{{ location }}</option>
         </select>
       </div>
     </div>
 
-    <!-- About the Lesson and About You -->
-    <div class="form-row">
+    <div *ngIf="step === 3">
       <div class="form-group">
         <label for="aboutLesson">About the Lesson:</label>
-        <textarea id="aboutLesson" formControlName="aboutLesson"></textarea>
-        <div *ngIf="createListingForm.get('aboutLesson')?.invalid && createListingForm.get('aboutLesson')?.touched" class="error">
+        <textarea id="aboutLesson" formControlName="aboutLesson" class="form-control"></textarea>
+        <div *ngIf="createListingForm.get('aboutLesson')?.invalid && createListingForm.get('aboutLesson')?.touched"
+          class="error">
           .....
         </div>
       </div>
       <div class="form-group">
         <label for="aboutYou">About You:</label>
-        <textarea id="aboutYou" formControlName="aboutYou"></textarea>
-        <div *ngIf="createListingForm.get('aboutYou')?.invalid && createListingForm.get('aboutYou')?.touched" class="error">
+        <textarea id="aboutYou" formControlName="aboutYou" class="form-control"></textarea>
+        <div *ngIf="createListingForm.get('aboutYou')?.invalid && createListingForm.get('aboutYou')?.touched"
+          class="error">
           .....
         </div>
       </div>
     </div>
 
-    <!-- Rates -->
-    <fieldset class="form-group" formGroupName="rates">
-      <legend>Rates</legend>
-      <div class="rate-fields">
-        <div>
+    <div *ngIf="step === 4">
+      <fieldset class="form-group" formGroupName="rates">
+        <legend>Rates</legend>
+        <div class="form-group">
           <label for="hourlyRate">Hourly Rate:</label>
-          <input id="hourlyRate" type="number" (input)="calculatePerHour()" formControlName="hourly" />
-          <div *ngIf="createListingForm.get('rates.hourly')?.invalid && createListingForm.get('rates.hourly')?.touched" class="error">
+          <input id="hourlyRate" type="number" class="form-control" formControlName="hourly"
+            (input)="calculatePerHour()" />
+          <div *ngIf="createListingForm.get('rates.hourly')?.invalid && createListingForm.get('rates.hourly')?.touched"
+            class="error">
             Hourly rate is required and must be a valid number.
           </div>
         </div>
-        <div>
+        <div class="form-group" style="display: none;">
           <label for="fiveHoursRate">5 Hours Rate:</label>
-          <input id="fiveHoursRate" type="number" (input)="calculatePerFiveHours()" formControlName="fiveHours" />
+          <input id="fiveHoursRate" type="number" class="form-control" formControlName="fiveHours"
+            (input)="calculatePerFiveHours()" />
         </div>
-        <div>
+        <div class="form-group" style="display: none;">
           <label for="tenHoursRate">10 Hours Rate:</label>
-          <input id="tenHoursRate" type="number" formControlName="tenHours" />
+          <input id="tenHoursRate" type="number" class="form-control" formControlName="tenHours" />
         </div>
-      </div>
-    </fieldset>
-    
-    <!-- Social Platforms -->
-    <div class="form-row">
+      </fieldset>
+    </div>
+
+    <div *ngIf="step === 5">
       <div class="form-group">
         <label for="socialPlatforms">Social Platforms:</label>
-        <select id="socialPlatforms" formControlName="socialPlatforms" multiple>
+        <select id="socialPlatforms" class="form-control" formControlName="socialPlatforms" multiple>
           <option *ngFor="let platform of socialPlatformOptions" [value]="platform">{{ platform }}</option>
         </select>
       </div>
     </div>
-
-    <!-- Buttons -->
-    <div class="form-actions">
-      <button type="submit" class="btn-primary" [disabled]="createListingForm.invalid">Create Listing</button>
-      <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
-    </div>
   </form>
-</div>
+</app-multi-step-modal>

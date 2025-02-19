@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { ConfigService } from './config.service';
+import { Observable, of, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +13,30 @@ export class GoogleMapsService {
     private configService: ConfigService
   ) { }
 
-  loadGoogleMaps(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (this.scriptLoaded) {
-        resolve();
-        return;
-      }
-      
-      this.configService.loadConfig().then(() => {
+  loadGoogleMaps(): Observable<void> {
+    if (this.scriptLoaded) {
+      return of(undefined); // Return an observable that emits void immediately
+    }
+
+    return this.configService.loadConfig().pipe(
+      switchMap(() => new Observable<void>((observer) => {
         const script = document.createElement('script');
         script.src = `https://maps.googleapis.com/maps/api/js?key=${this.configService.get('googleMapsApiKey')}&libraries=places`;
         script.async = true;
         script.defer = true;
+
         script.onload = () => {
           this.scriptLoaded = true;
-          resolve();
+          observer.next();
+          observer.complete();
         };
-        script.onerror = () => reject('Google Maps API could not be loaded.');
-        document.body.appendChild(script);  
-      });
-    });
+
+        script.onerror = () => {
+          observer.error('Google Maps API could not be loaded.');
+        };
+
+        document.body.appendChild(script);
+      }))
+    );
   }
 }

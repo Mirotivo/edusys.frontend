@@ -1,24 +1,23 @@
+import { Component } from '@angular/core';
+import { Review } from '../../models/review';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { EvaluationService } from '../../services/evaluation.service';
+import { environment } from '../../environments/environment';
+import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../layout/landing/header/header.component';
-import { NavigationBarComponent } from '../../components/navigation-bar/navigation-bar.component';
-import { Review } from '../../models/review';
-import { EvaluationService } from '../../services/evaluation.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { LeaveReviewComponent } from '../../components/leave-review/leave-review.component';
-import { AuthService } from '../../services/auth.service';
-import { environment } from '../../environments/environment';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user';
 
 @Component({
   selector: 'app-evaluations',
-  imports: [CommonModule, FormsModule, HeaderComponent, ModalComponent, LeaveReviewComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, LeaveReviewComponent],
   templateUrl: './evaluations.component.html',
   styleUrl: './evaluations.component.scss'
 })
-export class EvaluationsComponent implements OnInit {
+export class EvaluationsComponent {
   pendingReviews: Review[] = [];
   receivedReviews: Review[] = [];
   sentReviews: Review[] = [];
@@ -34,7 +33,7 @@ export class EvaluationsComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private evaluationService: EvaluationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadAllReviews();
@@ -68,7 +67,7 @@ export class EvaluationsComponent implements OnInit {
       this.recommendations = data.recommendations;
       // this.remainingReviews = data.pendingReviews.length;
     });
-    }
+  }
 
   setActiveTab(tab: string): void {
     this.activeSubTab = tab;
@@ -88,4 +87,5 @@ export class EvaluationsComponent implements OnInit {
   handleProposeLesson(event: { date: string; duration: number; price: number }): void {
     // Perform the action, e.g., send the proposal to the backend
   }
+
 }

@@ -10,115 +10,86 @@ import { DiplomaStatus, PaymentSchedule, User } from '../models/user';
 export class UserService {
   private apiUrl = `${environment.apiUrl}/users`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUser(): Observable<User> {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get<User>(`${this.apiUrl}/me`, { headers });
+    return this.http.get<User>(`${this.apiUrl}/me`);
   }
 
   getUserByToken(recommendationToken: string): Observable<any> {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get(`${this.apiUrl}/by-token/${recommendationToken}`, { headers });
+    return this.http.get(`${this.apiUrl}/by-token/${recommendationToken}`);
   }
 
   getDiplomaStatus(): Observable<any> {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get<any>(`${this.apiUrl}/diploma-status`, { headers });
+    return this.http.get<any>(`${this.apiUrl}/diploma-status`);
   }
 
   submitDiploma(diplomaFile: File): Observable<void> {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
     const formData = new FormData();
     formData.append('diplomaFile', diplomaFile);
 
-    return this.http.post<void>(`${this.apiUrl}/submit-diploma`, formData, { headers });
+    return this.http.post<void>(`${this.apiUrl}/submit-diploma`, formData);
   }
-  
+
   updateUser(user: Partial<User>, imageFile?: File): Observable<void> {
-    const token = localStorage.getItem('token');
-  
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-  
     // Prepare FormData
     const formData = new FormData();
-  
+
     if (imageFile) {
       formData.append('profileImage', imageFile);
     }
-  
+
     if (user.firstName) formData.append('firstName', user.firstName);
     if (user.lastName) formData.append('lastName', user.lastName);
-    if (user.aboutMe) formData.append('aboutMe', user.aboutMe);
+    if (user.bio) formData.append('bio', user.bio);
     if (user.email) formData.append('email', user.email);
-    if (user.address) formData.append('address', user.address);
-    if (user.latitude) formData.append('latitude', user.latitude.toString());
-    if (user.longitude) formData.append('longitude', user.longitude.toString());
-    if (user.dob) formData.append('dob', user.dob);
+    if (user.dateOfBirth) formData.append('dateOfBirth', user.dateOfBirth);
     if (user.phoneNumber) formData.append('phoneNumber', user.phoneNumber);
     if (user.skypeId) formData.append('skypeId', user.skypeId);
     if (user.hangoutId) formData.append('hangoutId', user.hangoutId);
-  
+
+    if (user.address) {
+      if (user.address.formattedAddress) formData.append('address.formattedAddress', user.address.formattedAddress);
+      if (user.address.streetAddress) formData.append('address.streetAddress', user.address.streetAddress);
+      if (user.address.city) formData.append('address.city', user.address.city);
+      if (user.address.state) formData.append('address.state', user.address.state);
+      if (user.address.country) formData.append('address.country', user.address.country);
+      if (user.address.postalCode) formData.append('address.postalCode', user.address.postalCode);
+      if (user.address.latitude) formData.append('address.latitude', user.address.latitude.toString());
+      if (user.address.longitude) formData.append('address.longitude', user.address.longitude.toString());
+    }
+
     if (user.profileVerified) {
       formData.append('profileVerified', user.profileVerified.join(','));
     }
-  
+
     if (user.lessonsCompleted) {
       formData.append('lessonsCompleted', user.lessonsCompleted);
     }
-  
+
     if (user.evaluations !== undefined) {
       formData.append('evaluations', String(user.evaluations));
     }
-  
+
     if (user.recommendationToken) {
       formData.append('recommendationToken', user.recommendationToken);
     }
-  
+
     if (user.paymentDetailsAvailable !== undefined) {
       formData.append('paymentDetailsAvailable', String(user.paymentDetailsAvailable));
     }
-  
-    return this.http.put<void>(`${this.apiUrl}/me`, formData, { headers });
+
+    return this.http.put<void>(`${this.apiUrl}/me`, formData);
   }
 
   changePassword(oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<void> {
-    const token = localStorage.getItem('token');
-  
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-  
     return this.http.post<void>(`${this.apiUrl}/change-password`, {
       oldPassword,
       newPassword,
       confirmNewPassword
-    }, { headers });
+    });
   }
-  
+
   requestPasswordReset(resetPasswordRequest: { email: string }): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/request-reset-password`, resetPasswordRequest);
   }
@@ -128,50 +99,25 @@ export class UserService {
   }
 
   deleteAccount(): Observable<void> {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-  
-    return this.http.delete<void>(`${this.apiUrl}/me`, { headers });
+    return this.http.delete<void>(`${this.apiUrl}/me`);
   }
 
   getCompensationPercentage(): Observable<number> {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get<number>(`${this.apiUrl}/compensation-percentage`, { headers });
+    return this.http.get<number>(`${this.apiUrl}/compensation-percentage`);
   }
 
   updateCompensationPercentage(newPercentage: number): Observable<void> {
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.put<void>(`${this.apiUrl}/compensation-percentage`, { percentage: newPercentage }, { headers });
+    return this.http.put<void>(`${this.apiUrl}/compensation-percentage`, { percentage: newPercentage });
   }
 
   getPaymentPreference(): Observable<PaymentSchedule> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-  
-    return this.http.get<PaymentSchedule>(`${this.apiUrl}/payment-schedule`, { headers });
+    return this.http.get<PaymentSchedule>(`${this.apiUrl}/payment-schedule`);
   }
-  
+
   updatePaymentPreference(paymentPreference: PaymentSchedule): Observable<void> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-  
     return this.http.put<void>(
       `${this.apiUrl}/payment-schedule`,
-      { paymentSchedule: paymentPreference },
-      { headers }
+      { paymentSchedule: paymentPreference }
     );
-  }  
+  }
 }

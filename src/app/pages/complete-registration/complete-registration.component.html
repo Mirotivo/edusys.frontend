@@ -18,12 +18,12 @@
       </div>
       <div class="form-group">
         <label for="dateOfBirth" class="form-label">Date of Birth</label>
-        <input type="date" class="form-control" id="dateOfBirth" formControlName="dob" />
+        <input type="date" class="form-control" id="dateOfBirth" formControlName="dateOfBirth" />
       </div>
       <div class="form-group">
-        <label for="phone" class="form-label">Phone Number</label>
-        <input type="tel" class="form-control" id="phone" formControlName="phone" required />
-        <div *ngIf="profileForm.get('phone')?.invalid && (profileForm.get('phone')?.dirty || profileForm.get('phone')?.touched)" class="error-message">Phone number is required.</div>
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber" required />
+        <div *ngIf="profileForm.get('phoneNumber')?.invalid && (profileForm.get('phoneNumber')?.dirty || profileForm.get('phoneNumber')?.touched)" class="error-message">Phone number is required.</div>
       </div>
       <button type="submit" class="btn btn-primary registration-submit-btn">
         Complete Registration

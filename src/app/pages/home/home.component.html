@@ -53,7 +53,10 @@
             <div class="title-bar">
                 <img src="assets/img/icon/index-title-bar.svg" class="img-fluid" alt="">
             </div>
-            <p class="sub-title">144 Courses live - 20 added today.</p>
+            <p class="sub-title">
+                {{ totalCourses }} Courses live
+                <span *ngIf="newCoursesToday > 0"> - {{ newCoursesToday }} added today</span>              
+            </p>
         </div>
         <div class="popular-categories popular-cat-one aos" data-aos="fade-up">
             <div class="row justify-content-center">
@@ -308,7 +311,7 @@
             <div class="title-bar">
                 <img src="assets/img/icon/index-title-bar.svg" alt="">
             </div>
-            <p class="sub-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod</p>
+            <p class="sub-title">Explore job locations with top mentors and thriving professional networks. Find opportunities in the most dynamic cities.</p>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -353,83 +356,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="faq-card">
-                    <div class="two-faq">
-                        <a class="collapsed" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button"
-                            aria-expanded="false" aria-controls="multiCollapseExample1">
-                            <span> How can I book?</span>
-                            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                    <!-- FAQ -->
+                    <div class="two-faq" *ngFor="let faq of faqs; let i = index">
+                        <a class="collapsed" data-bs-toggle="collapse" [attr.href]="'#faq' + i" role="button"
+                            aria-expanded="false" [attr.aria-controls]="'faq' + i">
+                            <span> {{ faq.question }} </span>
+                            <div class="collapse multi-collapse" [id]="'faq' + i">
                                 <div class="collapse-para">
-                                    Lorem ipsum dolor sit amet consectetur. In nibh enim pretium vitae velit. Laoreet
-                                    nibh et ultricies gravida sit elit enim metus donec. Eleifend vitae arcu enim est.
-                                    Massa nibh viverra pulvinar cras nisl congue viverra. Cras est eu morbi non
-                                    consectetur. Enim viverra interdum lorem turpis vel at. Nunc dignissim turpis
-                                    lacinia varius purus congue massa. Ac faucibus felis sed amet. Cursus ut aliquam sit
-                                    convallis. Luctus purus curabitur vivamus
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="two-faq">
-                        <a class="collapsed" data-bs-toggle="collapse" href="#multiCollapseExample2" role="button"
-                            aria-expanded="true" aria-controls="multiCollapseExample2">
-                            <span> Quisque dignissim vulputate purus in sodales?</span>
-                            <div class="collapse multi-collapse" id="multiCollapseExample2">
-                                <div class="collapse-para">
-                                    Lorem ipsum dolor sit amet consectetur. In nibh enim pretium vitae velit. Laoreet
-                                    nibh et ultricies gravida sit elit enim metus donec. Eleifend vitae arcu enim est.
-                                    Massa nibh viverra pulvinar cras nisl congue viverra. Cras est eu morbi non
-                                    consectetur. Enim viverra interdum lorem turpis vel at. Nunc dignissim turpis
-                                    lacinia varius purus congue massa. Ac faucibus felis sed amet. Cursus ut aliquam sit
-                                    convallis. Luctus purus curabitur vivamus
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="two-faq">
-                        <a class="collapsed" data-bs-toggle="collapse" href="#multiCollapseExample3" role="button"
-                            aria-expanded="true" aria-controls="multiCollapseExample3">
-                            <span> Nullam non vehicula neque. Vivamus sed consectetur nunc. Proin eu tristique justo, id
-                                eleifend urna? </span>
-                            <div class="collapse multi-collapse" id="multiCollapseExample3">
-                                <div class="collapse-para">
-                                    Lorem ipsum dolor sit amet consectetur. In nibh enim pretium vitae velit. Laoreet
-                                    nibh et ultricies gravida sit elit enim metus donec. Eleifend vitae arcu enim est.
-                                    Massa nibh viverra pulvinar cras nisl congue viverra. Cras est eu morbi non
-                                    consectetur. Enim viverra interdum lorem turpis vel at. Nunc dignissim turpis
-                                    lacinia varius purus congue massa. Ac faucibus felis sed amet. Cursus ut aliquam sit
-                                    convallis. Luctus purus curabitur vivamus
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="two-faq">
-                        <a class="collapsed" data-bs-toggle="collapse" href="#multiCollapseExample4" role="button"
-                            aria-expanded="false" aria-controls="multiCollapseExample4">
-                            <span> Lorem Ipsum is simply dummy text of the printing and typesetting?</span>
-                            <div class="collapse multi-collapse" id="multiCollapseExample4">
-                                <div class="collapse-para">
-                                    Lorem ipsum dolor sit amet consectetur. In nibh enim pretium vitae velit. Laoreet
-                                    nibh et ultricies gravida sit elit enim metus donec. Eleifend vitae arcu enim est.
-                                    Massa nibh viverra pulvinar cras nisl congue viverra. Cras est eu morbi non
-                                    consectetur. Enim viverra interdum lorem turpis vel at. Nunc dignissim turpis
-                                    lacinia varius purus congue massa. Ac faucibus felis sed amet. Cursus ut aliquam sit
-                                    convallis. Luctus purus curabitur vivamus
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="two-faq">
-                        <a class="collapsed mb-0" data-bs-toggle="collapse" href="#multiCollapseExample5" role="button"
-                            aria-expanded="false" aria-controls="multiCollapseExample5">
-                            <span> Sit amet pulvinar metus est ut nisl? </span>
-                            <div class="collapse multi-collapse" id="multiCollapseExample5">
-                                <div class="collapse-para">
-                                    Lorem ipsum dolor sit amet consectetur. In nibh enim pretium vitae velit. Laoreet
-                                    nibh et ultricies gravida sit elit enim metus donec. Eleifend vitae arcu enim est.
-                                    Massa nibh viverra pulvinar cras nisl congue viverra. Cras est eu morbi non
-                                    consectetur. Enim viverra interdum lorem turpis vel at. Nunc dignissim turpis
-                                    lacinia varius purus congue massa. Ac faucibus felis sed amet. Cursus ut aliquam sit
-                                    convallis. Luctus purus curabitur vivamus
+                                    {{ faq.answer }}
                                 </div>
                             </div>
                         </a>

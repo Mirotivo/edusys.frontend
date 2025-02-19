@@ -33,7 +33,7 @@ export class ManageCardsComponent implements OnInit {
   constructor(
     private paymentService: PaymentService,
     private configService: ConfigService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadSavedCards();
@@ -66,34 +66,41 @@ export class ManageCardsComponent implements OnInit {
     this.cardSelected.emit(null); // Emit null if no card is selected
   }
 
-  async initializeCardElement() {
+  initializeCardElement() {
     if (this.cardInitialized) {
       return; // Avoid reinitializing
     }
-    this.configService.loadConfig().then(async () => {
-      this.stripe = await loadStripe(this.configService.get('stripePublishableKey'));
-      if (!this.stripe) {
-        console.error('Stripe could not be initialized');
-        return;
-      }
-  
-      // const elements = this.stripe.elements();
-      // this.cardElement = elements.create('card');
-      // const retryMounting = setInterval(() => {
-      //   const cardElementContainer = document.getElementById('card-element');
-      //   if (cardElementContainer) {
-      //     this.cardElement.mount('#card-element');
-      //     this.cardInitialized = true;
-      //     clearInterval(retryMounting);
-      //   }
-      // }, 500);
-      const elements = this.stripe?.elements();
-      this.cardNumber = elements?.create('cardNumber');
-      this.cardNumber?.mount('#card-number');
-      this.cardExpiry = elements?.create('cardExpiry');
-      this.cardExpiry?.mount('#card-expiry');
-      this.cardCvc = elements?.create('cardCvc');
-      this.cardCvc?.mount('#card-cvc');  
+    this.configService.loadConfig().subscribe({
+      next: async () => {
+        this.stripe = await loadStripe(this.configService.get('stripePublishableKey'));
+        if (!this.stripe) {
+          console.error('Stripe could not be initialized');
+          return;
+        }
+
+        // const elements = this.stripe.elements();
+        // this.cardElement = elements.create('card');
+        // const retryMounting = setInterval(() => {
+        //   const cardElementContainer = document.getElementById('card-element');
+        //   if (cardElementContainer) {
+        //     this.cardElement.mount('#card-element');
+        //     this.cardInitialized = true;
+        //     clearInterval(retryMounting);
+        //   }
+        // }, 500);
+        const elements = this.stripe?.elements();
+        this.cardNumber = elements?.create('cardNumber');
+        this.cardNumber?.mount('#card-number');
+        this.cardExpiry = elements?.create('cardExpiry');
+        this.cardExpiry?.mount('#card-expiry');
+        this.cardCvc = elements?.create('cardCvc');
+        this.cardCvc?.mount('#card-cvc');
+
+        this.cardInitialized = true;
+      },
+      error: (err) => {
+        console.error('Failed to load configuration:', err.message);
+      },
     });
   }
 

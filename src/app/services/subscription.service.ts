@@ -11,35 +11,16 @@ export class SubscriptionService {
 
   constructor(private http: HttpClient) { }
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('User is not authenticated.');
-    }
-
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    });
-  }
-
-
   checkActiveSubscription(): Observable<{ isActive: boolean }> {
-    return this.http.get<{ isActive: boolean }>(`${this.apiUrl}/check-active`, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.get<{ isActive: boolean }>(`${this.apiUrl}/check-active`);
   }
 
   getSubscriptionDetails(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/details`, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.get<any>(`${this.apiUrl}/details`);
   }
 
   cancelSubscription(): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/cancel`, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.delete(`${this.apiUrl}/cancel`);
   }
 
   updateSubscription(): Observable<any> {
@@ -52,14 +33,11 @@ export class SubscriptionService {
       discountAmount: number;
       discountPercentage: number;
     }>(`${this.apiUrl}/validate-promo`, {
-      params: { promoCode },
-      headers: this.getAuthHeaders(),
+      params: { promoCode }
     });
   }
 
   createSubscription(request: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create`, request, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http.post(`${this.apiUrl}/create`, request);
   }
 }

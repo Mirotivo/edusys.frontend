@@ -11,45 +11,29 @@ import { SendMessage } from '../models/send-message';
 export class ChatService {
   private apiUrl = `${environment.apiUrl}/chats`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getChats(): Observable<Chat[]> {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      console.error('No token found in localStorage');
-      throw new Error('No authentication token available');
-    }
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get<Chat[]>(this.apiUrl, { headers });
+    return this.http.get<Chat[]>(this.apiUrl);
   }
 
   getMessages(): Observable<{ sender: string; content: string; time: string }[]> {
-    return this.getChats().pipe(
-      map((chats) =>
-        chats.map((chat) => {
-          const lastMessage = chat.messages[chat.messages.length - 1]; // Get the last message
-          return {
-            sender: chat.name,
-            content: lastMessage?.text || 'No messages yet', // Fallback if no messages
-            time: lastMessage?.timestamp || 'N/A', // Fallback if no timestamp
-          };
-        })
-      )
-    );
+    return this.getChats()
+      .pipe(
+        map((chats) =>
+          chats.map((chat) => {
+            const lastMessage = chat.messages[chat.messages.length - 1]; // Get the last message
+            return {
+              sender: chat.name,
+              content: lastMessage?.text || 'No messages yet', // Fallback if no messages
+              time: lastMessage?.timestamp || 'N/A', // Fallback if no timestamp
+            };
+          })
+        )
+      );
   }
 
-
   sendMessage(message: SendMessage): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-  
-    return this.http.post(`${this.apiUrl}/send`, message, { headers });
-  }  
+    return this.http.post(`${this.apiUrl}/send`, message);
+  }
 }

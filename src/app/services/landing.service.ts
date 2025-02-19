@@ -11,6 +11,10 @@ export class LandingService {
 
   constructor(private http: HttpClient) {}
 
+  getCourseCounts(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/stats`);
+  }
+
   getCategories(): Observable<any> {
     return this.http.get(`${this.apiUrl}/categories`);
   }

@@ -1,75 +1,149 @@
-<app-header></app-header>
-<div class="listings-page">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <button class="create-listing-btn" (click)="openModal()">Create a Listing</button>
-    <ul class="listings">
-      <li *ngFor="let listing of listings" [class.active]="listing?.id === selectedListing?.id"
-        (click)="selectListing(listing)">
-        <div class="listing-info">
-          <app-profile-image [profileImagePath]="listing.listingImagePath" [firstName]="listing.title"
-            [lastName]=""></app-profile-image>
-          <div class="listing-details">
-            <h3>{{ listing.title }}</h3>
-          </div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-4 col-lg-3 theiaStickySidebar">
+            <div class="card profile-sidebar shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="sidebar-title mb-0">My Listings</h5>
+                        <button class="btn btn-sm btn-primary" (click)="openCreateListingModal()">+ Create</button>
+                    </div>
+
+                    <!-- Listings List -->
+                    <ul class="custom-sidebar-nav list-unstyled" *ngIf="listings?.length; else noListings">
+                        <li *ngFor="let listing of listings" class="listing-item d-flex align-items-center p-2 rounded"
+                            [class.active]="listing?.id === selectedListing?.id" (click)="selectListing(listing)">
+
+                            <!-- Profile Image -->
+                            <div class="listing-image-container">
+                                <app-profile-image [profileImagePath]="listing.listingImagePath"
+                                    [firstName]="listing.title" [lastName]="">
+                                </app-profile-image>
+                            </div>
+
+                            <!-- Listing Details -->
+                            <div class="listing-details ms-2">
+                                <h6 class="listing-title text-truncate mb-1" [title]="listing.title">
+                                    {{ listing.title }}
+                                </h6>
+                                <small class="text-muted d-block">{{ listing.lessonCategory || 'No category' }}</small>
+                                <small class="listing-info text-muted d-block">
+                                    {{ listing.locations.length || 0 }} Locations •
+                                    ${{ listing.rates.hourly || '' }}/hr
+                                </small>
+                            </div>
+
+                            <!-- Action Icons -->
+                            <div class="ms-auto">
+                                <button class="btn btn-sm btn-outline-info" (click)="toggleVisibility(listing)">
+                                    <i class="fas" [ngClass]="{'fa-eye': listing.isVisible, 'fa-eye-slash': !listing.isVisible}"></i>
+                                </button>                            
+                                <!-- <button class="btn btn-sm btn-outline-secondary me-1" (click)="editListing(listing)">
+                                    <i class="fas fa-edit"></i>
+                                </button> -->
+                                <button class="btn btn-sm btn-outline-danger" (click)="deleteListing(listing)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- No Listings Available -->
+                    <ng-template #noListings>
+                        <div class="empty-state text-center py-4">
+                            <img src="assets/img/empty.svg" alt="No Listings" class="empty-icon">
+                            <p class="text-muted mt-2">No listings available. Start by creating one.</p>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
         </div>
-      </li>
-    </ul>
-  </div>
 
-  <!-- Main Content -->
-  <div class="sidebar-main-content" *ngIf="selectedListing">
-    <div class="header">
-      <h2>{{ selectedListing.title }}</h2>
-      <button class="premium-btn">Go premium</button>
+
+        <!-- Main Content -->
+        <div class="col-md-8 col-lg-9" *ngIf="selectedListing">
+            <div class="card listing-card shadow-sm">
+
+                <!-- Listing Header with Image -->
+                <div class="card-header d-flex justify-content-between align-items-center bg-light">
+                    <div class="d-flex align-items-center">
+                        <div class="profile-image-container">
+                            <img [src]="selectedListing.listingImagePath || 'assets/img/default-placeholder.png'"
+                                class="rounded-circle listing-profile-img me-3" alt="Listing Image">
+                        </div>
+                        <div>
+                            <h4 class="mb-0 text-truncate" [title]="selectedListing.title">{{ selectedListing.title }}
+                            </h4>
+                            <p class="text-muted small mb-0">
+                                {{ selectedListing.lessonCategory || 'No category' }} •
+                                <i class="fas fa-star text-warning"></i> {{ selectedListing.rating || 'N/A' }} ({{
+                                selectedListing.reviews || 0 }} reviews)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Listing Details -->
+                <div class="card-body">
+                    <div class="listing-section mb-4"
+                        *ngFor="let section of ['Lesson Category', 'Locations', 'About Lesson', 'About You', 'Rates', 'Recommendations']">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="section-title mb-0">{{ section | titlecase }}</h5>
+                            <button class="btn btn-sm btn-outline-secondary" (click)="editSection(section)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+
+                        <ng-container [ngSwitch]="section">
+
+                            <!-- Lesson Category -->
+                            <p *ngSwitchCase="'Lesson Category'" class="listing-text">
+                                {{ selectedListing.lessonCategory || 'No category specified' }}
+                            </p>
+
+                            <!-- Locations -->
+                            <div *ngSwitchCase="'Locations'" class="d-flex flex-wrap">
+                                <span class="badge bg-primary me-1"
+                                    *ngFor="let location of selectedListing.locations">{{ location }}</span>
+                            </div>
+
+                            <!-- About Lesson -->
+                            <p *ngSwitchCase="'About Lesson'" class="listing-text">
+                                {{ selectedListing.aboutLesson || 'No details provided' }}
+                            </p>
+
+                            <!-- About You -->
+                            <p *ngSwitchCase="'About You'" class="listing-text">
+                                {{ selectedListing.aboutYou || 'No details provided' }}
+                            </p>
+
+                            <!-- Rates -->
+                            <ul *ngSwitchCase="'Rates'" class="list-unstyled listing-rates">
+                                <li><strong>Hourly rate:</strong> ${{ selectedListing.rates.hourly || 'N/A' }}</li>
+                                <li><strong>5-hour pack:</strong> ${{ selectedListing.rates.fiveHours || 'N/A' }}</li>
+                                <li><strong>10-hour pack:</strong> ${{ selectedListing.rates.tenHours || 'N/A' }}</li>
+                            </ul>
+
+                            <!-- Recommendations -->
+                            <div *ngSwitchCase="'Recommendations'" class="d-flex flex-wrap">
+                                <span class="badge bg-success me-1"
+                                    *ngFor="let platform of selectedListing.socialPlatforms">{{ platform }}</span>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
     </div>
 
-    <div class="listing-section">
-      <button class="edit-btn" (click)="editSection('lessonCategory')">Edit</button>
-      <h4>Lessons Category</h4>
-      <p>{{ selectedListing.lessonCategory }}</p>
-    </div>
-
-    <div class="listing-section">
-      <button class="edit-btn" (click)="editSection('location')">Edit</button>
-      <h4>Location</h4>
-      <div class="location-options">
-        <span *ngFor="let location of selectedListing.locations">{{ location }}</span>
-      </div>
-    </div>
-
-    <div class="listing-section">
-      <button class="edit-btn" (click)="editSection('aboutLesson')">Edit</button>
-      <h4>About the Lesson</h4>
-      <p>{{ selectedListing.aboutLesson }}</p>
-    </div>
-
-    <div class="listing-section">
-      <button class="edit-btn" (click)="editSection('aboutYou')">Edit</button>
-      <h4>About You</h4>
-      <p>{{ selectedListing.aboutYou }}</p>
-    </div>
-
-    <div class="listing-section">
-      <button class="edit-btn" (click)="editSection('rates')">Edit</button>
-      <h4>Rates</h4>
-      <ul>
-        <li>Hourly rate: {{ selectedListing.rates.hourly }}</li>
-        <li>5 hours: {{ selectedListing.rates.fiveHours }}</li>
-        <li>10 hours: {{ selectedListing.rates.tenHours }}</li>
-      </ul>
-    </div>
-
-    <div class="listing-section">
-      <button class="edit-btn" (click)="editSection('recommendations')">Edit</button>
-      <h4>Recommendations</h4>
-      <div class="recommendations">
-        <span *ngFor="let platform of selectedListing.socialPlatforms">{{ platform }}</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal for Create Listing -->
-  <app-modal *ngIf="isModalOpen" [isOpen]="isModalOpen" (onClose)="closeModal()">
-    <app-create-listing (onClose)="closeModal()"></app-create-listing>
-  </app-modal>
+    <!-- Modal for Create Listing -->
+    <app-create-listing  *ngIf="isCreateListingModalOpen" (onClose)="closeCreateListingModal()"></app-create-listing>
+    <!-- Modal for Edit Listing -->
+    <app-edit-listing  *ngIf="isEditListingModalOpen" [listing]="selectedListing" [editingSection]="editingSection" (onClose)="closeEditListingModal()"></app-edit-listing>
+    
+</div>

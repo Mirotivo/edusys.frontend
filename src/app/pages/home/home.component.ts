@@ -32,6 +32,50 @@ export class HomeComponent implements OnInit, AfterViewInit {
   selectedCategory: string = "All";
   filteredCourses: any[] = [];
   courseCategories: LessonCategory[] = [];
+  totalCourses: number = 0;
+  newCoursesToday: number = 0;
+  faqs = [
+    {
+      question: 'How does Avancira work?',
+      answer: 'Avancira connects students with expert tutors. Simply sign up, browse tutor profiles, book lessons, and manage your learning in one place.'
+    },
+    {
+      question: 'Do I need a membership to book lessons?',
+      answer: 'Yes, a membership is required to access tutors and book lessons. Membership offers exclusive discounts and priority booking.'
+    },
+    {
+      question: 'How do I book a lesson?',
+      answer: 'Sign in, select a tutor, choose your preferred date and time, confirm the booking, and complete the payment securely through Avancira.'
+    },
+    {
+      question: 'Can I reschedule or cancel a lesson?',
+      answer: 'Yes, you can reschedule or cancel a lesson from your dashboard. Cancellation policies may vary by tutor.'
+    },
+    {
+      question: 'How do I pay for lessons?',
+      answer: 'Payments are made securely via credit/debit cards, PayPal, or other supported methods. You can also buy lesson packages for discounts.'
+    },
+    {
+      question: 'Can I message a tutor before booking?',
+      answer: 'Yes, you can send a message to a tutor to ask any questions before booking a lesson.'
+    },
+    {
+      question: 'Do tutors provide learning materials?',
+      answer: 'Some tutors offer learning materials, but this depends on the tutor. You can check their profile for details.'
+    },
+    {
+      question: 'What if I’m not satisfied with my lesson?',
+      answer: 'If you are not satisfied, you can contact support for assistance. We strive to ensure a great learning experience.'
+    },
+    {
+      question: 'Can I cancel my membership?',
+      answer: 'Yes, you can cancel your membership at any time through your account settings.'
+    },
+    {
+      question: 'Are the tutors qualified?',
+      answer: 'Yes, all tutors are verified professionals with relevant experience in their respective subjects.'
+    }
+  ];
 
   customOptions: OwlOptions = {
     loop: true,
@@ -61,6 +105,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     AOS.init({ duration: 1200, once: true, });
 
+    this.loadCourseCounts();
     this.loadCategories();
     this.loadListings();
     this.loadTrendingCourses();
@@ -70,9 +115,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.googleMapsService.loadGoogleMaps()
-    .then(() => this.initializeAutocomplete())
-    .catch((error) => console.error(error));
+    this.googleMapsService.loadGoogleMaps().subscribe({
+      next: () => this.initializeAutocomplete(),
+      error: (error) => console.error('Google Maps loading error:', error),
+    });
   }
 
   initializeAutocomplete(): void {
@@ -91,6 +137,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         };
         console.log('Selected location:', this.selectedLocation);
       }
+    });
+  }
+
+  loadCourseCounts(): void {
+    this.landingService.getCourseCounts().subscribe({
+      next: (counts) => {
+        this.totalCourses = counts.totalListings;
+        this.newCoursesToday = counts.newListingsToday;
+      },
+      error: (error) => console.error('Error loading course counts:', error),
     });
   }
 

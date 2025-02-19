@@ -10,14 +10,22 @@ export enum PaymentSchedule
     PerLesson
 }
 
+export interface Address {
+  postalCode: string;
+  country: string;
+  state: string;
+  city: string;
+  streetAddress: string;
+  latitude: number;
+  longitude: number;
+  formattedAddress: string;
+}
 export interface User {
   firstName: string;
   lastName: string;
-  aboutMe: string|null;
-  address: string;
-  latitude: number;
-  longitude: number;
-  dob: string;
+  address: Address|null;
+  bio: string|null;
+  dateOfBirth: string;
   email: string;
   phoneNumber: string;
   skypeId: string;

@@ -36,7 +36,7 @@
                             </div>
                             <div class="user-info-cont">
                                 <h4 class="usr-name">{{ user.firstName }} {{ user.lastName }}</h4>
-                                <p>{{ user.address }}</p>
+                                <p>{{ user.address?.formattedAddress }}</p>
                                 <div class="profile-status">
                                     <p><strong>Profile Verified:</strong>
                                         {{ user.profileVerified && user.profileVerified.length > 0 ?
@@ -56,19 +56,19 @@
                         </div>
                         <div class="custom-sidebar-nav">
                             <ul>
-                                <li><a [routerLink]="'/dashboard'" class="active"><i class="fas fa-home"></i>Dashboard <span><i
+                                <li><a [routerLink]="'/dashboard'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fas fa-home"></i>Dashboard <span><i
                                                 class="fas fa-chevron-right"></i></span></a></li>
-                                <li><a [routerLink]="'/messages'"><i class="fas fa-comments"></i>Messages <span><i
+                                <li><a [routerLink]="'/messages'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fas fa-comments"></i>Messages <span><i
                                                 class="fas fa-chevron-right"></i></span></a></li>
-                                <li><a [routerLink]="'invoices'"><i class="fas fa-file-invoice"></i>Invoices <span><i
+                                <li><a [routerLink]="'invoices'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fas fa-file-invoice"></i>Invoices <span><i
                                                 class="fas fa-chevron-right"></i></span></a></li>
-                                <li><a [routerLink]="'payments'"><i class="fas fa-file-invoice"></i>Payments <span><i
+                                <li><a [routerLink]="'payments'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fas fa-file-invoice"></i>Payments <span><i
                                                 class="fas fa-chevron-right"></i></span></a></li>
-                                <li><a [routerLink]="'evaluations'"><i class="fas fa-eye"></i>Reviews <span><i
+                                <li><a [routerLink]="'evaluations'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fas fa-eye"></i>Reviews <span><i
                                                 class="fas fa-chevron-right"></i></span></a></li>
-                                <li><a [routerLink]="'/listings'"><i class="fab fa-blogger-b"></i>My Listings <span><i
+                                <li><a [routerLink]="'listings'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fab fa-blogger-b"></i>My Listings <span><i
                                                 class="fas fa-chevron-right"></i></span></a></li>
-                                <li><a [routerLink]="'profile'"><i class="fas fa-user-cog"></i>Profile <span><i
+                                <li><a [routerLink]="'profile'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="fas fa-user-cog"></i>Profile <span><i
                                                 class="fas fa-chevron-right"></i></span></a></li>
                             </ul>
                         </div>

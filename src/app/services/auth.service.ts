@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { NotificationService } from './notification.service';
-import { catchError, from, map, Observable, throwError } from 'rxjs';
+import { catchError, from, map, Observable, tap, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 interface ApiResponse {
   success: boolean;
   message?: string;
   data?: any;
-  details?:string;
+  details?: string;
 }
 
 @Injectable({
@@ -16,121 +17,66 @@ interface ApiResponse {
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/users`;
 
-  constructor(private notificationService: NotificationService) { }
+  constructor(private http: HttpClient, private notificationService: NotificationService) { }
 
-  async register(
+  register(
     email: string,
     password: string,
     confirmPassword: string,
     referralToken: string | null
-  ): Promise<string | null> {
-    try {
-      const response = await fetch(`${this.apiUrl}/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, confirmPassword, referralToken }),
-      });
-
-      if (response.ok) {
-        return null; // Registration successful
-      }
-
-      if (response.status === 400) {
-        const errorResponse = await response.json();
-
-        // Safely handle errors array and get the first error message if available
-        if (errorResponse.errors && Array.isArray(errorResponse.errors) && errorResponse.errors.length > 0) {
-          return errorResponse.errors[0]; // Return the first error
-        }
-
-        return "There was an issue with your registration. Please check your details and try again.";
-      }
-
-      return 'An unexpected error occurred. Please try again.';
-    } catch (error) {
-      console.error('Error during registration:', error);
-      return 'An unexpected error occurred. Please check your connection.';
-    }
+  ): Observable<string | null> {
+    return this.http.post<{ errors?: string[] }>(`${this.apiUrl}/register`, {
+      email,
+      password,
+      confirmPassword,
+      referralToken,
+    })
+      .pipe(
+        map(() => null), // Registration successful
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 400 && error.error?.errors?.length) {
+            return throwError(() => new Error(error.error.errors[0])); // Return first validation error
+          }
+          return throwError(() => new Error('An unexpected error occurred. Please try again.'));
+        })
+      );
   }
 
   confirmEmail(userId: string, token: string): Observable<ApiResponse> {
-    return from(
-      fetch(`${this.apiUrl}/ConfirmEmail?userId=${userId}&token=${token}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          return response.json().then(errorData => {
-            const errorMessage = errorData?.message || errorData?.details || `HTTP error ${response.status}`;
-            throw new Error(errorMessage);
-          });
-        }
-        return response.json();
-      })
-    ).pipe(
-      map((data:ApiResponse) => data),
-      catchError((error: Error) => {
-        console.error("Email confirmation error:", error);
-        return throwError(() => new Error(error.message || "An error occurred during email confirmation."));
-      })
-    );
+    return this.http.get<ApiResponse>(`${this.apiUrl}/ConfirmEmail`, {
+      params: { userId, token },
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          const errorMessage = error.error?.message || error.error?.details || `HTTP error ${error.status}`;
+          console.error('Email confirmation error:', errorMessage);
+          return throwError(() => new Error(errorMessage || "An error occurred during email confirmation."));
+        })
+      );
   }
 
-  async login(email: string, password: string): Promise<{ token: string; roles: string[] } | null> {
-    try {
-      const response = await fetch(`${this.apiUrl}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        const { data } = result;
-        return {
-          token: data.token,
-          roles: data.roles,
-        };
-      }
-
-      return null; // Return null if login fails
-    } catch (error) {
-      console.error('Login error:', error);
-      return null;
-    }
+  login(email: string, password: string): Observable<{ token: string; roles: string[] } | null> {
+    return this.http
+      .post<{ token: string; roles: string[] }>(`${this.apiUrl}/login`, { email, password })
+      .pipe(
+        map(response => response ?? null),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Login error:', error.message);
+          return throwError(() => new Error('Login failed. Please try again.'));
+        })
+      );
   }
 
-  async socialLogin(provider: string, token: string): Promise<{ token: string; roles: string[]; isRegistered: boolean }> {
-    try {
-      const response = await fetch(`${this.apiUrl}/social-login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ provider, token }),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        return {
-          token: result.token,
-          roles: result.roles,
-          isRegistered: result.isRegistered
-        };
-      }
-
-      throw new Error('Social login failed');
-    } catch (error) {
-      console.error('Social login error:', error);
-      throw error;
-    }
+  socialLogin(provider: string, token: string): Observable<{ token: string; roles: string[]; isRegistered: boolean }> {
+    return this.http
+      .post<{ token: string; roles: string[]; isRegistered: boolean }>(`${this.apiUrl}/social-login`, { provider, token })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Social login error:', error.message);
+          return throwError(() => new Error('Social login failed. Please try again.'));
+        })
+      );
   }
 
   isLoggedIn() {
@@ -145,7 +91,6 @@ export class AuthService {
     localStorage.setItem('email', email);
   }
 
-  // Save roles as a JSON string
   saveRoles(roles: string[]): void {
     localStorage.setItem('roles', JSON.stringify(roles));
   }

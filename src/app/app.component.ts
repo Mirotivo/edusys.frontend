@@ -27,8 +27,9 @@ export class AppComponent implements OnInit {
     // Check if the user is logged in
     if (this.authService.isLoggedIn()) {
       // Payment
-      this.configService.loadConfig().then(() => {
-        console.log('Config loaded:', this.configService.get('apiUrl'));
+      this.configService.loadConfig().subscribe({
+        next: () => console.log('Config loaded:', this.configService.get('apiUrl')),
+        error: (err) => console.error('Failed to load configuration:', err.message),
       });
 
       // Monitor the active route

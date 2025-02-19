@@ -25,16 +25,16 @@
             </div>
             <ul class="main-nav" *ngIf="isLoggedIn();">
                 <li>
-                    <a [routerLink]="'dashboard'">My Dashboard</a>
+                    <a [routerLink]="'/dashboard'">My Dashboard</a>
                 </li>
                 <li>
                     <a [routerLink]="'messages'">Messages</a>
                 </li>
                 <li>
-                    <a [routerLink]="'listings'">My Listings</a>
+                    <a [routerLink]="'/dashboard/listings'">My Listings</a>
                 </li>
                 <li>
-                    <a [routerLink]="'dashboard/profile'">My Profile</a>
+                    <a [routerLink]="'/dashboard/profile'">My Profile</a>
                 </li>
                 <li class="login-link">
                     <a href="javascript:void(0);" (click)="logout()">Logout</a>
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <a class="dropdown-item" [routerLink]="'/dashboard'">Dashboard</a>
-                    <a class="dropdown-item" [routerLink]="'profile'">Profile Settings</a>
+                    <a class="dropdown-item" [routerLink]="'/dashboard/profile'">Profile Settings</a>
                     <a class="dropdown-item" (click)="logout()" role="button">Logout</a>
                 </div>
             </li>

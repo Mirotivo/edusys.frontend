@@ -31,8 +31,8 @@ export class CompleteRegistrationComponent implements OnInit, OnDestroy {
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      dob: [''],
-      phone: ['', Validators.required],
+      dateOfBirth: [''],
+      phoneNumber: ['', Validators.required],
       skypeId: [''],
       hangoutId: [''],
     });
