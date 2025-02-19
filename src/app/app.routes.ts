@@ -30,46 +30,60 @@ import { NewInvoicesComponent } from './pages/new-invoices/new-invoices.componen
 import { NewPaymentsComponent } from './pages/new-payments/new-payments.component';
 import { EvaluationsComponent } from './pages/evaluations/evaluations.component';
 import { ListingsComponent } from './pages/listings/listings.component';
+import { BaseLayoutComponent } from './layout/base-layout/base-layout.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'confirm-email', component: ConfirmEmailComponent },
   { path: 'complete-registration', component: CompleteRegistrationComponent },
-  { path: 'terms', component: TermsComponent },
-  { path: 'privacy-policy', component: PrivacyComponent },
-  { path: 'goodbye', component: GoodbyeComponent },
 
-  { path: 'search-results', loadComponent: () => import('./pages/search-results/search-results.component').then(m => m.SearchResultsComponent) },
-  { path: 'category/:name', loadComponent: () => import('./components/categories/categories.component').then(m => m.CategoriesComponent) },
-  { path: 'about', loadComponent: () => import('./pages/about-us/about-us.component').then(m => m.AboutUsComponent) },
-  { path: 'states', loadComponent: () => import('./pages/states/states.component').then(m => m.StatesComponent) },
-  { path: 'careers', loadComponent: () => import('./pages/careers/careers.component').then(m => m.CareersComponent) },
-  { path: 'online-courses', loadComponent: () => import('./pages/online-courses/online-courses.component').then(m => m.OnlineCoursesComponent) },
-  { path: 'help-centre', loadComponent: () => import('./pages/help-center/help-center.component').then(m => m.HelpCenterComponent) },
-  { path: 'payment/:id', loadComponent: () => import('./pages/payment/payment.component').then(m => m.PaymentComponent), canActivate: [AuthGuard] },
-  { path: 'payment-result', loadComponent: () => import('./pages/payment-result/payment-result.component').then(m => m.PaymentResultComponent), canActivate: [AuthGuard] },
-  { path: 'listing/:id', loadComponent: () => import('./pages/listing/listing.component').then(m => m.ListingComponent) },
-  { path: 'booking/:id', loadComponent: () => import('./pages/booking/booking.component').then(m => m.BookingComponent) },
-  { path: 'messages', loadComponent: () => import('./pages/messages/messages.component').then(m => m.MessagesComponent), canActivate: [AuthGuard] },
-  { path: 'recommendation/:tokenId', loadComponent: () => import('./pages/recommendation-submission/recommendation-submission.component').then(m => m.RecommendationSubmissionComponent), canActivate: [AuthGuard] },
-  { path: 'premium', loadComponent: () => import('./pages/premium/premium.component').then(m => m.PremiumComponent), canActivate: [AuthGuard] },
-  { path: 'subscribe-premium', loadComponent: () => import('./pages/premium-subscription/premium-subscription.component').then(m => m.PremiumSubscriptionComponent), canActivate: [AuthGuard] },
-
+  {
+    path: '',
+    component: BaseLayoutComponent, 
+    children: [
+      { path: '', component: HomeComponent },
+      { path: 'terms', component: TermsComponent },
+      { path: 'privacy-policy', component: PrivacyComponent },
+      { path: 'goodbye', component: GoodbyeComponent },
+  
+      { path: 'search-results', loadComponent: () => import('./pages/search-results/search-results.component').then(m => m.SearchResultsComponent) },
+      { path: 'category/:name', loadComponent: () => import('./components/categories/categories.component').then(m => m.CategoriesComponent) },
+      { path: 'about', loadComponent: () => import('./pages/about-us/about-us.component').then(m => m.AboutUsComponent) },
+      { path: 'states', loadComponent: () => import('./pages/states/states.component').then(m => m.StatesComponent) },
+      { path: 'careers', loadComponent: () => import('./pages/careers/careers.component').then(m => m.CareersComponent) },
+      { path: 'online-courses', loadComponent: () => import('./pages/online-courses/online-courses.component').then(m => m.OnlineCoursesComponent) },
+      { path: 'help-centre', loadComponent: () => import('./pages/help-center/help-center.component').then(m => m.HelpCenterComponent) },
+      { path: 'payment/:id', loadComponent: () => import('./pages/payment/payment.component').then(m => m.PaymentComponent), canActivate: [AuthGuard] },
+      { path: 'payment-result', loadComponent: () => import('./pages/payment-result/payment-result.component').then(m => m.PaymentResultComponent), canActivate: [AuthGuard] },
+      { path: 'listing/:id', loadComponent: () => import('./pages/listing/listing.component').then(m => m.ListingComponent) },
+      { path: 'booking/:id', loadComponent: () => import('./pages/booking/booking.component').then(m => m.BookingComponent) },
+      { path: 'messages', loadComponent: () => import('./pages/messages/messages.component').then(m => m.MessagesComponent), canActivate: [AuthGuard] },
+      { path: 'recommendation/:tokenId', loadComponent: () => import('./pages/recommendation-submission/recommendation-submission.component').then(m => m.RecommendationSubmissionComponent), canActivate: [AuthGuard] },
+      { path: 'premium', loadComponent: () => import('./pages/premium/premium.component').then(m => m.PremiumComponent), canActivate: [AuthGuard] },
+      { path: 'subscribe-premium', loadComponent: () => import('./pages/premium-subscription/premium-subscription.component').then(m => m.PremiumSubscriptionComponent), canActivate: [AuthGuard] }
+    ]
+  },
+  
   // Dashboard Routes
   {
-    path: 'dashboard',
-    component: DashboardLayoutComponent,
-    canActivate: [AuthGuard],
+    path: '',
+    component: BaseLayoutComponent,
     children: [
-      { path: '', component: DashboardComponent, data: { title: 'Dashboard' } },
-      { path: 'listings', component: ListingsComponent, data: { title: 'Listings' } },
-      { path: 'evaluations', component: EvaluationsComponent, data: { title: 'Evaluations' } },
-      { path: 'payments', component: NewPaymentsComponent, data: { title: 'Payments' } },
-      { path: 'invoices', component: NewInvoicesComponent, data: { title: 'Invoices' } },
-      { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
+      {
+        path: 'dashboard',
+        component: DashboardLayoutComponent,
+        canActivate: [AuthGuard],
+        children: [
+          { path: '', component: DashboardComponent, data: { title: 'Dashboard' } },
+          { path: 'listings', component: ListingsComponent, data: { title: 'Listings' } },
+          { path: 'evaluations', component: EvaluationsComponent, data: { title: 'Evaluations' } },
+          { path: 'payments', component: NewPaymentsComponent, data: { title: 'Payments' } },
+          { path: 'invoices', component: NewInvoicesComponent, data: { title: 'Invoices' } },
+          { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
+        ]
+      }
     ]
   }
 ]
