@@ -1,27 +1,26 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { RouterModule } from '@angular/router';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap } from 'rxjs/operators';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user';
-import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
+import { ProfileImageComponent } from '../../../components/profile-image/profile-image.component';
+import { User } from '../../../models/user';
+import { UserService } from '../../../services/user.service';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
-  selector: 'app-dashboard-layout',
-  imports: [RouterOutlet, RouterModule, ProfileImageComponent],
-  templateUrl: './dashboard-layout.component.html',
-  styleUrl: './dashboard-layout.component.scss'
+  selector: 'app-sidebar',
+  imports: [CommonModule, RouterModule, ProfileImageComponent],
+  templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.scss'
 })
-export class DashboardLayoutComponent implements OnInit {
+export class SidebarComponent implements OnInit {
   currentPage: string = 'Home'; // Default breadcrumb title
   user!: User;
 
   constructor(
-      private userService: UserService,
-      private router: Router,
-      private activatedRoute: ActivatedRoute
-    ) { }
+    private userService: UserService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
 
   ngOnInit() {
@@ -47,4 +46,5 @@ export class DashboardLayoutComponent implements OnInit {
       error: (err) => console.error('Failed to load user data:', err),
     });
   }
+
 }

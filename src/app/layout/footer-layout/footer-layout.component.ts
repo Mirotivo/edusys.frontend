@@ -6,12 +6,12 @@ import { HeaderComponent } from "../shared/header/header.component";
 import { FooterComponent } from '../shared/footer/footer.component';
 
 @Component({
-  selector: 'app-base-layout',
-  imports: [CommonModule, FormsModule, RouterModule, HeaderComponent, FooterComponent],
-  templateUrl: './base-layout.component.html',
-  styleUrl: './base-layout.component.scss'
+  selector: 'app-footer-layout',
+  imports: [CommonModule, FormsModule, RouterModule, FooterComponent],
+  templateUrl: './footer-layout.component.html',
+  styleUrl: './footer-layout.component.scss'
 })
 
-export class BaseLayoutComponent {
+export class FooterLayoutComponent {
 
 }

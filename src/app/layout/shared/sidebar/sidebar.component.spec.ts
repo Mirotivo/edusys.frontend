@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MinimalLayoutComponent } from './minimal-layout.component';
+import { SidebarComponent } from './sidebar.component';
 
-describe('MinimalLayoutComponent', () => {
-  let component: MinimalLayoutComponent;
-  let fixture: ComponentFixture<MinimalLayoutComponent>;
+describe('SidebarComponent', () => {
+  let component: SidebarComponent;
+  let fixture: ComponentFixture<SidebarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MinimalLayoutComponent]
+      imports: [SidebarComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MinimalLayoutComponent);
+    fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

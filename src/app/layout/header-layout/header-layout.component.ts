@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../shared/header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HeaderComponent } from '../shared/header/header.component';
 
 @Component({
-  selector: 'app-minimal-layout',
+  selector: 'app-header-layout',
   imports: [CommonModule, FormsModule, RouterModule, HeaderComponent],
-  templateUrl: './minimal-layout.component.html',
-  styleUrl: './minimal-layout.component.scss'
+  templateUrl: './header-layout.component.html',
+  styleUrl: './header-layout.component.scss'
 })
-export class MinimalLayoutComponent {
+export class HeaderLayoutComponent {
 
 }
