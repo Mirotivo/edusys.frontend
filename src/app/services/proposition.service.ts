@@ -40,6 +40,9 @@ export class PropositionService {
     return this.http.get<{ propositions: any[]; lessons: any[] }>(`${this.apiUrl}/${contactId}/${listingId}`);
   }
   
+  getAllLessonsAndPropositions(): Observable<{ propositions: any[]; lessons: any[] }> {
+    return this.http.get<{ propositions: any[]; lessons: any[] }>(`${this.apiUrl}`);
+  }
 
   cancelLesson(lessonId: number) {
     return this.http.delete<void>(`${this.apiUrl}/${lessonId}/cancel`);

@@ -1,0 +1,90 @@
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>With</th>
+                                        <th>Date</th>
+                                        <th>Duration</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let session of combinedSessions" [ngClass]="{
+                                        'table-warning': session.status === LessonStatus.Proposed,
+                                        'table-success': session.status === LessonStatus.Booked,
+                                        'table-danger': session.status === LessonStatus.Canceled
+                                        }">
+                                        <td>{{ session.recipientName }}
+                                        </td>
+                                        <td>{{ session.date | date: 'short' }}</td>
+                                        <td>{{ session.duration }}</td>
+                                        <td *ngIf="session.price">${{ session.price }}</td>
+                                        <td *ngIf="!session.price">N/A</td>
+                                        <td>
+                                            <span class="badge" [ngClass]="{
+                                                'bg-success': session.status === LessonStatus.Booked,
+                                                'bg-warning': session.status === LessonStatus.Proposed,
+                                                'bg-danger': session.status === LessonStatus.Canceled
+                                                }">
+                                                {{ LessonStatus[+session.status] }}
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="table-action">
+                                                <!-- Tutor Actions for Propositions -->
+                                                <button *ngIf="session.type === 'Proposition' && Role.Tutor"
+                                                    class="btn btn-sm bg-success-light"
+                                                    (click)="respondToProposition(session.id, true)">
+                                                    <i class="fas fa-check"></i> Accept
+                                                </button>
+                                                <button *ngIf="session.type === 'Proposition' && Role.Tutor"
+                                                    class="btn btn-sm bg-danger-light"
+                                                    (click)="respondToProposition(session.id, false)">
+                                                    <i class="fas fa-times"></i> Refuse
+                                                </button>
+
+                                                <!-- Student Actions for Propositions -->
+                                                <button *ngIf="session.type === 'Proposition' && Role.Student"
+                                                    class="btn btn-sm bg-danger-light"
+                                                    (click)="respondToProposition(session.id, false)">
+                                                    <i class="fas fa-ban"></i> Cancel
+                                                </button>
+
+                                                <!-- Start Video Call -->
+                                                <button
+                                                    *ngIf="session.type === 'Lesson' && session.status === LessonStatus.Booked"
+                                                    class="btn btn-sm bg-primary-light"
+                                                    (click)="startVideoCall(session)">
+                                                    <i class="fas fa-video"></i> Start Call
+                                                </button>
+
+                                                <!-- Cancel Lesson -->
+                                                <button
+                                                    *ngIf="session.type === 'Lesson' && session.status === LessonStatus.Booked"
+                                                    class="btn btn-sm bg-warning-light"
+                                                    (click)="cancelLesson(session.id)">
+                                                    <i class="fas fa-times-circle"></i> Cancel Lesson
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="no-sessions text-center mt-3" *ngIf="combinedSessions.length === 0">
+                            <p>No sessions available.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

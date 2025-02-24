@@ -32,6 +32,7 @@ import { EvaluationsComponent } from './pages/evaluations/evaluations.component'
 import { ListingsComponent } from './pages/listings/listings.component';
 import { BaseLayoutComponent } from './layout/base-layout/base-layout.component';
 import { MinimalLayoutComponent } from './layout/minimal-layout/minimal-layout.component';
+import { LessonsComponent } from './pages/lessons/lessons.component';
 
 export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -90,6 +91,7 @@ export const routes: Routes = [
         children: [
           { path: '', component: DashboardComponent, data: { title: 'Dashboard' } },
           { path: 'listings', component: ListingsComponent, data: { title: 'Listings' } },
+          { path: 'lessons', component: LessonsComponent, data: { title: 'Lessons' } },
           { path: 'evaluations', component: EvaluationsComponent, data: { title: 'Evaluations' } },
           { path: 'payments', component: NewPaymentsComponent, data: { title: 'Payments' } },
           { path: 'invoices', component: NewInvoicesComponent, data: { title: 'Invoices' } },
