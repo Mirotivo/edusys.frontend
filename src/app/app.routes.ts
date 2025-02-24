@@ -31,6 +31,7 @@ import { NewPaymentsComponent } from './pages/new-payments/new-payments.componen
 import { EvaluationsComponent } from './pages/evaluations/evaluations.component';
 import { ListingsComponent } from './pages/listings/listings.component';
 import { BaseLayoutComponent } from './layout/base-layout/base-layout.component';
+import { MinimalLayoutComponent } from './layout/minimal-layout/minimal-layout.component';
 
 export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -59,13 +60,24 @@ export const routes: Routes = [
       { path: 'payment-result', loadComponent: () => import('./pages/payment-result/payment-result.component').then(m => m.PaymentResultComponent), canActivate: [AuthGuard] },
       { path: 'listing/:id', loadComponent: () => import('./pages/listing/listing.component').then(m => m.ListingComponent) },
       { path: 'booking/:id', loadComponent: () => import('./pages/booking/booking.component').then(m => m.BookingComponent) },
-      { path: 'messages', loadComponent: () => import('./pages/messages/messages.component').then(m => m.MessagesComponent), canActivate: [AuthGuard] },
+      // { path: 'messages', loadComponent: () => import('./pages/messages/messages.component').then(m => m.MessagesComponent), canActivate: [AuthGuard] },
       { path: 'recommendation/:tokenId', loadComponent: () => import('./pages/recommendation-submission/recommendation-submission.component').then(m => m.RecommendationSubmissionComponent), canActivate: [AuthGuard] },
       { path: 'premium', loadComponent: () => import('./pages/premium/premium.component').then(m => m.PremiumComponent), canActivate: [AuthGuard] },
       { path: 'subscribe-premium', loadComponent: () => import('./pages/premium-subscription/premium-subscription.component').then(m => m.PremiumSubscriptionComponent), canActivate: [AuthGuard] }
     ]
   },
   
+  {
+    path: 'messages',
+    component: MinimalLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: MessagesComponent,
+        canActivate: [AuthGuard]
+      }
+    ]
+  },
   // Dashboard Routes
   {
     path: '',

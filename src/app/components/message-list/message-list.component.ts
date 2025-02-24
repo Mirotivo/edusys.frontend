@@ -3,6 +3,10 @@ import { Chat } from '../../models/chat';
 import { ChatService } from '../../services/chat.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { User } from '../../models/user';
+import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-message-list',
@@ -15,13 +19,36 @@ export class MessageListComponent implements OnInit {
   contacts: Chat[] = [];
   @Input() selectedContact: Chat | null = null;
   @Output() selectedContactChange = new EventEmitter<Chat>();
+  user!: User;
 
   constructor(
+    private router: Router,
+    private userService: UserService,
+    private authService: AuthService,
     private chatService: ChatService
   ) { }
 
   ngOnInit(): void {
+    if (this.isLoggedIn()) {
+      this.fetchUserInfo();
+    }
     this.loadContacts();
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.authService.getToken();
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
+
+  fetchUserInfo() {
+    this.userService.getUser().subscribe({
+      next: (userData) => (this.user = userData),
+      error: (err) => console.error('Failed to load user data:', err),
+    });
   }
 
   loadContacts(): void {

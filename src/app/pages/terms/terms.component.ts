@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 
 @Component({
   selector: 'app-terms',
-  imports: [HeaderCenterComponent],
+  imports: [],
   templateUrl: './terms.component.html',
   styleUrl: './terms.component.scss'
 })

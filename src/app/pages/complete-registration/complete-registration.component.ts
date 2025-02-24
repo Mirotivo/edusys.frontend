@@ -6,11 +6,10 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Subject, takeUntil } from 'rxjs';
-import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 
 @Component({
   selector: 'app-complete-registration',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, HeaderCenterComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './complete-registration.component.html',
   styleUrl: './complete-registration.component.scss'
 })

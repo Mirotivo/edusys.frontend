@@ -194,3 +194,23 @@
     transform: scale(1);
   }
 }
+
+.chatSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  position: sticky;
+  top: 0;
+}
+
+.chat-body {
+  flex: 1;
+}
+
+.chat-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+}

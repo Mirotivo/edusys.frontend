@@ -9,12 +9,11 @@ import { SubscriptionService } from '../../services/subscription.service';
 import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
 import { Card, CardType } from '../../models/card';
-import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 import { PaymentType } from '../../models/payment-type';
 
 @Component({
   selector: 'app-payment',
-  imports: [CommonModule, FormsModule, HeaderCenterComponent, ManageCardsComponent],
+  imports: [CommonModule, FormsModule, ManageCardsComponent],
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss']
 })

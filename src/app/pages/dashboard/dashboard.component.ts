@@ -16,7 +16,7 @@ import { Transaction } from '../../models/transaction';
 import { User } from '../../models/user';
 
 // Components
-import { HeaderComponent } from '../../layout/landing/header/header.component';
+import { HeaderComponent } from '../../layout/shared/header/header.component';
 import { NavigationBarComponent } from '../../components/navigation-bar/navigation-bar.component';
 import { LeaveReviewComponent } from '../../components/leave-review/leave-review.component';
 import { ModalComponent } from '../../components/modal/modal.component';

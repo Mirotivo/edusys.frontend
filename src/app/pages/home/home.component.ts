@@ -1,6 +1,4 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { HeaderLandingComponent } from '../../layout/landing/header-landing/header-landing.component';
-import { FooterLandingComponent } from '../../layout/landing/footer-landing/footer-landing.component';
 import * as AOS from 'aos';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { LessonCategory } from '../../models/lesson-category';
@@ -10,13 +8,12 @@ import { ListingService } from '../../services/listing.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent } from '../../layout/landing/footer/footer.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { LandingService } from '../../services/landing.service';
 import { GoogleMapsService } from '../../services/google-maps.service';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, CarouselModule, HeaderLandingComponent, FooterComponent, RouterModule],
+  imports: [CommonModule, FormsModule, CarouselModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

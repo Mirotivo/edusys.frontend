@@ -4,7 +4,7 @@ import { CategoryService } from '../../services/category.service';
 import { ListingService } from '../../services/listing.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../layout/landing/header/header.component';
+import { HeaderComponent } from '../../layout/shared/header/header.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { CreateListingComponent } from '../../components/create-listing/create-listing.component';
 import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';

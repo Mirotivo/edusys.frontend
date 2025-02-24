@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 
 @Component({
   selector: 'app-privacy',
-  imports: [HeaderCenterComponent],
+  imports: [],
   templateUrl: './privacy.component.html',
   styleUrl: './privacy.component.scss'
 })

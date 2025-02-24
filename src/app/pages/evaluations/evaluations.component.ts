@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../layout/landing/header/header.component';
+import { HeaderComponent } from '../../layout/shared/header/header.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { LeaveReviewComponent } from '../../components/leave-review/leave-review.component';
 

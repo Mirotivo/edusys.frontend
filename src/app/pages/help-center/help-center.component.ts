@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent } from '../../layout/landing/footer/footer.component';
-import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 import { HelpFindATutorComponent } from './students/help-find-a-tutor/help-find-a-tutor.component';
 import { HelpContactATutorComponent } from './students/help-contact-a-tutor/help-contact-a-tutor.component';
 import { HelpRequestSentComponent } from './students/help-request-sent/help-request-sent.component';
@@ -65,8 +63,6 @@ import { HelpTutorsReportALessonComponent } from './tutors/manage-my-lessons/hel
   imports: [
     CommonModule,
     FormsModule,
-    HeaderCenterComponent,
-    FooterComponent,
 
     // Student Components
     HelpFindATutorComponent,

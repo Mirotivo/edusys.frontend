@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
 import { Card, CardType } from '../../models/card';
 import { ListingService } from '../../services/listing.service';
@@ -12,7 +11,7 @@ import { Proposition } from '../../models/proposition';
 
 @Component({
   selector: 'app-booking',
-  imports: [CommonModule, FormsModule, HeaderCenterComponent, ManageCardsComponent],
+  imports: [CommonModule, FormsModule, ManageCardsComponent],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss'
 })

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 
 @Component({
   selector: 'app-about-us',
-  imports: [HeaderCenterComponent],
+  imports: [],
   templateUrl: './about-us.component.html',
   styleUrl: './about-us.component.scss'
 })

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../../layout/landing/header/header.component';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-premium',
-  imports: [HeaderComponent],
+  imports: [],
   templateUrl: './premium.component.html',
   styleUrl: './premium.component.scss'
 })

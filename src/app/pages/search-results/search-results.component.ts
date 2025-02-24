@@ -4,13 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ListingService } from '../../services/listing.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HeaderCenterComponent } from '../../layout/customer/header-center/header-center.component';
 import { LessonCategory } from '../../models/lesson-category';
 import { LandingService } from '../../services/landing.service';
 
 @Component({
   selector: 'app-search-results',
-  imports: [CommonModule, FormsModule, HeaderCenterComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss'
 })
