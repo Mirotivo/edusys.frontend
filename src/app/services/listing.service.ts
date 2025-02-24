@@ -15,9 +15,15 @@ export class ListingService {
   searchListings(query: string, selectedCategories: string[], page: number = 1, pageSize: number = 10): Observable<any> {
     const params = {
       query: query,
+      categories: '',
       page: page.toString(),
       pageSize: pageSize.toString(),
     };
+
+    // Include categories if selected
+    if (selectedCategories.length > 0) {
+      params.categories = selectedCategories.join(',');
+    }
 
     return this.http.get<any>(`${this.apiUrl}/search`, { params });
   }

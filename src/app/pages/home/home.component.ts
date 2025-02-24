@@ -115,6 +115,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    AOS.refresh();
     this.googleMapsService.loadGoogleMaps().subscribe({
       next: () => this.initializeAutocomplete(),
       error: (error) => console.error('Google Maps loading error:', error),

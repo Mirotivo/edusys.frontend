@@ -20,7 +20,7 @@
                                 <input type="text" class="form-control text-truncate key"
                                     placeholder=" Keyword / Course Name" [(ngModel)]="searchQuery"
                                     (keydown.enter)="performSearch()">
-                                <input type="text" class="form-control text-truncate city" id="city-search" 
+                                <input type="text" class="form-control text-truncate city" id="city-search"
                                     placeholder=" City or Postalcode" (keydown.enter)="performSearch()">
                                 <a href="javascript:void(0);"
                                     class="btn bg-search search-btn align-items-center d-flex justify-content-center"
@@ -54,7 +54,7 @@
             </div>
             <p class="sub-title">
                 {{ totalCourses }} Courses live
-                <span *ngIf="newCoursesToday > 0"> - {{ newCoursesToday }} added today</span>              
+                <span *ngIf="newCoursesToday > 0"> - {{ newCoursesToday }} added today</span>
             </p>
         </div>
         <div class="popular-categories popular-cat-one aos" data-aos="fade-up">
@@ -106,8 +106,8 @@
                                 <div class="product">
                                     <div class="product-img trend-course">
                                         <a [href]="'/listing/' + course.listingId">
-                                            <img class="img-fluid course-tutor-img" [src]="course.img" [alt]="course.title" width="600"
-                                                height="300">
+                                            <img class="img-fluid course-tutor-img" [src]="course.img"
+                                                [alt]="course.title" width="600" height="300">
                                         </a>
                                     </div>
                                     <div class="product-content">
@@ -123,7 +123,8 @@
                                         <p class="description">{{ course.description }}</p>
                                         <div class="rating rating-star rating-two align-items-center">
                                             <div class="rating-img">
-                                                <img class="course-tutor-img" [src]="course.instructorImg" [alt]="course.instructor">
+                                                <img class="course-tutor-img" [src]="course.instructorImg"
+                                                    [alt]="course.instructor">
                                             </div>
                                             <h5><a [href]="'/listing/' + course.listingId">{{ course.instructor }}</a>
                                             </h5>
@@ -209,8 +210,8 @@
                                         <div class="product">
                                             <div class="product-img trend-course">
                                                 <a [href]="'/listing/' + course.listingId">
-                                                    <img class="img-fluid course-tutor-img" [src]="course.img" [alt]="course.title"
-                                                        width="600" height="300">
+                                                    <img class="img-fluid course-tutor-img" [src]="course.img"
+                                                        [alt]="course.title" width="600" height="300">
                                                 </a>
                                             </div>
                                             <div class="product-content">
@@ -310,7 +311,8 @@
             <div class="title-bar">
                 <img src="assets/img/icon/index-title-bar.svg" alt="">
             </div>
-            <p class="sub-title">Explore job locations with top mentors and thriving professional networks. Find opportunities in the most dynamic cities.</p>
+            <p class="sub-title">Explore job locations with top mentors and thriving professional networks. Find
+                opportunities in the most dynamic cities.</p>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -374,211 +376,49 @@
 </section>
 <!-- /Faq -->
 
-<!-- Student say about -->
+<!-- Student Say About Section -->
 <section class="student-say-about testimonial-section testi-mon-one">
     <div class="container">
-        <div class="section-header section-head-one text-center aos " data-aos="fade-up">
+        <div class="section-header section-head-one text-center" data-aos="fade-up">
             <h2>Reviews From Our Users</h2>
             <div class="title-bar">
-                <img src="assets/img/icon/index-title-bar.svg" alt="">
+                <img src="assets/img/icon/index-title-bar.svg" alt="Title Bar">
             </div>
-            <p class="sub-title">They are highly aWe collect reviews from our users so you can get an honest opinion
-                of what an experience with our website are really like! and trained in their areas</p>
+            <p class="sub-title">
+                We collect reviews from our users so you can get an honest opinion about their experience with our
+                website.
+            </p>
         </div>
+
         <div class="col-lg-12 col-md-12 text-center d-flex justify-content-center">
-            <!-- <div id="myCarousel" class="carousel slide student-slide-testimoni aos " data-aos="fade-up" data-bs-interval="5000" data-bs-ride="carousel"> -->
-            <div class="carousel-inner user-review-slide owl-carousel">
-                <div class="carousel-item testi-item say-us active">
-                    <div class="student-group" data-aos="fade-up">
-                        <div class="reviewer-detail">
-                            <div class="student-about-img">
-                                <img src="assets/img/user/user20.png" alt="">
-                            </div>
-                            <div class="reviewer-name">
-                                <h3><a href="reviews.html">Hannah Schmitt</a></h3>
-                                <span>Lead Designer</span>
-                            </div>
-                        </div>
-                        <p class="say-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus nibh mauris,
-                            nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis
-                            diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim Lorem ipsum
-                            dolor sit amet, consectetur adipiscing elit. Cursus nibh mauris, nec turpis orci lectus
-                            maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu.
-                            Faucibus venenatis felis id augue sit cursus pellentesque enim </p>
-                        <div class="rating">
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item testi-item say-us active">
-                    <div class="student-group" data-aos="fade-up">
-                        <div class="reviewer-detail">
-                            <div class="student-about-img">
-                                <img src="assets/img/user/user21.png" alt="">
-                            </div>
-                            <div class="reviewer-name">
-                                <h3><a href="reviews.html">Anderson Saviour</a></h3>
-                                <span>IT Manager</span>
+            <owl-carousel-o [options]="customOptions">
+                <ng-container *ngFor="let testimonial of studentReviews">
+                    <ng-template carouselSlide>
+                        <div class="carousel-item testi-item say-us">
+                            <div class="student-group" data-aos="fade-up">
+                                <div class="reviewer-detail">
+                                    <div class="student-about-img">
+                                        <img [src]="testimonial.image" [alt]="testimonial.name">
+                                    </div>
+                                    <div class="reviewer-name">
+                                        <h3><a href="reviews.html">{{ testimonial.name }}</a></h3>
+                                        <span>{{ testimonial.role }}</span>
+                                    </div>
+                                </div>
+                                <p class="say-text">{{ testimonial.review }}</p>
+                                <div class="rating">
+                                    <i *ngFor="let star of [].constructor(testimonial.rating)"
+                                        class="fa fa-star filled"></i>
+                                </div>
                             </div>
                         </div>
-                        <p class="say-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus nibh mauris,
-                            nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis
-                            diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim Lorem ipsum
-                            dolor sit amet, consectetur adipiscing elit. Cursus nibh mauris, nec turpis orci lectus
-                            maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu.
-                            Faucibus venenatis felis id augue sit cursus pellentesque enim </p>
-                        <div class="rating">
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item testi-item say-us active">
-                    <div class="student-group" data-aos="fade-up">
-                        <div class="reviewer-detail">
-                            <div class="student-about-img">
-                                <img src="assets/img/user/user20.png" alt="">
-                            </div>
-                            <div class="reviewer-name">
-                                <h3><a href="reviews.html">Hannah Schmitt</a></h3>
-                                <span>Lead designer</span>
-                            </div>
-                        </div>
-                        <p class="say-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus nibh mauris,
-                            nec turpis orci lectus maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis
-                            diam lacus arcu. Faucibus venenatis felis id augue sit cursus pellentesque enim Lorem ipsum
-                            dolor sit amet, consectetur adipiscing elit. Cursus nibh mauris, nec turpis orci lectus
-                            maecenas. Suspendisse sed magna eget nibh in turpis. Consequat duis diam lacus arcu.
-                            Faucibus venenatis felis id augue sit cursus pellentesque enim </p>
-                        <div class="rating">
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                            <i class="fa fa-star filled"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    </ng-template>
+                </ng-container>
+            </owl-carousel-o>
         </div>
     </div>
 </section>
 <!-- /Student say about -->
-
-<!-- Our Blog -->
-<section class="section our-blog trending-courses-three popular-course-three">
-    <div class="container">
-        <div class="blog-head">
-            <!-- Section Header -->
-            <div class="section-header section-head-one aos " data-aos="fade-up">
-                <h2>From Our Blogs</h2>
-                <div class="title-bar">
-                    <img src="assets/img/icon/index-title-bar.svg" alt="">
-                </div>
-                <p class="sub-title">We collect reviews from our users so you can get an honest opinion of what an
-                    experience with our website are really like!</p>
-            </div>
-            <!-- /Section Header -->
-            <div class="explore-more text-center">
-                <a href="blog-list.html" class="all-browse">Browse All Blogs <i class="fas fa-chevron-right"></i></a>
-            </div>
-        </div>
-        <div class="row align-items-center justify-content-center">
-            <div class="col-lg-4 col-md-6">
-                <div class="course-box course-box-two" data-aos="fade-up">
-                    <div class="product">
-                        <div class="product-img trend-course">
-                            <a href="blog-details.html">
-                                <img class="img-fluid" alt="" src="assets/img/blog/blog-21.jpg">
-                            </a>
-                        </div>
-                        <div class="feature-texts">
-                            <span>Marketing</span>
-                        </div>
-                        <div class="product-content">
-                            <ul class="date">
-                                <li>
-                                    <span><i class="fas fa-envelope"></i></span>
-                                    40 Comments
-                                </li>
-                                <li>
-                                    <span><i class="fas fa-clock"></i></span>
-                                    21 Jan, 2023
-                                </li>
-                            </ul>
-                            <h3 class="title"><a href="blog-details.html">Interview Question: Why Dont You Have a
-                                    Degree?</a></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="course-box course-box-two" data-aos="fade-up">
-                    <div class="product">
-                        <div class="product-img trend-course">
-                            <a href="blog-details.html">
-                                <img class="img-fluid" alt="" src="assets/img/blog/blog-22.jpg">
-                            </a>
-                        </div>
-                        <div class="feature-texts">
-                            <span>Marketing</span>
-                        </div>
-                        <div class="product-content">
-                            <ul class="date">
-                                <li>
-                                    <span><i class="fas fa-envelope"></i></span>
-                                    30 Comments
-                                </li>
-                                <li>
-                                    <span><i class="fas fa-clock"></i></span>
-                                    20 Jan, 2023
-                                </li>
-                            </ul>
-                            <h3 class="title"><a href="blog-details.html">How to Make a Perfect CV That Attracts the
-                                    Attention</a></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="course-box course-box-two" data-aos="fade-up">
-                    <div class="product">
-                        <div class="product-img trend-course">
-                            <a href="blog-details.html">
-                                <img class="img-fluid" alt="" src="assets/img/blog/blog-23.jpg">
-                            </a>
-                        </div>
-                        <div class="feature-texts">
-                            <span>Marketing</span>
-                        </div>
-                        <div class="product-content">
-                            <ul class="date">
-                                <li>
-                                    <span><i class="fas fa-envelope"></i></span>
-                                    50 Comments
-                                </li>
-                                <li>
-                                    <span><i class="fas fa-clock"></i></span>
-                                    22 Jan, 2023
-                                </li>
-                            </ul>
-                            <h3 class="title"><a href="blog-details.html">39 Strengths and Weaknesses To Discuss in a
-                                    Courses</a></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Our Blog -->
 
 <!-- New Course subscribe -->
 <section class="new-course great-option">

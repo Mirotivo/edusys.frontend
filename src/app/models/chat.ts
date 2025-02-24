@@ -13,6 +13,7 @@ export interface Chat {
     studentId: string;
     recipientId: string;
     name: string;
+    profileImagePath: string;
     lastMessage: string;
     timestamp: string;
     details: string;
