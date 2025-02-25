@@ -79,7 +79,7 @@
             <div class="col-sm-3 col-md-3 col-xl-3" *ngFor="let mentor of searchResults">
               <div class="profile-widget">
                 <div class="user-avatar">
-                  <a [href]="'/payment/' + mentor.id">
+                  <a [href]="'/listing/' + mentor.id">
                     <img [src]="mentor.listingImagePath" class="img-fluid" [alt]="mentor.tutorName">
                   </a>
                   <a href="javascript:void(0)" class="fav-btn">
@@ -88,7 +88,7 @@
                 </div>
                 <div class="pro-content">
                   <h3 class="title">
-                    <a [href]="'/payment/' + mentor.id">{{ mentor.title }}</a>
+                    <a [href]="'/listing/' + mentor.id">{{ mentor.title }}</a>
                     <i class="fas fa-check-circle verified"></i>
                   </h3>
                   <p class="speciality">{{ mentor.lessonCategory }}</p>
@@ -113,10 +113,10 @@
                   </ul>
                   <div class="row row-sm">
                     <div class="col-6">
-                      <a [href]="'/payment/' + mentor.id" class="btn view-btn">View Profile</a>
+                      <a [href]="'/listing/' + mentor.id" class="btn view-btn">View Profile</a>
                     </div>
                     <div class="col-6">
-                      <a [href]="'/payment/' + mentor.id" class="btn book-btn">Book Appointment</a>
+                      <a [href]="'/listing/' + mentor.id" class="btn book-btn">Book Appointment</a>
                     </div>
                   </div>
                 </div>
@@ -130,12 +130,12 @@
                 <div class="mentor-widget">
                   <div class="user-info-left">
                     <div class="mentor-img">
-                      <a [href]="'/payment/' + mentor.id">
+                      <a [href]="'/listing/' + mentor.id">
                         <img [src]="mentor.listingImagePath" class="img-fluid" [alt]="mentor.tutorName">
                       </a>
                     </div>
                     <div class="user-info-cont">
-                      <h4 class="usr-name"><a [href]="'/payment/' + mentor.id">{{ mentor.title }}</a></h4>
+                      <h4 class="usr-name"><a [href]="'/listing/' + mentor.id">{{ mentor.title }}</a></h4>
                       <p class="mentor-type">{{ mentor.lessonCategory }}</p>
                       <div class="rating">
                         <i *ngFor="let star of [1, 2, 3, 4, 5]" class="fas" [ngClass]="{'fa-star filled': star <= (mentor.rating ? mentor.rating : 4.5), 
@@ -161,7 +161,7 @@
                       </ul>
                     </div>
                     <div class="mentor-booking">
-                      <a class="apt-btn" [href]="'/payment/' + mentor.id">Book Appointment</a>
+                      <a class="apt-btn" [href]="'/listing/' + mentor.id">Book Appointment</a>
                     </div>
                   </div>
                 </div>

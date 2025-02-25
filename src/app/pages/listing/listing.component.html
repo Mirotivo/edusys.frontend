@@ -28,15 +28,15 @@
               <h4 class="mentor-type">{{ listing.title }}</h4>
               <div class="mentor-action">
                 <p class="mentor-type social-title">Contact Me</p>
-                <a class="btn-blue" (click)="navigateToPayment()">
+                <a class="btn-blue" (click)="navigateToPayment('message')">
                   <i class="fas fa-comments"></i>
                 </a>
 
-                <a class="btn-blue" (click)="navigateToPayment()">
+                <a class="btn-blue" (click)="navigateToPayment('email')">
                   <i class="fas fa-envelope"></i>
                 </a>
 
-                <a class="btn-blue" (click)="navigateToPayment()">
+                <a class="btn-blue" (click)="navigateToPayment('phone')">
                   <i class="fas fa-phone-alt"></i>
                 </a>
               </div>
@@ -45,7 +45,7 @@
           <div class="user-info-right d-flex align-items-end flex-wrap">
             <div class="hireme-btn text-center">
               <span class="hire-rate">{{ listing.rates.hourly | currency: 'AUD' }} / Hour</span>
-              <a class="blue-btn-radius" (click)="navigateToPayment()">Hire Me</a>
+              <a class="blue-btn-radius" (click)="navigateToPayment('booking')">Hire Me</a>
             </div>
           </div>
         </div>
@@ -140,21 +140,16 @@
     <!-- /Mentor Details Tab -->
 
 
-    <div class="booking-page" *ngIf="!loading; else loadingTemplate">
+    
+    <div class="booking-page" *ngIf="showMessageSection">
       <!-- Message Section -->
-      <div class="message-section" *ngIf="showMessageSection">
+      <div class="message-section">
         <h3>Send a Message to {{ listing.tutorName }}</h3>
         <textarea rows="4" placeholder="Write your message here..." [(ngModel)]="newMessage"></textarea>
         <button class="btn btn-primary" (click)="sendMessage()">Send Message</button>
         <p *ngIf="messageSuccess" class="success-message">
           Your message has been sent!
         </p>
-      </div>
-
-      <!-- Propose a Lesson Section -->
-      <div class="propose-lesson-section" *ngIf="!showMessageSection">
-        <app-propose-lesson [listing]="listing" [studentId]="null"
-          (onPropose)="handleProposeLesson()"></app-propose-lesson>
       </div>
     </div>
 

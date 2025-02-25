@@ -19,8 +19,7 @@ import { PaymentType } from '../../models/payment-type';
 })
 export class PaymentComponent implements OnInit {
   CardType: CardType = CardType.Paying;
-  listing: Listing | null = null;
-  listingId!: number;
+  referrer: string | null = null;
   loading = true;
   isLoggedIn = false;
   selectedCard: Card | null = null;
@@ -35,29 +34,15 @@ export class PaymentComponent implements OnInit {
   ngOnInit(): void {
     this.isLoggedIn = !!localStorage.getItem('token');
 
+    this.route.queryParams.subscribe((params) => {
+      this.referrer = params['referrer'] || '/';
+    });
+
     this.route.paramMap.subscribe((params) => {
-      this.listingId = Number(params.get('id'));
-      if (!isNaN(this.listingId)) {
-        this.loadListing(this.listingId);
-        this.checkSubscriptionStatus();
-      } else {
-        console.error('Listing Id is missing');
-        this.loading = false;
-      }
+      this.checkSubscriptionStatus();
     });
   }
 
-  loadListing(listingId: number): void {
-    this.listingService.getListing(listingId).subscribe({
-      next: (listing) => {
-        this.listing = listing;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Failed to fetch listing:', err);
-      },
-    });
-  }
 
   onCardSelected(card: Card | null): void {
     this.selectedCard = card;
@@ -67,7 +52,13 @@ export class PaymentComponent implements OnInit {
     this.subscriptionService.checkActiveSubscription().subscribe({
       next: (response: { isActive: boolean }) => {
         if (response.isActive) {
-          this.router.navigate(['/booking', this.listingId]);
+          const referrerUrl = new URL(this.referrer || '/', window.location.origin);
+          const queryParams = Object.fromEntries(referrerUrl.searchParams.entries());
+          delete queryParams['referrer'];
+          queryParams['success'] = 'true';
+          this.router.navigate([referrerUrl.pathname], {
+            queryParams
+          });
         }
       },
       error: (err) => {
@@ -92,24 +83,22 @@ export class PaymentComponent implements OnInit {
 
     this.subscriptionService.createSubscription(subscriptionRequest).subscribe({
       next: (response) => {
-        this.router.navigate(['/booking', this.listingId], {
-          queryParams: {
-            success: true,
-            listingId: this.listingId,
-            gateway: 'Stripe',
-            paymentType: PaymentType.StudentMembership
-          }
+        const referrerUrl = new URL(this.referrer || '/', window.location.origin);
+        const queryParams = Object.fromEntries(referrerUrl.searchParams.entries());
+        delete queryParams['referrer'];
+        queryParams['success'] = 'true';
+        this.router.navigate([referrerUrl.pathname], {
+          queryParams
         });
       },
       error: (err) => {
         console.error('Error creating subscription:', err);
-        this.router.navigate(['/booking', this.listingId], {
-          queryParams: {
-            success: false,
-            listingId: this.listingId,
-            gateway: 'Stripe',
-            paymentType: PaymentType.StudentMembership
-          }
+        const referrerUrl = new URL(this.referrer || '/', window.location.origin);
+        const queryParams = Object.fromEntries(referrerUrl.searchParams.entries());
+        delete queryParams['referrer'];
+        queryParams['success'] = 'false';
+        this.router.navigate([referrerUrl.pathname], {
+          queryParams
         });
       },
     });
@@ -131,7 +120,7 @@ export class PaymentComponent implements OnInit {
 
   planOptions = [
     { key: 'Monthly', label: 'Monthly Plan', price: 69, period: 'month', description: 'Enjoy full access to our services with a monthly commitment.' },
-    { key: 'Yearly', label: '12-Month Plan', price: 69*12, period: 'year', description: 'Includes 3 extra months free! Pay for 12 months and get 15 months of access.' }
+    { key: 'Yearly', label: '12-Month Plan', price: 69 * 12, period: 'year', description: 'Includes 3 extra months free! Pay for 12 months and get 15 months of access.' }
   ];
 
   promoCode: string = '';

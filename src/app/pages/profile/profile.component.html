@@ -69,10 +69,7 @@
                                 <input type="text" class="form-control" [(ngModel)]="profile.hangoutId" name="hangoutId"
                                     placeholder="Enter Hangout ID">
                             </div>
-                            <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn" (click)="saveProfile()">Save
-                                    Changes</button>
-                            </div>
+
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -86,6 +83,11 @@
                                 <app-map-address [initialAddress]="profile.address?.formattedAddress || null"
                                     (addressSelected)="updateAddress($event)"></app-map-address>
                             </div>
+                        </div>
+
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary submit-btn" (click)="saveProfile()">Save
+                                Changes</button>
                         </div>
                     </div>
                 </form>

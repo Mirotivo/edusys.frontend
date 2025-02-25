@@ -105,15 +105,17 @@ export class NewPaymentsComponent {
   // Subscription Management
   loadSubscriptionDetails(): void {
     this.subscriptionService.getSubscriptionDetails().subscribe({
-      next: (details) => { 
-        debugger
-        this.subscriptionDetails = details; },
+      next: (details) => {
+        this.subscriptionDetails = details;
+      },
       error: (err) => console.error('Failed to load subscription details', err)
     });
   }
 
   subscribeNow() {
-    this.router.navigate(['/payment', 1]);
+    this.router.navigate(['/payment'], {
+      queryParams: { referrer: this.router.url }
+    });
   }
 
   updateSubscription(): void {
@@ -125,7 +127,10 @@ export class NewPaymentsComponent {
 
   cancelSubscription(): void {
     this.subscriptionService.cancelSubscription().subscribe({
-      next: () => alert('Subscription cancelled successfully!'),
+      next: () => {
+        this.loadSubscriptionDetails();
+        alert('Subscription cancelled successfully!');
+      },
       error: (err) => console.error('Failed to cancel subscription', err),
     });
   }

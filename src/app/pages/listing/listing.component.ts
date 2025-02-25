@@ -7,11 +7,11 @@ import { Listing } from '../../models/listing';
 import { ChatService } from '../../services/chat.service';
 import { PropositionService } from '../../services/proposition.service';
 import { Proposition } from '../../models/proposition';
-import { ProposeLessonComponent } from '../../components/propose-lesson/propose-lesson.component';
+import { SubscriptionService } from '../../services/subscription.service';
 
 @Component({
   selector: 'app-listing',
-  imports: [CommonModule, FormsModule, ProposeLessonComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './listing.component.html',
   styleUrls: ['./listing.component.scss'],
 })
@@ -23,14 +23,14 @@ export class ListingComponent implements OnInit {
   lessonPrice: number = 0; // Price in dollars
   loading: boolean = true;
   messageSuccess: boolean = false; // Indicates whether the message was sent successfully
-  proposeSuccess: boolean = false; // Indicates whether the lesson proposal was successful
-  showMessageSection: boolean = true; // Toggle between message and propose lesson sections
+  showMessageSection: boolean = false; // Toggle between message and propose lesson sections
 
   constructor(
     private route: ActivatedRoute,
     private listingService: ListingService,
     private chatService: ChatService,
     private propositionService: PropositionService,
+    private subscriptionService: SubscriptionService,
     private router: Router
   ) { }
 
@@ -85,16 +85,29 @@ export class ListingComponent implements OnInit {
     }
   }
 
-  handleProposeLesson(): void {
-    this.proposeSuccess = true;
-    setTimeout(() => {
-      this.proposeSuccess = false;
-    }, 3000); // Keep the success message for 3 seconds
-  }
-
-  navigateToPayment(): void {
+  navigateToPayment(action: string): void {
     if (this.listing && this.listing.id) {
-      this.router.navigate(['/payment', this.listing.id]);
+      this.subscriptionService.checkActiveSubscription().subscribe({
+        next: (response: { isActive: boolean }) => {
+          if (response.isActive) {
+            if (action == 'booking')
+            {
+              this.router.navigate(['/booking', this.listing.id]);
+            }
+            else if (action == 'message') {
+              this.showMessageSection = true;
+            }
+          }
+          else {
+            this.router.navigate(['/payment'], {
+              queryParams: { referrer: this.router.url }
+            });
+          }
+        },
+        error: (err) => {
+          console.error('Error checking subscription status:', err);
+        },
+      });
     }
-  }  
+  }
 }

@@ -118,7 +118,9 @@ export class SearchResultsComponent implements OnInit {
 
 
   navigateToPayment(listingId: number): void {
-    this.router.navigate(['/payment', listingId]);
+    this.router.navigate(['/payment'], {
+      queryParams: { referrer: this.router.url }
+    });
   }
 
   toggleView(isGrid: boolean): void {
