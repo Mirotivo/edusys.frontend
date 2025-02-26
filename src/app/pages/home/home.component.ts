@@ -80,8 +80,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     mouseDrag: true,
     touchDrag: true,
     pullDrag: false,
-    dots: true,
-    dotsEach: true,
+    dots: false,
+    dotsEach: false,
     navSpeed: 700,
     navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
     responsive: {

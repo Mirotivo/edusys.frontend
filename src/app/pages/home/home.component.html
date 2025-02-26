@@ -376,50 +376,6 @@
 </section>
 <!-- /Faq -->
 
-<!-- Student Say About Section -->
-<section class="student-say-about testimonial-section testi-mon-one">
-    <div class="container">
-        <div class="section-header section-head-one text-center" data-aos="fade-up">
-            <h2>Reviews From Our Users</h2>
-            <div class="title-bar">
-                <img src="assets/img/icon/index-title-bar.svg" alt="Title Bar">
-            </div>
-            <p class="sub-title">
-                We collect reviews from our users so you can get an honest opinion about their experience with our
-                website.
-            </p>
-        </div>
-
-        <div class="col-lg-12 col-md-12 text-center d-flex justify-content-center">
-            <owl-carousel-o [options]="customOptions">
-                <ng-container *ngFor="let testimonial of studentReviews">
-                    <ng-template carouselSlide>
-                        <div class="carousel-item testi-item say-us">
-                            <div class="student-group" data-aos="fade-up">
-                                <div class="reviewer-detail">
-                                    <div class="student-about-img">
-                                        <img [src]="testimonial.image" [alt]="testimonial.name">
-                                    </div>
-                                    <div class="reviewer-name">
-                                        <h3><a href="reviews.html">{{ testimonial.name }}</a></h3>
-                                        <span>{{ testimonial.role }}</span>
-                                    </div>
-                                </div>
-                                <p class="say-text">{{ testimonial.review }}</p>
-                                <div class="rating">
-                                    <i *ngFor="let star of [].constructor(testimonial.rating)"
-                                        class="fa fa-star filled"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-template>
-                </ng-container>
-            </owl-carousel-o>
-        </div>
-    </div>
-</section>
-<!-- /Student say about -->
-
 <!-- New Course subscribe -->
 <section class="new-course great-option">
     <div class="container">
