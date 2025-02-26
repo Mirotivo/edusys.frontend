@@ -41,6 +41,13 @@
                                 </div>
                             </div>
                             <div class="mb-3">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" [(ngModel)]="profile.lastName"
+                                        name="lastName" placeholder="Enter last name">
+                                </div>
+                            </div>
+                            <div class="mb-3">
                                 <label class="form-label">Date of Birth</label>
                                 <input type="date" [(ngModel)]="profile.dateOfBirth" name="dateOfBirth"
                                     class="form-control">
@@ -73,20 +80,13 @@
 
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <div class="form-group">
-                                    <label>Last Name</label>
-                                    <input type="text" class="form-control" [(ngModel)]="profile.lastName"
-                                        name="lastName" placeholder="Enter last name">
-                                </div>
-                            </div>
+                            
                             <div class="mb-3">
                                 <app-map-address [initialAddress]="profile.address?.formattedAddress || null"
                                     (addressSelected)="updateAddress($event)"></app-map-address>
                             </div>
                         </div>
-
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12" style="text-align: end;">
                             <button type="submit" class="btn btn-primary submit-btn" (click)="saveProfile()">Save
                                 Changes</button>
                         </div>
