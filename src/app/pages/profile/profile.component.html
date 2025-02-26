@@ -42,7 +42,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Date of Birth</label>
-                                <input type="date" [(ngModel)]="profile.dateOfBirth" name="dateOfBirth" class="form-control">
+                                <input type="date" [(ngModel)]="profile.dateOfBirth" name="dateOfBirth"
+                                    class="form-control">
                             </div>
                             <div class="mb-3">
                                 <div class="form-group">
@@ -104,7 +105,7 @@
                                     placeholder="Write a short bio about yourself"></textarea>
                             </div>
                             <!-- Save Bio Button -->
-                            <div class="text-end">
+                            <div class="text-center">
                                 <button type="submit" class="btn btn-primary" (click)="saveProfile()">Save Bio</button>
                             </div>
                         </div>
@@ -127,8 +128,9 @@
                                         placeholder="Provide details about your uploaded documents"></textarea>
                                 </div>
                                 <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary" (click)="submitDiploma()">Save Qualifications</button>
-                                </div>    
+                                    <button type="submit" class="btn btn-primary" (click)="submitDiploma()">Save
+                                        Qualifications</button>
+                                </div>
                             </div>
                             <!-- Display uploaded Qualifications -->
                             <!-- <div *ngIf="diplomaStatus != DiplomaStatus.NotSubmitted">
@@ -174,7 +176,7 @@
                             <div *ngIf="diplomaStatus === DiplomaStatus.Verified" class="qualification-status">
                                 <p>Your diploma has been verified.</p>
                                 <button class="btn verified-btn" disabled>Verified</button>
-                            </div>                    
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -198,7 +200,9 @@
                         <input type="password" class="form-control" placeholder="Confirm new password"
                             [(ngModel)]="changePasswordData.confirmNewPassword" name="confirmNewPassword" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Change Password</button>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </div>
                 </form>
             </div>
         </div>

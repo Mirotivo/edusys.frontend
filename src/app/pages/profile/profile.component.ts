@@ -79,13 +79,19 @@ export class ProfileComponent implements OnInit {
   }
 
   saveProfile(): void {
-    if (this.profile) {
-      this.userService.updateUser(this.profile).subscribe({
-        error: (err) => console.error('Failed to update profile', err)
-      });
-    }
+    if (!this.profile) return;
+  
+    this.userService.updateUser(this.profile).subscribe({
+      next: () => {
+        this.alertService.successAlert('Profile updated successfully.', 'Success');
+      },
+      error: (err) => {
+        console.error('Failed to update profile', err);
+        this.alertService.errorAlert('Failed to update profile. Please try again.', 'Error');
+      }
+    });
   }
-
+  
   updateAddress(location: Address) {
     if (this.profile && this.profile.address) {
       this.profile.address.formattedAddress = location.formattedAddress;
