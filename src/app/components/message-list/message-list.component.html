@@ -1,6 +1,6 @@
 <form class="chat-search d-flex align-items-center">
   <div class="avatar avatar-online me-3">
-    <img [src]="user.profileImagePath" alt="User Image" class="avatar-img rounded-circle">
+    <img [src]="user.profileImagePath" alt="User Image" class="avatar-img rounded-circle" [imageFallback]="user.firstName + ' ' + user.lastName">
   </div>
   <div class="input-group">
     <div class="input-group-prepend">

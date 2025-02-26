@@ -6,16 +6,16 @@ import { Address, DiplomaStatus, PaymentSchedule, User } from '../../models/user
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MapAddressComponent } from '../../components/map-address/map-address.component';
-import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 import { PaymentHistory } from '../../models/payment-history';
 import { CardType } from '../../models/card';
 import { PaymentService } from '../../services/payment.service';
 import { AlertService } from '../../services/alert.service';
+import { ImageFallbackDirective } from '../../directives/image-fallback.directive';
 
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, FormsModule, MapAddressComponent],
+  imports: [CommonModule, FormsModule, MapAddressComponent, ImageFallbackDirective],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
