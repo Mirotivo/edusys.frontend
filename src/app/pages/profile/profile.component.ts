@@ -11,6 +11,7 @@ import { CardType } from '../../models/card';
 import { PaymentService } from '../../services/payment.service';
 import { AlertService } from '../../services/alert.service';
 import { ImageFallbackDirective } from '../../directives/image-fallback.directive';
+import { SpinnerService } from '../../services/spinner.service'; 
 
 
 @Component({
@@ -54,6 +55,7 @@ export class ProfileComponent implements OnInit {
     private alertService: AlertService,
     private authService: AuthService,
     private userService: UserService,
+    private spinnerService: SpinnerService,
     private router: Router
   ) {
   }
@@ -78,16 +80,21 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+
   saveProfile(): void {
     if (!this.profile) return;
+  
+    this.spinnerService.show();
   
     this.userService.updateUser(this.profile).subscribe({
       next: () => {
         this.alertService.successAlert('Profile updated successfully.', 'Success');
+        this.spinnerService.hide();
       },
       error: (err) => {
         console.error('Failed to update profile', err);
         this.alertService.errorAlert('Failed to update profile. Please try again.', 'Error');
+        this.spinnerService.hide();
       }
     });
   }
