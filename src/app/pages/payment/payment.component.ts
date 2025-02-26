@@ -10,6 +10,7 @@ import { ProfileImageComponent } from '../../components/profile-image/profile-im
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
 import { Card, CardType } from '../../models/card';
 import { PaymentType } from '../../models/payment-type';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-payment',
@@ -25,6 +26,7 @@ export class PaymentComponent implements OnInit {
   selectedCard: Card | null = null;
 
   constructor(
+    private alertService: AlertService,
     private route: ActivatedRoute,
     private router: Router,
     private listingService: ListingService,
@@ -69,7 +71,7 @@ export class PaymentComponent implements OnInit {
 
   payWithSelectedCard(): void {
     if (!this.selectedCard) {
-      alert('Please select a card to proceed.');
+      this.alertService.warningAlert('Please select a card to proceed.');
       return;
     }
 
@@ -83,6 +85,8 @@ export class PaymentComponent implements OnInit {
 
     this.subscriptionService.createSubscription(subscriptionRequest).subscribe({
       next: (response) => {
+        this.alertService.successAlert('Subscription created successfully!', 'Success');
+
         const referrerUrl = new URL(this.referrer || '/', window.location.origin);
         const queryParams = Object.fromEntries(referrerUrl.searchParams.entries());
         delete queryParams['referrer'];
@@ -93,6 +97,8 @@ export class PaymentComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error creating subscription:', err);
+        this.alertService.errorAlert('Failed to process payment. Please try again.', 'Payment Failed');
+
         const referrerUrl = new URL(this.referrer || '/', window.location.origin);
         const queryParams = Object.fromEntries(referrerUrl.searchParams.entries());
         delete queryParams['referrer'];

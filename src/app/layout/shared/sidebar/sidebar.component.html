@@ -32,28 +32,38 @@
     </div>
     <div class="custom-sidebar-nav">
         <ul>
-            <li><a [routerLink]="'/dashboard'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
-                        class="fas fa-home"></i>Dashboard
-                    <span><i class="fas fa-chevron-right"></i></span></a></li>
-            <li><a [routerLink]="'/messages'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
-                        class="fas fa-comments"></i>Messages <span><i class="fas fa-chevron-right"></i></span></a></li>
-            <li><a [routerLink]="'invoices'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
-                        class="fas fa-file-invoice"></i>Invoices <span><i class="fas fa-chevron-right"></i></span></a>
+            <li>
+                <a [routerLink]="'/dashboard'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-home"></i>Dashboard<span><i class="fas fa-chevron-right"></i></span></a>
             </li>
-            <li><a [routerLink]="'payments'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
-                        class="fas fa-file-invoice"></i>Payments <span><i class="fas fa-chevron-right"></i></span></a>
+            <li>
+                <a [routerLink]="'/messages'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-comments"></i>Messages <span><i class="fas fa-chevron-right"></i></span></a>
             </li>
-            <li><a [routerLink]="'evaluations'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
-                        class="fas fa-eye"></i>Reviews
-                    <span><i class="fas fa-chevron-right"></i></span></a></li>
-            <li><a [routerLink]="'lessons'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
-                        class="fab fa-blogger-b"></i>My
-                    Lessons <span><i class="fas fa-chevron-right"></i></span></a></li>
-            <li><a [routerLink]="'listings'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
-                        class="fab fa-blogger-b"></i>My
-                    Listings <span><i class="fas fa-chevron-right"></i></span></a></li>
-            <li><a [routerLink]="'profile'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
-                        class="fas fa-user-cog"></i>Profile <span><i class="fas fa-chevron-right"></i></span></a></li>
+            <li>
+                <a [routerLink]="'invoices'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-file-invoice"></i>Invoices <span><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li>
+                <a [routerLink]="'payments'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-credit-card"></i>Payments <span><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li>
+                <a [routerLink]="'evaluations'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-star"></i>Reviews <span><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li>
+                <a [routerLink]="'lessons'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-chalkboard-teacher"></i>My Lessons <span><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li>
+                <a [routerLink]="'listings'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-clipboard-list"></i>My Listings <span><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li>
+                <a [routerLink]="'profile'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-user-cog"></i>Profile <span><i class="fas fa-chevron-right"></i></span></a>
+            </li>
         </ul>
     </div>
 </div>

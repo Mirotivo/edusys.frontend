@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PropositionService } from '../../services/proposition.service';
 import { Proposition } from '../../models/proposition';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-booking',
@@ -28,6 +29,7 @@ export class BookingComponent implements OnInit {
   minDate: string = ''; // Minimum selectable date
 
   constructor(
+    private alertService: AlertService,
     private propositionService: PropositionService,
     private route: ActivatedRoute,
     private listingService: ListingService,
@@ -78,11 +80,11 @@ export class BookingComponent implements OnInit {
 
   confirmAndPay(): void {
     if (!this.selectedDate || !this.selectedTime) {
-      alert('Please select a date and time for the lesson.');
+      this.alertService.warningAlert('Please select a date and time for the lesson.');
       return;
     }
     if (!this.selectedCard) {
-      alert('Please select a payment card.');
+      this.alertService.warningAlert('Please select a payment card.');
       return;
     }
     // Navigate to payment page with listing ID
@@ -94,13 +96,14 @@ export class BookingComponent implements OnInit {
       studentId: null,
     };
 
-    debugger
     this.propositionService.proposeLesson(proposition).subscribe({
       next: (lesson) => {
+        this.alertService.successAlert('Lesson proposed successfully!', 'Success');
         this.router.navigate(['/messages']);
       },
       error: (err) => {
         console.error('Failed to propose lesson:', err);
+        this.alertService.errorAlert('Failed to propose lesson. Please try again.', 'Error');
       },
     });
   }

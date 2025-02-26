@@ -8,6 +8,7 @@ import { PaymentService } from '../../services/payment.service';
 import { ManageCardsComponent } from '../manage-cards/manage-cards.component';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-profile-payments',
@@ -33,6 +34,7 @@ export class ProfilePaymentsComponent {
   compensationPercentage: number = 50;
 
   constructor(
+    private alertService: AlertService,
     private userService: UserService,
     private paymentService: PaymentService,
     private route: ActivatedRoute
@@ -78,11 +80,14 @@ export class ProfilePaymentsComponent {
           style: { layout: 'vertical', label: 'paypal' },
           onApprove: () => {
             this.paymentService.addPayPalAccount('example@paypal.com').subscribe(() => {
-              alert('Your PayPal account has been linked successfully!');
+              this.alertService.successAlert('Your PayPal account has been linked successfully!', 'Success');
               this.paypalAccountAdded = true;
             });
           },
-          onError: (err: any) => console.error('Error linking PayPal account:', err),
+          error: (err: any) => {
+            console.error('Failed to link PayPal account:', err);
+            this.alertService.errorAlert('Failed to link your PayPal account. Please try again.', 'Error');
+          }
         })
         .render('#paypal-button-container');
     });

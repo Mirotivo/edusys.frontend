@@ -10,6 +10,7 @@ import { ProposeLessonComponent } from '../propose-lesson/propose-lesson.compone
 import { Listing } from '../../models/listing';
 import { NotificationService } from '../../services/notification.service';
 import { UserService } from '../../services/user.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-manage-lessons',
@@ -27,6 +28,7 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
   selectedListing!: Listing;
 
   constructor(
+    private alertService: AlertService,
     private propositionService: PropositionService,
     private notificationService: NotificationService,
     private listingService: ListingService,
@@ -166,7 +168,8 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
   cancelLesson(lessonId: number): void {
     this.propositionService.cancelLesson(lessonId).subscribe({
       next: () => {
-        alert('Lesson canceled successfully.');
+        this.alertService.successAlert('Lesson canceled successfully.', 'Success');
+        
         // Update the lesson status locally to reflect the cancellation
         const lesson = this.lessons.find((l) => l.id === lessonId);
         if (lesson) {
@@ -175,10 +178,11 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         console.error('Failed to cancel lesson:', err);
+        this.alertService.errorAlert('Failed to cancel the lesson. Please try again.', 'Error');
       },
     });
   }
-
+  
 
 
   isModalOpen = false;

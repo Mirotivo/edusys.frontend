@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Lesson, LessonStatus } from '../../models/lesson';
 import { PropositionService } from '../../services/proposition.service';
 import { UserService } from '../../services/user.service';
+import { ToastrService } from 'ngx-toastr';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-lessons',
@@ -22,8 +24,10 @@ export class LessonsComponent {
   lessons: any[] = [];
 
   constructor(
+    private alertService: AlertService,
     private propositionService: PropositionService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -50,7 +54,16 @@ export class LessonsComponent {
     ];
   }
 
-  respondToProposition(propositionId: number, accept: boolean) {
+  async respondToProposition(propositionId: number, accept: boolean) {
+    if (!accept) {
+      const confirmed = await this.alertService.confirm(
+        'This lesson will be canceled.',
+        'Cancel Lesson',
+        'Yes, cancel it!'
+      );
+      if (!confirmed) return;
+    }
+
     this.propositionService.respondToProposition(propositionId, accept).subscribe({
       next: () => {
         // Update the UI after successful response
@@ -133,10 +146,17 @@ export class LessonsComponent {
     });
   }
 
-  cancelLesson(lessonId: number) {
+  async cancelLesson(lessonId: number) {
+    const confirmed = await this.alertService.confirm(
+      'This lesson will be canceled.',
+      'Cancel Lesson',
+      'Yes, cancel it!'
+    );
+    if (!confirmed) return;
+
     this.propositionService.cancelLesson(lessonId).subscribe({
       next: () => {
-        alert('Lesson canceled successfully.');
+        this.toastr.success('Lesson canceled successfully.', 'Success');
         // Update the lesson status locally to reflect the cancellation
         const lesson = this.lessons.find((l) => l.id === lessonId);
         if (lesson) {

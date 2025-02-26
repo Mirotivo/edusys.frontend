@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../layout/shared/header/header.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { LeaveReviewComponent } from '../../components/leave-review/leave-review.component';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-evaluations',
@@ -30,6 +31,7 @@ export class EvaluationsComponent {
   sponsorLink: string = '';
 
   constructor(
+    private alertService: AlertService,
     private userService: UserService,
     private authService: AuthService,
     private evaluationService: EvaluationService
@@ -53,12 +55,13 @@ export class EvaluationsComponent {
 
   copyLink(): void {
     navigator.clipboard.writeText(this.recommendationLink).then(() => {
-      alert('Link copied to clipboard!');
+      this.alertService.successAlert('Link copied to clipboard!', 'Success');
     }).catch(err => {
       console.error('Could not copy link: ', err);
+      this.alertService.errorAlert('Failed to copy link. Please try again.', 'Error');
     });
   }
-
+  
   loadAllReviews(): void {
     this.evaluationService.getAllReviews().subscribe((data) => {
       this.pendingReviews = data.pendingReviews;

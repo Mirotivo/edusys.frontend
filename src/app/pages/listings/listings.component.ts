@@ -10,6 +10,7 @@ import { CreateListingComponent } from '../../components/create-listing/create-l
 import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 import { MultiStepModalComponent } from '../../components/multi-step-modal/multi-step-modal.component';
 import { EditListingComponent } from '../../components/edit-listing/edit-listing.component';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-listings',
@@ -26,6 +27,7 @@ export class ListingsComponent {
   selectedListing: Listing | null = null; // Selected listing can be null
 
   constructor(
+    private alertService: AlertService,
     private categoryService: CategoryService,
     private listingService: ListingService,
   ) { }
@@ -67,22 +69,30 @@ export class ListingsComponent {
       );
   }
 
-  /** Delete a listing */
-  deleteListing(listing: Listing): void {
-    if (!confirm(`Are you sure you want to delete the listing: ${listing.title}?`)) return;
+/** Delete a listing */
+async deleteListing(listing: Listing): Promise<void> {
+  const confirmed = await this.alertService.confirm(
+    `Are you sure you want to delete the listing: ${listing.title}?`,
+    'Delete Listing',
+    'Yes, delete it'
+  );
 
-    this.listingService.deleteListing(listing.id)
-      .subscribe({
-        next: () => {
-          this.listings = this.listings.filter(l => l.id !== listing.id);
-          if (this.selectedListing?.id === listing.id) {
-            this.selectedListing = this.listings.length > 0 ? this.listings[0] : null;
-          }
-          console.log('Listing deleted successfully');
-        },
-        error: err => console.error('Error deleting listing:', err)
-      });
-  }
+  if (!confirmed) return;
+
+  this.listingService.deleteListing(listing.id).subscribe({
+    next: () => {
+      this.listings = this.listings.filter(l => l.id !== listing.id);
+      if (this.selectedListing?.id === listing.id) {
+        this.selectedListing = this.listings.length > 0 ? this.listings[0] : null;
+      }
+      this.alertService.successAlert('Listing deleted successfully.', 'Success');
+    },
+    error: (err) => {
+      console.error('Error deleting listing:', err);
+      this.alertService.errorAlert('Failed to delete listing. Please try again.', 'Error');
+    },
+  });
+}
 
   editingSection: string | null = null;
   editSection(section: string): void {

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Review } from '../../models/review';
 import { UserService } from '../../services/user.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-recommendation-submission',
@@ -23,11 +24,12 @@ export class RecommendationSubmissionComponent implements OnInit {
   };
 
   constructor(
+    private alertService: AlertService,
     private route: ActivatedRoute,
     private router: Router,
     private evaluationService: EvaluationService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -58,11 +60,12 @@ export class RecommendationSubmissionComponent implements OnInit {
   submitRecommendation(): void {
     this.evaluationService.submitRecommendation(this.recommendation).subscribe({
       next: () => {
-        alert('Recommendation submitted successfully!');
+        this.alertService.successAlert('Recommendation submitted successfully!', 'Success');
         this.router.navigate(['/']);
       },
       error: (err) => {
         console.error('Error submitting recommendation:', err);
+        this.alertService.errorAlert('Failed to submit recommendation. Please try again.');
       }
     });
   }

@@ -10,6 +10,7 @@ import { SubscriptionService } from '../../services/subscription.service';
 import { PaymentType } from '../../models/payment-type';
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
 import { ConfigService } from '../../services/config.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-premium-subscription',
@@ -39,6 +40,7 @@ export class PremiumSubscriptionComponent implements OnInit {
   selectedCard: Card | null = null; // Track the selected card
 
   constructor(
+    private alertService: AlertService,
     private router: Router,
     private paymentService: PaymentService,
     private subscriptionService: SubscriptionService,
@@ -119,7 +121,7 @@ export class PremiumSubscriptionComponent implements OnInit {
 
   payWithSelectedCard(): void {
     if (!this.selectedCard) {
-      alert('Please select a card to proceed.');
+      this.alertService.warningAlert('Please select a card to proceed.');
       return;
     }
 
@@ -133,6 +135,7 @@ export class PremiumSubscriptionComponent implements OnInit {
     this.subscriptionService.createSubscription(subscriptionRequest).subscribe({
       next: (response) => {
         console.log('Subscription created successfully:', response);
+        this.alertService.successAlert('Subscription created successfully!', 'Success');
         this.router.navigate(['/payment-result'], {
           queryParams: {
             success: true,
@@ -144,6 +147,7 @@ export class PremiumSubscriptionComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error creating subscription:', err);
+        this.alertService.errorAlert('Failed to process payment. Please try again.', 'Payment Failed');
         this.router.navigate(['/payment-result'], {
           queryParams: {
             success: false,

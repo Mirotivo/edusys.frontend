@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Card, CardType } from '../../models/card';
 import { ConfigService } from '../../services/config.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-manage-cards',
@@ -31,6 +32,7 @@ export class ManageCardsComponent implements OnInit {
   @Output() selectedCard: Card | null = null; // Track the selected card
 
   constructor(
+    private alertService: AlertService,
     private paymentService: PaymentService,
     private configService: ConfigService,
   ) { }
@@ -106,30 +108,33 @@ export class ManageCardsComponent implements OnInit {
 
   async saveCard(event: Event) {
     event.preventDefault();
-
+  
     if (!this.stripe || !this.cardNumber || !this.cardHolderName) {
-      alert('Please fill in all details.');
+      this.alertService.warningAlert('Please fill in all details.');
       return;
     }
-
+  
     const { token, error } = await this.stripe.createToken(this.cardNumber);
-
+  
     if (error) {
       console.error('Error creating token:', error);
+      this.alertService.errorAlert('Failed to create card token. Please check your details and try again.', 'Error');
       return;
     }
-
+  
     this.paymentService.saveCard(token.id, this.cardPurpose).subscribe({
       next: () => {
+        this.alertService.successAlert('Card saved successfully!', 'Success');
         this.loadSavedCards();
         this.showAddCardSection = false;
       },
       error: (err) => {
         console.error('Error saving card:', err);
-        alert('Failed to save card.');
+        this.alertService.errorAlert('Failed to save card. Please try again.', 'Error');
       },
     });
   }
+  
 
   setAsDefault(id: number): void {
     this.savedCards.forEach(method => (method.isDefault = false));

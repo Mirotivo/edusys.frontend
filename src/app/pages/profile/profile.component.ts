@@ -10,6 +10,7 @@ import { ProfileImageComponent } from '../../components/profile-image/profile-im
 import { PaymentHistory } from '../../models/payment-history';
 import { CardType } from '../../models/card';
 import { PaymentService } from '../../services/payment.service';
+import { AlertService } from '../../services/alert.service';
 
 
 @Component({
@@ -50,6 +51,7 @@ export class ProfileComponent implements OnInit {
   deleteConfirmation = false;
 
   constructor(
+    private alertService: AlertService,
     private authService: AuthService,
     private userService: UserService,
     private router: Router
@@ -137,13 +139,19 @@ export class ProfileComponent implements OnInit {
   }
 
   submitDiploma(): void {
-    if (!this.selectedFile) return alert('Please select a diploma file before submitting.');
+    if (!this.selectedFile) {
+      this.alertService.warningAlert('Please select a diploma file before submitting.');
+      return;
+    }
     this.userService.submitDiploma(this.selectedFile).subscribe({
       next: () => {
-        alert('Diploma submitted for review.');
+        this.alertService.successAlert('Diploma submitted for review.');
         this.diplomaStatus = DiplomaStatus.UnderReview;
       },
-      error: (err) => console.error('Error submitting diploma:', err)
+      error: (err) => {
+        console.error('Error submitting diploma:', err);
+        this.alertService.errorAlert('Failed to submit the diploma. Please try again.');
+      }
     });
   }
 
@@ -151,24 +159,41 @@ export class ProfileComponent implements OnInit {
   changePassword(): void {
     if (this.profile?.email) {
       this.userService.requestPasswordReset({ email: this.profile.email }).subscribe({
-        next: () => alert('Password reset request has been sent to your email.'),
-        error: (err) => console.error('Error sending password reset request:', err)
-      });
-    }
-  }
-
-  confirmAndDeleteAccount(): void {
-    if (this.deleteConfirmation && confirm('Are you sure you want to delete your account? This action is irreversible.')) {
-      this.userService.deleteAccount().subscribe({
         next: () => {
-          this.authService.logout();
-          this.router.navigate(['/goodbye']);
+          this.alertService.successAlert('Password reset request has been sent to your email.');
         },
-        error: (err) => console.error('Failed to delete account:', err)
+        error: (err) => {
+          console.error('Error sending password reset request:', err);
+          this.alertService.errorAlert('Failed to send password reset request. Please try again.');
+        }
       });
     }
   }
 
+  async confirmAndDeleteAccount(): Promise<void> {
+    if (!this.deleteConfirmation) return;
+  
+    const confirmed = await this.alertService.confirm(
+      'Are you sure you want to delete your account? This action is irreversible.',
+      'Delete Account',
+      'Yes, delete my account'
+    );
+  
+    if (!confirmed) return;
+  
+    this.userService.deleteAccount().subscribe({
+      next: () => {
+        this.alertService.successAlert('Your account has been deleted.', 'Account Deleted');
+        this.authService.logout();
+        this.router.navigate(['/goodbye']);
+      },
+      error: (err) => {
+        console.error('Failed to delete account:', err);
+        this.alertService.errorAlert('Failed to delete account. Please try again.', 'Error');
+      },
+    });
+  }
+  
   changePasswordData = {
     oldPassword: '',
     newPassword: '',
@@ -176,7 +201,7 @@ export class ProfileComponent implements OnInit {
   };
   changeOldPassword(): void {
     if (this.changePasswordData.newPassword !== this.changePasswordData.confirmNewPassword) {
-      alert("New password and confirmation do not match.");
+      this.alertService.warningAlert('New password and confirmation do not match.');
       return;
     }
 
@@ -186,11 +211,11 @@ export class ProfileComponent implements OnInit {
       this.changePasswordData.confirmNewPassword
     ).subscribe({
       next: () => {
-        alert('Password updated successfully.');
+        this.alertService.successAlert('Password updated successfully.');
         this.changePasswordData = { oldPassword: '', newPassword: '', confirmNewPassword: '' };
       },
       error: (err) => {
-        alert('Failed to update password: ' + (err.error?.message || 'Unknown error'));
+        this.alertService.errorAlert('Failed to update password: ' + (err.error?.message || 'Unknown error'));
       }
     });
   }

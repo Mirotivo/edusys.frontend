@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
 import { SubscriptionService } from '../../services/subscription.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-new-payments',
@@ -37,6 +38,7 @@ export class NewPaymentsComponent {
   subscriptionDetails: any = null;
 
   constructor(
+    private alertService: AlertService,
     private userService: UserService,
     private paymentService: PaymentService,
     private subscriptionService: SubscriptionService,
@@ -85,11 +87,14 @@ export class NewPaymentsComponent {
           style: { layout: 'vertical', label: 'paypal' },
           onApprove: () => {
             this.paymentService.addPayPalAccount('example@paypal.com').subscribe(() => {
-              alert('Your PayPal account has been linked successfully!');
+              this.alertService.successAlert('Your PayPal account has been linked successfully!', 'Success');
               this.paypalAccountAdded = true;
             });
           },
-          onError: (err: any) => console.error('Error linking PayPal account:', err),
+          onError: (err: any) => {
+            console.error('Error linking PayPal account:', err);
+            this.alertService.errorAlert('Failed to link your PayPal account. Please try again.', 'Error');
+          },
         })
         .render('#paypal-button-container');
     });
@@ -120,8 +125,13 @@ export class NewPaymentsComponent {
 
   updateSubscription(): void {
     this.subscriptionService.updateSubscription().subscribe({
-      next: () => alert('Subscription updated successfully!'),
-      error: (err) => console.error('Failed to update subscription', err),
+      next: () => {
+        this.alertService.successAlert('Subscription updated successfully!', 'Success');
+      },
+      error: (err) => {
+        console.error('Failed to update subscription', err);
+        this.alertService.errorAlert('Failed to update subscription. Please try again.', 'Error');
+      },
     });
   }
 
@@ -129,21 +139,29 @@ export class NewPaymentsComponent {
     this.subscriptionService.cancelSubscription().subscribe({
       next: () => {
         this.loadSubscriptionDetails();
-        alert('Subscription cancelled successfully!');
+        this.alertService.successAlert('Subscription cancelled successfully!', 'Success');
       },
-      error: (err) => console.error('Failed to cancel subscription', err),
+      error: (err) => {
+        console.error('Failed to cancel subscription', err);
+        this.alertService.errorAlert('Failed to cancel subscription. Please try again.', 'Error');
+      },
     });
   }
-
+  
   editBillingFrequency() {
     throw new Error('Method not implemented.');
   }
-  cancelPlan() {
+  cancelPlan(): void {
     this.subscriptionService.cancelSubscription().subscribe({
-      next: () => alert('Subscription cancelled successfully!'),
-      error: (err) => console.error('Failed to cancel subscription', err),
+      next: () => {
+        this.alertService.successAlert('Subscription cancelled successfully!', 'Success');
+      },
+      error: (err) => {
+        console.error('Failed to cancel subscription', err);
+        this.alertService.errorAlert('Failed to cancel subscription. Please try again.', 'Error');
+      },
     });
-  }
+  }  
   switchPlans() {
     throw new Error('Method not implemented.');
   }
