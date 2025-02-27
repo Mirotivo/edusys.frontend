@@ -16,8 +16,8 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/me`);
   }
 
-  getUserByToken(recommendationToken: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/by-token/${recommendationToken}`);
+  getUserByToken(recommendationToken: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/by-token/${recommendationToken}`);
   }
 
   getDiplomaStatus(): Observable<any> {

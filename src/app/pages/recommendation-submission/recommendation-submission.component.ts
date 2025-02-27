@@ -15,7 +15,8 @@ import { AlertService } from '../../services/alert.service';
 })
 export class RecommendationSubmissionComponent implements OnInit {
   recommendation: Review = {
-    revieweeId: 0,
+    revieweeId: '',
+    date: new Date(),
     name: '',
     subject: '',
     feedback: '',
@@ -47,8 +48,8 @@ export class RecommendationSubmissionComponent implements OnInit {
     this.userService.getUserByToken(userToken).subscribe({
       next: (user) => {
         this.recommendation.revieweeId = user.id;
-        this.recommendation.name = user.name;
-        this.recommendation.avatar = user.avatar || null;
+        this.recommendation.name = user.fullName;
+        this.recommendation.avatar = user.profileImagePath || null;
       },
       error: (err) => {
         console.error('Error fetching user details:', err);

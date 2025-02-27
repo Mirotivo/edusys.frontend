@@ -35,40 +35,62 @@
             </div>
 
             <!-- Reviews Received -->
-            <div *ngIf="activeSubTab === 'received'">
+            <div *ngIf="activeSubTab === 'received'" class="doc-review review-listing">
               <h3>Reviews Received</h3>
-              <ul class="list-group">
-                <li class="list-group-item" *ngFor="let review of receivedReviews">
-                  <div class="d-flex align-items-center">
-                    <img *ngIf="review.avatar" [src]="review.avatar" alt="{{ review.name }}" class="rounded-circle me-2"
-                      width="40">
-                    <span *ngIf="!review.avatar" class="review-avatar me-2">{{ review.name[0] }}</span>
-                    <div>
-                      <strong>{{ review.name }}</strong>
-                      <p class="text-muted">{{ review.subject }} student</p>
-                      <p>{{ review.feedback }}</p>
+              <ul class="comments-list">
+                <!-- Comment List -->
+                <li *ngFor="let review of receivedReviews">
+                  <div class="comment">
+                    <img class="avatar rounded-circle" alt="User Image" [src]="review.avatar">
+                    <div class="comment-body">
+                      <div class="meta-data">
+                        <span class="comment-author">{{ review.name }}</span>
+                        <span class="comment-date">Reviewed {{ review.date | timeAgo }}</span>
+                        <div class="review-count rating">
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                        </div>
+                      </div>
+                      <p class="comment-content">
+                        {{ review.feedback }}
+                      </p>
                     </div>
                   </div>
                 </li>
+                <!-- /Comment List -->
               </ul>
             </div>
 
             <!-- Reviews Sent -->
-            <div *ngIf="activeSubTab === 'sent'">
+            <div *ngIf="activeSubTab === 'sent'" class="doc-review review-listing">
               <h3>Reviews Sent</h3>
               <ul class="list-group">
-                <li class="list-group-item" *ngFor="let review of sentReviews">
-                  <div class="d-flex align-items-center">
-                    <img *ngIf="review.avatar" [src]="review.avatar" alt="{{ review.name }}" class="rounded-circle me-2"
-                      width="40">
-                    <span *ngIf="!review.avatar" class="review-avatar me-2">{{ review.name[0] }}</span>
-                    <div>
-                      <strong>{{ review.name }}</strong>
-                      <p class="text-muted">{{ review.subject }} student</p>
-                      <p>{{ review.feedback }}</p>
+                <!-- Comment List -->
+                <li *ngFor="let review of sentReviews">
+                  <div class="comment">
+                    <img class="avatar rounded-circle" alt="User Image" [src]="review.avatar">
+                    <div class="comment-body">
+                      <div class="meta-data">
+                        <span class="comment-author">{{ review.name }}</span>
+                        <span class="comment-date">Reviewed {{ review.date | timeAgo }}</span>
+                        <div class="review-count rating">
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                        </div>
+                      </div>
+                      <p class="comment-content">
+                        {{ review.feedback }}
+                      </p>
                     </div>
                   </div>
                 </li>
+                <!-- /Comment List -->
               </ul>
             </div>
           </div>
@@ -118,11 +140,32 @@
 
           <div class="recommendations">
             <h3 class="text-center">Received Recommendations</h3>
-            <div class="list-group">
-              <div class="list-group-item" *ngFor="let recommendation of recommendations">
-                <h4>{{ recommendation.name }}</h4>
-                <p>{{ recommendation.feedback }}</p>
-              </div>
+            <div class="doc-review review-listing">
+              <ul class="list-group">
+                <!-- Comment List -->
+                <li *ngFor="let review of recommendations">
+                  <div class="comment">
+                    <img class="avatar rounded-circle" alt="User Image" [src]="review.avatar">
+                    <div class="comment-body">
+                      <div class="meta-data">
+                        <span class="comment-author">{{ review.name }}</span>
+                        <span class="comment-date">Reviewed {{ review.date | timeAgo }}</span>
+                        <div class="review-count rating">
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                          <i class="fas fa-star filled"></i>
+                        </div>
+                      </div>
+                      <p class="comment-content">
+                        {{ review.feedback }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <!-- /Comment List -->
+              </ul>
             </div>
           </div>
         </div>

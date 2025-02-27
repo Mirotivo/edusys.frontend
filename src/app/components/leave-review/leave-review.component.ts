@@ -12,11 +12,12 @@ import { RatingComponent } from '../rating/rating.component';
   styleUrl: './leave-review.component.scss'
 })
 export class LeaveReviewComponent {
-  @Input() revieweeId!: number; // Accept revieweeId as input
+  @Input() revieweeId!: string; // Accept revieweeId as input
   @Output() onClose = new EventEmitter<void>();
 
   newReview: Review = {
-    revieweeId: 0,
+    revieweeId: '',
+    date: new Date(),
     subject: '',
     feedback: '',
     name: '',

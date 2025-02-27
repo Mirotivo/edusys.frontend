@@ -27,6 +27,7 @@
     "@types/aos": "^3.0.7",
     "aos": "^2.3.4",
     "bootstrap": "^5.3.3",
+    "date-fns": "^4.1.0",
     "feather-icons": "^4.29.2",
     "gapi-script": "^1.2.0",
     "jquery": "^3.7.1",

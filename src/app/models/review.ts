@@ -1,5 +1,6 @@
 export interface Review {
-    revieweeId: number;
+    revieweeId: string;
+    date: Date;
     name: string;
     subject: string;
     feedback?: string; // For received or sent reviews

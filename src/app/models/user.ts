@@ -21,8 +21,10 @@ export interface Address {
   formattedAddress: string;
 }
 export interface User {
+  id: string;
   firstName: string;
   lastName: string;
+  fullName: string;
   address: Address|null;
   bio: string|null;
   dateOfBirth: string;

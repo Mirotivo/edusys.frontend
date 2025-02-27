@@ -11,10 +11,11 @@ import { HeaderComponent } from '../../layout/shared/header/header.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { LeaveReviewComponent } from '../../components/leave-review/leave-review.component';
 import { AlertService } from '../../services/alert.service';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-evaluations',
-  imports: [CommonModule, FormsModule, ModalComponent, LeaveReviewComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, LeaveReviewComponent, TimeAgoPipe],
   templateUrl: './evaluations.component.html',
   styleUrl: './evaluations.component.scss'
 })
@@ -26,7 +27,7 @@ export class EvaluationsComponent {
   remainingReviews = 0;
   activeTab = 'reviews';
   activeSubTab = 'received';
-  selectedRevieweeId!: number;
+  selectedRevieweeId!: string;
   recommendationLink: string = '';
   sponsorLink: string = '';
 
@@ -78,7 +79,7 @@ export class EvaluationsComponent {
 
   isModalOpen = false;
 
-  openModal(revieweeId: number): void {
+  openModal(revieweeId: string): void {
     this.selectedRevieweeId = revieweeId;
     this.isModalOpen = true;
   }

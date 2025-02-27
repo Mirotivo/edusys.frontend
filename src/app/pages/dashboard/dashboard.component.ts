@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
   reviewsPending: Review[] = [];
   payments: Transaction[] = [];
   listings: Listing[] = [];
-  selectedRevieweeId!: number;
+  selectedRevieweeId!: string;
 
   constructor(
     private chatService: ChatService,
@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
 
   isModalOpen = false;
 
-  openModal(revieweeId: number): void {
+  openModal(revieweeId: string): void {
     this.selectedRevieweeId = revieweeId;
     this.isModalOpen = true;
   }
