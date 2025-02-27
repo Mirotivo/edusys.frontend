@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Role } from '../../models/chat';
 import { CommonModule } from '@angular/common';
-import { Lesson, LessonStatus } from '../../models/lesson';
+import { Lesson, LessonStatus, LessonType } from '../../models/lesson';
 import { PropositionService } from '../../services/proposition.service';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,13 +15,11 @@ import { AlertService } from '../../services/alert.service';
 })
 export class LessonsComponent {
   LessonStatus = LessonStatus;
+  LessonType = LessonType;
   Role = Role;
   activeTab: string = 'all';
-  combinedSessions: any[] = [];
   userId: number = 0;
-  // Example Data (Replace with real data from API)
-  propositions: any[] = [];
-  lessons: any[] = [];
+  lessons: Lesson[] = [];
 
   constructor(
     private alertService: AlertService,
@@ -35,11 +33,9 @@ export class LessonsComponent {
   }
 
   loadPropositions(): void {
-    this.propositionService.getAllLessonsAndPropositions().subscribe({
+    this.propositionService.getAllLessons().subscribe({
       next: (response) => {
-        this.propositions = response.propositions;
-        this.lessons = response.lessons;
-        this.mergeSessions();
+        this.lessons = response.lessons.results;
       },
       error: (err) => {
         console.error('Failed to fetch lessons and propositions:', err);
@@ -47,12 +43,6 @@ export class LessonsComponent {
     });
   }
 
-  mergeSessions() {
-    this.combinedSessions = [
-      ...this.propositions.map(proposition => ({ ...proposition, type: 'Proposition' })),
-      ...this.lessons.map(lesson => ({ ...lesson, type: 'Lesson' }))
-    ];
-  }
 
   async respondToProposition(propositionId: number, accept: boolean) {
     if (!accept) {
@@ -67,7 +57,6 @@ export class LessonsComponent {
     this.propositionService.respondToProposition(propositionId, accept).subscribe({
       next: () => {
         // Update the UI after successful response
-        this.propositions = this.propositions.filter(p => p.id !== propositionId);
         this.loadPropositions();
       },
       error: (err) => {

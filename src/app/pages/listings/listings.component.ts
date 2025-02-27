@@ -39,7 +39,7 @@ export class ListingsComponent {
   loadListings(): void {
     this.listingService.getListings().subscribe({
       next: (data) => {
-        this.listings = data;
+        this.listings = data.results;
         if (this.listings.length > 0) {
           this.selectedListing = this.listings[0];
         }

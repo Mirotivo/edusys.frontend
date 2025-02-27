@@ -18,7 +18,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let session of combinedSessions" [ngClass]="{
+                                    <tr *ngFor="let session of lessons" [ngClass]="{
                                         'table-warning': session.status === LessonStatus.Proposed,
                                         'table-success': session.status === LessonStatus.Booked,
                                         'table-danger': session.status === LessonStatus.Canceled,
@@ -43,19 +43,19 @@
                                         <td class="text-end">
                                             <div class="table-action">
                                                 <!-- Tutor Actions for Propositions -->
-                                                <button *ngIf="session.type === 'Proposition' && session.recipientRole == Role.Student"
+                                                <button *ngIf="session.type === LessonType.Proposition && session.recipientRole == Role.Student"
                                                     class="btn btn-sm bg-success-light"
                                                     (click)="respondToProposition(session.id, true)">
                                                     <i class="fas fa-check"></i> Accept
                                                 </button>
-                                                <button *ngIf="session.type === 'Proposition' && session.recipientRole == Role.Student"
+                                                <button *ngIf="session.type === LessonType.Proposition && session.recipientRole == Role.Student"
                                                     class="btn btn-sm bg-danger-light"
                                                     (click)="respondToProposition(session.id, false)">
                                                     <i class="fas fa-times"></i> Refuse
                                                 </button>
 
                                                 <!-- Student Actions for Propositions -->
-                                                <button *ngIf="session.type === 'Proposition' && session.recipientRole == Role.Tutor"
+                                                <button *ngIf="session.type === LessonType.Proposition && session.recipientRole == Role.Tutor"
                                                     class="btn btn-sm bg-danger-light"
                                                     (click)="respondToProposition(session.id, false)">
                                                     <i class="fas fa-ban"></i> Cancel
@@ -63,7 +63,7 @@
 
                                                 <!-- Start Video Call -->
                                                 <button
-                                                    *ngIf="session.type === 'Lesson' && session.status === LessonStatus.Booked"
+                                                    *ngIf="session.type === LessonType.Lesson && session.status === LessonStatus.Booked"
                                                     class="btn btn-sm bg-primary-light"
                                                     (click)="startVideoCall(session)">
                                                     <i class="fas fa-video"></i> Start Call
@@ -71,7 +71,7 @@
 
                                                 <!-- Cancel Lesson -->
                                                 <button
-                                                    *ngIf="session.type === 'Lesson' && session.status === LessonStatus.Booked"
+                                                    *ngIf="session.type === LessonType.Lesson && session.status === LessonStatus.Booked"
                                                     class="btn btn-sm bg-warning-light"
                                                     (click)="cancelLesson(session.id)">
                                                     <i class="fas fa-times-circle"></i> Cancel Lesson
@@ -82,7 +82,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="no-sessions text-center mt-3" *ngIf="combinedSessions.length === 0">
+                        <div class="no-sessions text-center mt-3" *ngIf="lessons.length === 0">
                             <p>No sessions available.</p>
                         </div>
                     </div>

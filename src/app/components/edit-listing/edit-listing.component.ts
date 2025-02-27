@@ -41,7 +41,7 @@ export class EditListingComponent implements OnInit {
   loadLessonCategories(searchText: string): void {
     this.categoryService.getFilteredCategories(searchText).subscribe({
       next: (data) => {
-        this.lessonCategories = data;
+        this.lessonCategories = data.results;
 
         // **Set selected lesson category from listing**
         if (this.listing?.lessonCategoryId) {

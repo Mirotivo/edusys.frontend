@@ -51,7 +51,7 @@ export class CreateListingComponent implements OnInit {
   loadLessonCategories(searchText: string): void {
     this.categoryService.getFilteredCategories(searchText).subscribe({
       next: (data) => {
-        this.lessonCategories = data;
+        this.lessonCategories = data.results;
       },
       error: (err) => {
         console.error('Failed to fetch lesson categories', err);

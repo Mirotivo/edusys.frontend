@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
       error: (err) => console.error('Failed to load payment history:', err),
     });
     this.listingService.getListings().subscribe({
-      next: (data) => (this.listings = data),
+      next: (data) => (this.listings = data.results),
       error: (err) => console.error('Failed to fetch listings:', err),
     });
   }

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Chat, Role } from '../../models/chat';
-import { Lesson, LessonStatus } from '../../models/lesson';
+import { Lesson, LessonStatus, LessonType } from '../../models/lesson';
 import { PropositionService } from '../../services/proposition.service';
 import { ListingService } from '../../services/listing.service';
 import { ModalComponent } from '../modal/modal.component';
@@ -55,10 +55,10 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
 
 
   loadPropositions(contactId: string, listingId: number): void {
-    this.propositionService.getPropositions(contactId, listingId).subscribe({
+    this.propositionService.getLessons(contactId, listingId).subscribe({
       next: (response) => {
-        this.propositions = response.propositions;
-        this.lessons = response.lessons;
+        this.propositions = response.lessons.results.filter(lesson => lesson.type === LessonType.Proposition);
+        this.lessons = response.lessons.results.filter(lesson => lesson.type === LessonType.Lesson);
       },
       error: (err) => {
         console.error('Failed to fetch contact details:', err);

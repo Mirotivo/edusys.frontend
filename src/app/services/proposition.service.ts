@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Proposition } from '../models/proposition';
+import { PagedResult } from '../models/paged-result';
+import { Lesson } from '../models/lesson';
 
 @Injectable({
   providedIn: 'root',
@@ -36,12 +38,12 @@ export class PropositionService {
       .padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   }
 
-  getPropositions(contactId: string, listingId: number): Observable<{ propositions: any[]; lessons: any[] }> {
-    return this.http.get<{ propositions: any[]; lessons: any[] }>(`${this.apiUrl}/${contactId}/${listingId}`);
+  getLessons(contactId: string, listingId: number): Observable<{ lessons: PagedResult<Lesson> }> {
+    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}/${contactId}/${listingId}`);
   }
   
-  getAllLessonsAndPropositions(): Observable<{ propositions: any[]; lessons: any[] }> {
-    return this.http.get<{ propositions: any[]; lessons: any[] }>(`${this.apiUrl}`);
+  getAllLessons(): Observable<{ lessons: PagedResult<Lesson> }> {
+    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}`);
   }
 
   cancelLesson(lessonId: number) {

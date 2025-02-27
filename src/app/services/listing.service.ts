@@ -3,6 +3,7 @@ import { Listing } from '../models/listing';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../environments/environment';
+import { PagedResult } from '../models/paged-result';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ListingService {
 
   constructor(private http: HttpClient) { }
 
-  searchListings(query: string, selectedCategories: string[], page: number = 1, pageSize: number = 10): Observable<any> {
+  searchListings(query: string, selectedCategories: string[], page: number = 1, pageSize: number = 10): Observable<PagedResult<Listing>> {
     const params = {
       query: query,
       categories: '',
@@ -25,15 +26,15 @@ export class ListingService {
       params.categories = selectedCategories.join(',');
     }
 
-    return this.http.get<any>(`${this.apiUrl}/search`, { params });
+    return this.http.get<PagedResult<Listing>>(`${this.apiUrl}/search`, { params });
   }
 
   getListing(listingId: number): Observable<Listing> {
     return this.http.get<Listing>(`${this.apiUrl}/${listingId}`);
   }
 
-  getListings(): Observable<Listing[]> {
-    return this.http.get<Listing[]>(this.apiUrl);
+  getListings(): Observable<PagedResult<Listing>> {
+    return this.http.get<PagedResult<Listing>>(this.apiUrl);
   }
 
   createListing(newListing: Listing): Observable<Listing> {
