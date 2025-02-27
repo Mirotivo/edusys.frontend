@@ -1,10 +1,9 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
+import { provideToastr } from 'ngx-toastr';
 import { httpInterceptorFn } from './interceptors/httpInterceptorFn';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -21,16 +20,13 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([httpInterceptorFn])
     ),
 
-    // Import modules (e.g., Toastr)
-    importProvidersFrom(
-      BrowserAnimationsModule,
-      ToastrModule.forRoot({
-        timeOut: 5000,
-        positionClass: 'toast-top-right',
-        preventDuplicates: true,
-      })
-    ),
-  
+    // Toastr configuration
+    provideToastr({
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
+
     provideAnimationsAsync(),
   ]
 };

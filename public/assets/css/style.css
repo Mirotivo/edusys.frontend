@@ -25399,3 +25399,7 @@ div.dataTables_wrapper div.dataTables_filter input {
 .hdpi.pac-logo:after {
 	display: none !important;
 }
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+   background-image: none !important;
+}

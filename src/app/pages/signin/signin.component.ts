@@ -3,10 +3,12 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { FacebookModule, FacebookService, InitParams, LoginResponse } from 'ngx-facebook';
+import { FacebookService, InitParams, LoginResponse } from 'ngx-facebook';
 import { ConfigService } from '../../services/config.service';
-import { environment } from '../../environments/environment';
 import { loadGapiInsideDOM } from 'gapi-script';
+import { ToastrService } from 'ngx-toastr';
+import { SpinnerService } from '../../services/spinner.service'; 
+
 
 
 declare const gapi: any;
@@ -21,7 +23,16 @@ export class SigninComponent {
   invalidLogin = false;
   returnUrl: string = '/';
 
-  constructor(private fb: FacebookService, private form: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService, private configService: ConfigService) { }
+  constructor(
+    private fb: FacebookService, 
+    private form: FormBuilder, 
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private authService: AuthService,
+    private configService: ConfigService, 
+    private toastr: ToastrService,
+    private spinner: SpinnerService,
+  ) { }
 
   ngOnInit(): void {
     // Initialize the form with Reactive Forms
@@ -74,28 +85,31 @@ export class SigninComponent {
       return;
     }
 
+    this.spinner.show();
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe({
       next: (result) => {
         if (result) {
           this.authService.saveToken(result.token);
           this.authService.saveRoles(result.roles);
           this.authService.saveEmail(this.loginForm.value.email);
-
           // Redirect to returnUrl or dashboard
           this.router.navigateByUrl(this.returnUrl);
         } else {
-          this.invalidLogin = true; // Invalid credentials
+          this.toastr.error('Invalid email or password.', 'Error');
         }
+        this.spinner.hide();
       },
       error: (error) => {
         console.error(error);
-        this.invalidLogin = true;
+        this.spinner.hide();
+        this.toastr.error('Invalid email or password.', 'Error');
       },
     });
   }
 
   /** ✅ Facebook Login */
   loginWithFacebook(): void {
+    this.spinner.show();
     this.fb
       .login({ scope: 'email,public_profile' })
       .then(async (response: LoginResponse) => {
@@ -105,13 +119,15 @@ export class SigninComponent {
       })
       .catch((error) => {
         console.error('❌ Facebook login error:', error);
-        this.invalidLogin = true;
+        this.toastr.error('Invalid email or password.', 'Error');
+        this.spinner.hide();
       });
   }
 
   /** ✅ Google Login */
   async loginWithGoogle(): Promise<void> {
     try {
+      this.spinner.show();
       const auth2 = gapi.auth2.getAuthInstance();
       if (!auth2) throw new Error('Google Auth instance not initialized');
 
@@ -121,13 +137,14 @@ export class SigninComponent {
 
       await this.handleSocialLogin('google', idToken);
     } catch (error) {
+      this.spinner.hide();
       console.error('❌ Google Login Failed:', error);
-      this.invalidLogin = true;
     }
   }
 
   /** ✅ Handle Social Login */
   handleSocialLogin(provider: string, token: string): void {
+    this.spinner.hide();
     this.authService.socialLogin(provider, token).subscribe({
       next: (result) => {
         this.authService.saveToken(result.token);
@@ -136,7 +153,7 @@ export class SigninComponent {
       },
       error: (error) => {
         console.error(`❌ ${provider} login verification failed:`, error.message);
-        this.invalidLogin = true;
+        this.toastr.error('Invalid email or password.', 'Error');
       },
     });
   }

@@ -43,11 +43,6 @@
               <a class="forgot-link" href="forgot-password">Forgot Password ?</a>
             </div>
             <button class="btn btn-primary login-btn" type="submit" [disabled]="loginForm.invalid">Login</button>
-            <!-- Error Message -->
-            <div *ngIf="invalidLogin" class="alert alert-danger">
-              Invalid email or password. Please try again.
-            </div>
-
             <div class="login-or">
               <span class="or-line"></span>
               <span class="span-or">or</span>

@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NotificationService } from './services/notification.service';
 import { AuthService } from './services/auth.service';
-import { NotificationEvent } from './models/notification';
 import { ToastrService } from 'ngx-toastr';
-import { MessagesComponent } from './pages/messages/messages.component';
-import { MessageListComponent } from './components/message-list/message-list.component';
 import { ConfigService } from './services/config.service';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  template: `<router-outlet></router-outlet>`
+  imports: [RouterOutlet, SpinnerComponent],
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   currentRoute: string = '';
