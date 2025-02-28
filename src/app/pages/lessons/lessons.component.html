@@ -26,7 +26,7 @@
                                         }">
                                         <td>{{ session.recipientName }}</td>
                                         <td>{{ session.topic }}</td>
-                                        <td>{{ session.date | date: 'short' }}</td>
+                                        <td>{{ session.date | date:'dd MMM yyyy, h:mm a' }}</td>
                                         <td>{{ session.duration }}</td>
                                         <td *ngIf="session.price">${{ session.price }}</td>
                                         <td *ngIf="!session.price">N/A</td>

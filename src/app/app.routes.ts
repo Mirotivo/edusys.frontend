@@ -26,7 +26,7 @@ import { CompleteRegistrationComponent } from './pages/complete-registration/com
 import { HomeComponent } from './pages/home/home.component';
 import { SidebarLayoutComponent } from './layout/sidebar-layout/sidebar-layout.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { NewInvoicesComponent } from './pages/new-invoices/new-invoices.component';
+import { InvoicesComponent } from './pages/invoices/invoices.component';
 import { NewPaymentsComponent } from './pages/new-payments/new-payments.component';
 import { EvaluationsComponent } from './pages/evaluations/evaluations.component';
 import { ListingsComponent } from './pages/listings/listings.component';
@@ -85,7 +85,7 @@ export const routes: Routes = [
               { path: 'lessons', component: LessonsComponent, data: { title: 'Lessons' } },
               { path: 'evaluations', component: EvaluationsComponent, data: { title: 'Evaluations' } },
               { path: 'payments', component: NewPaymentsComponent, data: { title: 'Payments' } },
-              { path: 'invoices', component: NewInvoicesComponent, data: { title: 'Invoices' } },
+              { path: 'invoices', component: InvoicesComponent, data: { title: 'Invoices' } },
               { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
             ]
           }

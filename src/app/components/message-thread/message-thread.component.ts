@@ -29,8 +29,10 @@ export class MessageThreadComponent implements AfterViewInit, OnInit, OnChanges 
     this.notificationService.onReceiveNotification((notification) => {
       if (this.selectedContact && notification.data.listingId === this.selectedContact.listingId && notification.data.senderId === this.selectedContact.recipientId) {
         this.selectedContact.messages.push({
-          text: notification.data.content,
           sentBy: 'contact',
+          senderId: '',
+          senderName: '',
+          content: notification.data.content,
           timestamp: notification.data.timestamp,
         });
 
@@ -54,9 +56,11 @@ export class MessageThreadComponent implements AfterViewInit, OnInit, OnChanges 
   sendMessage(): void {
     if (this.newMessage.trim() && this.selectedContact) {
       this.selectedContact?.messages.push({
-        text: this.newMessage,
         sentBy: 'me',
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        senderId: '',
+        senderName: '',
+        content: this.newMessage,
+        timestamp: new Date(),
       });
       this.scrollToBottom();
       this.messageSent.emit();

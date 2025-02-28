@@ -1,5 +1,3 @@
-import { Message } from "./message";
-
 export enum Role
 {
     None = 0,
@@ -15,10 +13,19 @@ export interface Chat {
     name: string;
     profileImagePath: string;
     lastMessage: string;
-    timestamp: string;
+    timestamp: Date;
     details: string;
     messages: Message[];
     requestDetails: string;
     myRole: Role;
+  }
+
+  
+export interface Message {
+    sentBy: 'me' | 'contact';
+    senderId: string;
+    senderName: string;
+    content: string;
+    timestamp: Date | 'N/A';
   }
   

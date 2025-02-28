@@ -13,8 +13,8 @@
         <h3>My Messages</h3>
         <ul>
           <li *ngFor="let message of messages">
-            <p><strong>{{ message.sender }}</strong> - {{ message.content }}</p>
-            <span>{{ message.time }}</span>
+            <p><strong>{{ message.senderName }}</strong> - {{ message.content }}</p>
+            <span>{{ message.timestamp | timeAgo }}</span>
           </li>
         </ul>
         <a href="/messages" class="view-all">See all messages</a>
@@ -29,7 +29,7 @@
             <button class="btn btn-warning" (click)="openModal(review.revieweeId)">Leave a Review</button>
           </li>
         </ul>
-        <a href="/evaluations" class="view-all">See all pending reviews</a>
+        <a href="/dashboard/evaluations" class="view-all">See all pending reviews</a>
       </div>
 
       <!-- Payments Section -->
@@ -37,13 +37,13 @@
         <h3>My Payments</h3>
         <ul>
           <li *ngFor="let payment of payments">
-            <p>{{ payment.date }} - {{ payment.description }}</p>
+            <p>{{ payment.date | timeAgo }} - {{ payment.description }}</p>
             <span [ngClass]="{ 'text-success': payment.amount > 0, 'text-danger': payment.amount < 0 }">
               {{ payment.amount | currency:'AUD' }}
             </span>
           </li>
         </ul>
-        <a href="/profile" class="view-all">See all payments</a>
+        <a href="/dashboard/payments" class="view-all">See all payments</a>
       </div>
 
       <!-- Listings Section -->
@@ -64,7 +64,7 @@
             </div>
           </li>
         </ul>
-        <a href="/listings" class="view-all">See all listings</a>
+        <a href="/dashboard/listings" class="view-all">See all listings</a>
       </div>
     </div>
   </div>

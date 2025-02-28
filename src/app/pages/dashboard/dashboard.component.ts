@@ -22,14 +22,18 @@ import { LeaveReviewComponent } from '../../components/leave-review/leave-review
 import { ModalComponent } from '../../components/modal/modal.component';
 import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 
+// Pipes
+import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
+import { Message } from '../../models/chat';
+
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, FormsModule, ModalComponent, LeaveReviewComponent, ProfileImageComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, LeaveReviewComponent, ProfileImageComponent, TimeAgoPipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  messages: any[] = [];
+  messages: Message[] = [];
   reviewsPending: Review[] = [];
   payments: Transaction[] = [];
   listings: Listing[] = [];

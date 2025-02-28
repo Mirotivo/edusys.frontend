@@ -5,12 +5,12 @@ import { Transaction } from '../../models/transaction';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-new-invoices',
+  selector: 'app-invoices',
   imports: [CommonModule],
-  templateUrl: './new-invoices.component.html',
-  styleUrl: './new-invoices.component.scss'
+  templateUrl: './invoices.component.html',
+  styleUrl: './invoices.component.scss'
 })
-export class NewInvoicesComponent {
+export class InvoicesComponent {
   payment: PaymentHistory | null = null;
   invoices: Transaction[] = [];
 

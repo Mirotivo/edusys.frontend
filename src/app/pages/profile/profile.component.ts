@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +21,8 @@ import { SpinnerService } from '../../services/spinner.service';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
+  @ViewChild('inputFile') inputFile!: ElementRef<HTMLInputElement>;
+
   // Enums and Data Models
   DiplomaStatus = DiplomaStatus;
 
@@ -113,29 +115,30 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  onProfilePictureUpload(): void {
+  onProfilePictureUpload(event: Event): void {
     if (!this.profile) return;
-
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.onchange = (event: any) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          if (this.profile) this.profile.profileImagePath = reader.result as string;
-
-          this.userService.updateUser(this.profile!, file).subscribe({
-            error: (err) => console.error('Error updating profile picture:', err)
-          });
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    fileInput.click();
+  
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      const file = input.files[0];
+      
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (this.profile) {
+          // Set the image path on the profile object
+          this.profile.profileImagePath = reader.result as string;
+        }
+  
+        // Send the image file to the server
+        this.userService.updateUser(this.profile!, file).subscribe({
+          error: (err) => console.error('Error updating profile picture:', err)
+        });
+      };
+  
+      reader.readAsDataURL(file);
+    }
   }
-
+  
   // 4. Diploma Management
   fetchDiplomaStatus(): void {
     this.userService.getDiplomaStatus().subscribe({
