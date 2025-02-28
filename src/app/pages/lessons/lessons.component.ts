@@ -1,28 +1,85 @@
 import { Component } from '@angular/core';
 import { Role } from '../../models/chat';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Lesson, LessonStatus, LessonType } from '../../models/lesson';
 import { LessonService } from '../../services/lesson.service';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { AlertService } from '../../services/alert.service';
+import { TableComponent } from '../../layout/shared/table/table.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-lessons',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, TableComponent],
   templateUrl: './lessons.component.html',
   styleUrl: './lessons.component.scss'
 })
 export class LessonsComponent {
-  LessonStatus = LessonStatus;
-  LessonType = LessonType;
-  Role = Role;
   lessons: Lesson[] = [];
-  totalResults: number = 0;
   page: number = 1;
   pageSize: number = 10;
   pageSizeOptions: number[] = [5, 10, 50, 100];
-  
+  totalResults: number = 0;
+  lessonColumns = [
+    { key: 'recipientName', label: 'With' },
+    { key: 'topic', label: 'Topic' },
+    { key: 'date', label: 'Date', formatter: (value: any) => new DatePipe('en-US').transform(value, 'dd MMM yyyy, h:mm a') || 'N/A' },
+    { key: 'duration', label: 'Duration' },
+    { key: 'price', label: 'Price', formatter: (value: any) => value ? `$${value}` : 'N/A' },
+    {
+      key: 'status',
+      label: 'Status',
+      formatter: (value: any) => {
+        const statusText = LessonStatus[value as keyof typeof LessonStatus]; // ✅ Convert to string
+        const statusClass: Record<string, string> = {  // ✅ Allow string-based indexing
+          [LessonStatus.Proposed]: 'bg-warning',
+          [LessonStatus.Booked]: 'bg-success',
+          [LessonStatus.Canceled]: 'bg-danger',
+          [LessonStatus.Completed]: 'bg-info'
+        };
+
+        return `<span class="badge ${statusClass[value as keyof typeof LessonStatus] || 'bg-secondary'}">${statusText}</span>`;
+      }
+    }
+  ];
+  lessonActions = [
+    {
+      label: 'Start Call',
+      icon: 'fa-video',
+      class: 'btn-sm bg-primary-light',
+      callback: (session: any) => this.startVideoCall(session),
+      condition: (session: any) => session.type === LessonType.Lesson && session.status === LessonStatus.Booked
+    },
+    {
+      label: 'Cancel Lesson',
+      icon: 'fa-times-circle',
+      class: 'btn-sm bg-warning-light',
+      callback: (session: any) => this.cancelLesson(session.id),
+      condition: (session: any) => session.type === LessonType.Lesson && session.status === LessonStatus.Booked
+    },
+    {
+      label: 'Accept',
+      icon: 'fa-check',
+      class: 'btn-sm bg-success-light',
+      callback: (session: any) => this.respondToProposition(session.id, true),
+      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === Role.Student
+    },
+    {
+      label: 'Refuse',
+      icon: 'fa-times',
+      class: 'btn-sm bg-danger-light',
+      callback: (session: any) => this.respondToProposition(session.id, false),
+      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === Role.Student
+    },
+    {
+      label: 'Cancel',
+      icon: 'fa-ban',
+      class: 'btn-sm bg-danger-light',
+      callback: (session: any) => this.respondToProposition(session.id, false),
+      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === Role.Tutor
+    }
+  ];
   constructor(
     private alertService: AlertService,
     private lessonService: LessonService,
@@ -161,25 +218,13 @@ export class LessonsComponent {
     });
   }
 
-  get totalPages(): number {
-    return Math.ceil(this.totalResults / this.pageSize);
+  onPageChange(newPage: number) {
+    this.page = newPage;
+    this.loadLessons();
   }
-  
-    /**
-   * Handles page change event
-   */
-    onPageChange(newPage: number): void {
-      this.page = newPage;
-      this.loadLessons();
-    }
-  
-    /**
-     * Handles page size change event
-     */
-    onPageSizeChange(event: any): void {
-      this.pageSize = event.target.value;
-      this.page = 1; // Reset to first page when changing page size
-      this.loadLessons();
-    }
-  
+
+  onPageSizeChange(newSize: number) {
+    this.pageSize = newSize;
+    this.loadLessons();
+  }
 }
