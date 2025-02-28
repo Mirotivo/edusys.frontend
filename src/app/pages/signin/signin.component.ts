@@ -8,6 +8,8 @@ import { ConfigService } from '../../services/config.service';
 import { loadGapiInsideDOM } from 'gapi-script';
 import { ToastrService } from 'ngx-toastr';
 import { SpinnerService } from '../../services/spinner.service'; 
+import { AlertService } from '../../services/alert.service';
+import { UserService } from '../../services/user.service';
 
 
 
@@ -29,9 +31,11 @@ export class SigninComponent {
     private route: ActivatedRoute, 
     private router: Router, 
     private authService: AuthService,
+    private userService: UserService,
     private configService: ConfigService, 
     private toastr: ToastrService,
     private spinner: SpinnerService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -156,5 +160,26 @@ export class SigninComponent {
         this.toastr.error('Invalid email or password.', 'Error');
       },
     });
+  }
+
+  async resetPassword() {
+    const email = await this.alertService.promptForInput(
+      'Reset my password',
+      'To retrieve your password, please enter the e-mail address associated with your account below.',
+      'email',
+      'Enter your email',
+      'Send'
+    );
+
+    if (email) {
+      this.userService.requestPasswordReset(email).subscribe();
+
+      this.alertService.successAlert(
+        'Check your email',
+        "An email with instructions on how to reset your password has been sent to you. If you don't receive this email, please check your spam folder.",
+        'Return to Sign-in'
+      );
+    }
+
   }
 }

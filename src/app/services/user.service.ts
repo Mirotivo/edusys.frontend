@@ -103,8 +103,8 @@ export class UserService {
     });
   }
 
-  requestPasswordReset(resetPasswordRequest: { email: string }): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/request-reset-password`, resetPasswordRequest);
+  requestPasswordReset(email: string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/request-reset-password`, { email: email });
   }
 
   resetPassword(data: { token: string; newPassword: string }): Observable<void> {

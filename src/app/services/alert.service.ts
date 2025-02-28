@@ -31,11 +31,12 @@ export class AlertService {
   /**
    * Show a SweetAlert2 Success Message
    */
-  successAlert(message: string, title: string = 'Success') {
+  successAlert(message: string, title: string = 'Success', confirmButtonText: string = 'OK') {
     Swal.fire({
       title: title,
       text: message,
       icon: 'success',
+      confirmButtonText: confirmButtonText,
       confirmButtonColor: '#28a745',
     });
   }
@@ -75,4 +76,32 @@ export class AlertService {
       confirmButtonColor: '#17a2b8',
     });
   }
+
+  /**
+   * Prompt user for input (reusable)
+   */
+  promptForInput(
+    title: string,
+    message: string,
+    inputType: 'text' | 'email' | 'password',
+    placeholder: string,
+    confirmButtonText: string = 'Submit'
+  ): Promise<string | null> {
+    return Swal.fire({
+      title: title,
+      text: message,
+      input: inputType,
+      inputPlaceholder: placeholder,
+      showCancelButton: true,
+      confirmButtonText: confirmButtonText,
+      cancelButtonText: 'Cancel',
+      preConfirm: (inputValue) => {
+        if (!inputValue) {
+          Swal.showValidationMessage('This field cannot be empty');
+        }
+        return inputValue;
+      }
+    }).then(result => (result.isConfirmed ? result.value : null));
+  }
+
 }
