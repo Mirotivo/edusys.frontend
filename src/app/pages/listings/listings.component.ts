@@ -7,18 +7,21 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../layout/shared/header/header.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { CreateListingComponent } from '../../components/create-listing/create-listing.component';
-import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 import { MultiStepModalComponent } from '../../components/multi-step-modal/multi-step-modal.component';
 import { EditListingComponent } from '../../components/edit-listing/edit-listing.component';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-listings',
-  imports: [CommonModule, FormsModule, CreateListingComponent, EditListingComponent, ProfileImageComponent],
+  imports: [CommonModule, FormsModule, CreateListingComponent, EditListingComponent],
   templateUrl: './listings.component.html',
   styleUrl: './listings.component.scss'
 })
 export class ListingsComponent {
+  totalResults: number = 0;
+  page: number = 1;
+  pageSize: number = 10;
+  pageSizeOptions: number[] = [5, 10, 50, 100];
 
   editListing(_t16: Listing) {
     throw new Error('Method not implemented.');
@@ -37,7 +40,7 @@ export class ListingsComponent {
   }
 
   loadListings(): void {
-    this.listingService.getListings().subscribe({
+    this.listingService.getListings(this.page, this.pageSize).subscribe({
       next: (data) => {
         this.listings = data.results;
         if (this.listings.length > 0) {
@@ -139,5 +142,21 @@ async deleteListing(listing: Listing): Promise<void> {
         }
       });
     }
+  }
+
+
+  get totalPages(): number {
+    return Math.ceil(this.totalResults / this.pageSize);
+  }
+
+  onPageChange(newPage: number): void {
+    this.page = newPage;
+    this.loadListings();
+  }
+
+  onPageSizeChange(event: any): void {
+    this.pageSize = event.target.value;
+    this.page = 1;
+    this.loadListings();
   }
 }

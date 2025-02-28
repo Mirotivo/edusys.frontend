@@ -1,149 +1,107 @@
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-4 col-lg-3 theiaStickySidebar">
-            <div class="card profile-sidebar shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="sidebar-title mb-0">My Listings</h5>
-                        <button class="btn btn-sm btn-primary" (click)="openCreateListingModal()">+ Create</button>
-                    </div>
-
-                    <!-- Listings List -->
-                    <ul class="custom-sidebar-nav list-unstyled" *ngIf="listings?.length; else noListings">
-                        <li *ngFor="let listing of listings" class="listing-item d-flex align-items-center p-2 rounded"
-                            [class.active]="listing?.id === selectedListing?.id" (click)="selectListing(listing)">
-
-                            <!-- Profile Image -->
-                            <div class="listing-image-container">
-                                <app-profile-image [profileImagePath]="listing.listingImagePath"
-                                    [firstName]="listing.title" [lastName]="">
-                                </app-profile-image>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <!-- Page size selection -->
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <label for="pageSize">Show entries:</label>
+                                <select id="pageSize" class="form-select d-inline-block w-auto ms-2"
+                                    (change)="onPageSizeChange($event)">
+                                    <option *ngFor="let size of pageSizeOptions" [value]="size"
+                                        [selected]="size === pageSize">{{ size }}</option>
+                                </select>
                             </div>
-
-                            <!-- Listing Details -->
-                            <div class="listing-details ms-2">
-                                <h6 class="listing-title text-truncate mb-1" [title]="listing.title">
-                                    {{ listing.title }}
-                                </h6>
-                                <small class="text-muted d-block">{{ listing.lessonCategory || 'No category' }}</small>
-                                <small class="listing-info text-muted d-block">
-                                    {{ listing.locations.length || 0 }} Locations •
-                                    ${{ listing.rates.hourly || '' }}/hr
-                                </small>
+                            <div>
+                                <p>Page {{ page }} of {{ totalPages }}</p>
                             </div>
-
-                            <!-- Action Icons -->
-                            <div class="ms-auto">
-                                <button class="btn btn-sm btn-outline-info" (click)="toggleVisibility(listing)">
-                                    <i class="fas" [ngClass]="{'fa-eye': listing.isVisible, 'fa-eye-slash': !listing.isVisible}"></i>
-                                </button>                            
-                                <!-- <button class="btn btn-sm btn-outline-secondary me-1" (click)="editListing(listing)">
-                                    <i class="fas fa-edit"></i>
-                                </button> -->
-                                <button class="btn btn-sm btn-outline-danger" (click)="deleteListing(listing)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <!-- No Listings Available -->
-                    <ng-template #noListings>
-                        <div class="empty-state text-center py-4">
-                            <img src="assets/img/empty.svg" alt="No Listings" class="empty-icon">
-                            <p class="text-muted mt-2">No listings available. Start by creating one.</p>
-                        </div>
-                    </ng-template>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Main Content -->
-        <div class="col-md-8 col-lg-9" *ngIf="selectedListing">
-            <div class="card listing-card shadow-sm">
-
-                <!-- Listing Header with Image -->
-                <div class="card-header d-flex justify-content-between align-items-center bg-light">
-                    <div class="d-flex align-items-center">
-                        <div class="profile-image-container">
-                            <img [src]="selectedListing.listingImagePath || 'assets/img/default-placeholder.png'"
-                                class="rounded-circle listing-profile-img me-3" alt="Listing Image">
-                        </div>
-                        <div>
-                            <h4 class="mb-0 text-truncate" [title]="selectedListing.title">{{ selectedListing.title }}
-                            </h4>
-                            <p class="text-muted small mb-0">
-                                {{ selectedListing.lessonCategory || 'No category' }} •
-                                <i class="fas fa-star text-warning"></i> {{ selectedListing.rating || 'N/A' }} ({{
-                                selectedListing.reviews || 0 }} reviews)
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Listing Details -->
-                <div class="card-body">
-                    <div class="listing-section mb-4"
-                        *ngFor="let section of ['Lesson Category', 'Locations', 'About Lesson', 'About You', 'Rates', 'Recommendations']">
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="section-title mb-0">{{ section | titlecase }}</h5>
-                            <button class="btn btn-sm btn-outline-secondary" (click)="editSection(section)">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
+                            <button class="btn btn-sm btn-primary" (click)="openCreateListingModal()">+ Create</button>
                         </div>
 
-                        <ng-container [ngSwitch]="section">
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Locations</th>
+                                        <th>Hourly Rate</th>
+                                        <th>5-hour Pack</th>
+                                        <th>10-hour Pack</th>
+                                        <th>Visibility</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let listing of listings">
+                                        <td>{{ listing.title }}</td>
+                                        <td>{{ listing.lessonCategory || 'No category' }}</td>
+                                        <td>
+                                            <span class="badge bg-primary me-1"
+                                                *ngFor="let location of listing.locations">{{ location }}</span>
+                                        </td>
+                                        <td>${{ listing.rates.hourly || 'N/A' }}</td>
+                                        <td>${{ listing.rates.fiveHours || 'N/A' }}</td>
+                                        <td>${{ listing.rates.tenHours || 'N/A' }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-info"
+                                                (click)="toggleVisibility(listing)">
+                                                <i class="fas"
+                                                    [ngClass]="{'fa-eye': listing.isVisible, 'fa-eye-slash': !listing.isVisible}"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="table-action">
+                                                <button class="btn btn-sm btn-outline-secondary me-1"
+                                                    (click)="editListing(listing)">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger"
+                                                    (click)="deleteListing(listing)">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                            <!-- Lesson Category -->
-                            <p *ngSwitchCase="'Lesson Category'" class="listing-text">
-                                {{ selectedListing.lessonCategory || 'No category specified' }}
-                            </p>
+                        <!-- No listings message -->
+                        <div class="no-sessions text-center mt-3" *ngIf="listings.length === 0">
+                            <p>No listings available. Start by creating one.</p>
+                        </div>
 
-                            <!-- Locations -->
-                            <div *ngSwitchCase="'Locations'" class="d-flex flex-wrap">
-                                <span class="badge bg-primary me-1"
-                                    *ngFor="let location of selectedListing.locations">{{ location }}</span>
-                            </div>
-
-                            <!-- About Lesson -->
-                            <p *ngSwitchCase="'About Lesson'" class="listing-text">
-                                {{ selectedListing.aboutLesson || 'No details provided' }}
-                            </p>
-
-                            <!-- About You -->
-                            <p *ngSwitchCase="'About You'" class="listing-text">
-                                {{ selectedListing.aboutYou || 'No details provided' }}
-                            </p>
-
-                            <!-- Rates -->
-                            <ul *ngSwitchCase="'Rates'" class="list-unstyled listing-rates">
-                                <li><strong>Hourly rate:</strong> ${{ selectedListing.rates.hourly || 'N/A' }}</li>
-                                <li><strong>5-hour pack:</strong> ${{ selectedListing.rates.fiveHours || 'N/A' }}</li>
-                                <li><strong>10-hour pack:</strong> ${{ selectedListing.rates.tenHours || 'N/A' }}</li>
+                        <!-- Pagination Controls -->
+                        <nav class="mt-3">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" [class.disabled]="page === 1">
+                                    <a class="page-link" (click)="onPageChange(page - 1)">Previous</a>
+                                </li>
+                                <li class="page-item" *ngFor="let i of [].constructor(totalPages); let idx = index"
+                                    [class.active]="page === idx + 1">
+                                    <a class="page-link" (click)="onPageChange(idx + 1)">{{ idx + 1 }}</a>
+                                </li>
+                                <li class="page-item" [class.disabled]="page === totalPages">
+                                    <a class="page-link" (click)="onPageChange(page + 1)">Next</a>
+                                </li>
                             </ul>
+                        </nav>
 
-                            <!-- Recommendations -->
-                            <div *ngSwitchCase="'Recommendations'" class="d-flex flex-wrap">
-                                <span class="badge bg-success me-1"
-                                    *ngFor="let platform of selectedListing.socialPlatforms">{{ platform }}</span>
-                            </div>
-                        </ng-container>
                     </div>
                 </div>
-
             </div>
         </div>
-
-
-
     </div>
 
     <!-- Modal for Create Listing -->
-    <app-create-listing  *ngIf="isCreateListingModalOpen" (onClose)="closeCreateListingModal()"></app-create-listing>
+    <app-create-listing *ngIf="isCreateListingModalOpen" (onClose)="closeCreateListingModal()"></app-create-listing>
+
     <!-- Modal for Edit Listing -->
-    <app-edit-listing  *ngIf="isEditListingModalOpen" [listing]="selectedListing" [editingSection]="editingSection" (onClose)="closeEditListingModal()"></app-edit-listing>
-    
+    <app-edit-listing *ngIf="isEditListingModalOpen" [listing]="selectedListing"
+        [editingSection]="editingSection" (onClose)="closeEditListingModal()"></app-edit-listing>
+
 </div>

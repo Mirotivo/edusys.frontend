@@ -51,8 +51,12 @@ export class ListingService {
     return this.http.get<PagedResult<Listing>>(`${this.apiUrl}/search`, { params });
   }
 
-  getListings(): Observable<PagedResult<Listing>> {
-    return this.http.get<PagedResult<Listing>>(this.apiUrl);
+  getListings(page: number = 1, pageSize: number = 10): Observable<PagedResult<Listing>> {
+    const params = {
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    };
+    return this.http.get<PagedResult<Listing>>(this.apiUrl, { params });
   }
 
   getListing(listingId: number): Observable<Listing> {
