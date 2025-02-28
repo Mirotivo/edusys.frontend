@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadDashboardData(): void {
-    this.chatService.getMessages().subscribe({
+    this.chatService.getChatsLastMessage().subscribe({
       next: (data) => (this.messages = data),
       error: (err) => console.error('Failed to load chat messages:', err),
     });

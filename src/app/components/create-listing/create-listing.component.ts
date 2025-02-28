@@ -4,7 +4,7 @@ import { ListingService } from '../../services/listing.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LessonCategory } from '../../models/lesson-category';
-import { CategoryService } from '../../services/category.service';
+import { LessonCategoryService } from '../../services/lesson-category.service';
 import { AutoCompleteInputComponent } from '../auto-complete-input/auto-complete-input.component';
 import { ModalComponent } from '../modal/modal.component';
 import { MultiStepModalComponent } from '../multi-step-modal/multi-step-modal.component';
@@ -25,7 +25,7 @@ export class CreateListingComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private categoryService: CategoryService,
+    private lessonCategoryService: LessonCategoryService,
     private listingService: ListingService
   ) { }
 
@@ -49,7 +49,7 @@ export class CreateListingComponent implements OnInit {
   }
 
   loadLessonCategories(searchText: string): void {
-    this.categoryService.getFilteredCategories(searchText).subscribe({
+    this.lessonCategoryService.getFilteredCategories(searchText).subscribe({
       next: (data) => {
         this.lessonCategories = data.results;
       },
@@ -84,7 +84,7 @@ export class CreateListingComponent implements OnInit {
   }
 
   addNewLessonCategory(newCategoryName: string): void {
-    this.categoryService.createCategory({ name: newCategoryName }).subscribe({
+    this.lessonCategoryService.createCategory({ name: newCategoryName }).subscribe({
       next: (createdCategory) => {
         // this.lessonCategories.push(createdCategory);
         this.lessonCategories = [...this.lessonCategories, createdCategory];

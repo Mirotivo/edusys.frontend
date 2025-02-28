@@ -9,23 +9,35 @@ import { Lesson } from '../models/lesson';
 @Injectable({
   providedIn: 'root',
 })
-export class PropositionService {
+export class LessonService {
   private apiUrl = `${environment.apiUrl}/lessons`;
 
   constructor(private http: HttpClient) {}
 
-  proposeLesson(lesson: Proposition): Observable<any> {
+  proposeLesson(lesson: Proposition): Observable<void> {
     // Ensure duration is in "HH:mm:ss" format
     const formattedLesson = {
       ...lesson,
       duration: this.formatDuration(lesson.duration),
     };
 
-    return this.http.post(`${this.apiUrl}/proposeLesson`, formattedLesson);
+    return this.http.post<void>(`${this.apiUrl}/proposeLesson`, formattedLesson);
+  }
+  
+  getLessons(contactId: string, listingId: number): Observable<{ lessons: PagedResult<Lesson> }> {
+    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}/${contactId}/${listingId}`);
+  }
+  
+  getAllLessons(): Observable<{ lessons: PagedResult<Lesson> }> {
+    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}`);
   }
 
-  respondToProposition(propositionId: number, accept: boolean) {
-    return this.http.post(`${this.apiUrl}/respondToProposition/${propositionId}`, accept);
+  respondToProposition(propositionId: number, accept: boolean): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/respondToProposition/${propositionId}`, accept);
+  }
+  
+  cancelLesson(lessonId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${lessonId}/cancel`);
   }
 
   private formatDuration(hours: number): string {
@@ -36,17 +48,5 @@ export class PropositionService {
     return `${h.toString().padStart(2, '0')}:${m
       .toString()
       .padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  }
-
-  getLessons(contactId: string, listingId: number): Observable<{ lessons: PagedResult<Lesson> }> {
-    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}/${contactId}/${listingId}`);
-  }
-  
-  getAllLessons(): Observable<{ lessons: PagedResult<Lesson> }> {
-    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}`);
-  }
-
-  cancelLesson(lessonId: number) {
-    return this.http.delete<void>(`${this.apiUrl}/${lessonId}/cancel`);
   }
 }

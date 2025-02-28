@@ -4,7 +4,7 @@ import { Listing } from '../../models/listing';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AutoCompleteInputComponent } from '../auto-complete-input/auto-complete-input.component';
-import { CategoryService } from '../../services/category.service';
+import { LessonCategoryService } from '../../services/lesson-category.service';
 import { ListingService } from '../../services/listing.service';
 import { LessonCategory } from '../../models/lesson-category';
 
@@ -27,7 +27,7 @@ export class EditListingComponent implements OnInit {
   locationOptions: string[] = ['Webcam', 'TutorLocation', 'StudentLocation'];
 
   constructor(
-    private categoryService: CategoryService,
+    private lessonCategoryService: LessonCategoryService,
     private listingService: ListingService
   ) { }
 
@@ -39,7 +39,7 @@ export class EditListingComponent implements OnInit {
   }
 
   loadLessonCategories(searchText: string): void {
-    this.categoryService.getFilteredCategories(searchText).subscribe({
+    this.lessonCategoryService.getFilteredCategories(searchText).subscribe({
       next: (data) => {
         this.lessonCategories = data.results;
 
@@ -62,7 +62,7 @@ export class EditListingComponent implements OnInit {
   }
 
   addNewLessonCategory(newCategoryName: string): void {
-    this.categoryService.createCategory({ name: newCategoryName }).subscribe({
+    this.lessonCategoryService.createCategory({ name: newCategoryName }).subscribe({
       next: (createdCategory) => {
         this.lessonCategories = [...this.lessonCategories, createdCategory];
         this.selectedLessonCategory = createdCategory.id;

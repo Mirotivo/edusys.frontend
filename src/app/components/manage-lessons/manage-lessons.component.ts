@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Chat, Role } from '../../models/chat';
 import { Lesson, LessonStatus, LessonType } from '../../models/lesson';
-import { PropositionService } from '../../services/proposition.service';
+import { LessonService } from '../../services/lesson.service';
 import { ListingService } from '../../services/listing.service';
 import { ModalComponent } from '../modal/modal.component';
 import { ProposeLessonComponent } from '../propose-lesson/propose-lesson.component';
@@ -29,7 +29,7 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
 
   constructor(
     private alertService: AlertService,
-    private propositionService: PropositionService,
+    private lessonService: LessonService,
     private notificationService: NotificationService,
     private listingService: ListingService,
     private userService: UserService
@@ -55,7 +55,7 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
 
 
   loadPropositions(contactId: string, listingId: number): void {
-    this.propositionService.getLessons(contactId, listingId).subscribe({
+    this.lessonService.getLessons(contactId, listingId).subscribe({
       next: (response) => {
         this.propositions = response.lessons.results.filter(lesson => lesson.type === LessonType.Proposition);
         this.lessons = response.lessons.results.filter(lesson => lesson.type === LessonType.Lesson);
@@ -79,7 +79,7 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
 
 
   respondToProposition(propositionId: number, accept: boolean): void {
-    this.propositionService.respondToProposition(propositionId, accept).subscribe({
+    this.lessonService.respondToProposition(propositionId, accept).subscribe({
       next: () => {
         // Update the UI after successful response
         this.propositions = this.propositions.filter(p => p.id !== propositionId);
@@ -166,7 +166,7 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
   }
 
   cancelLesson(lessonId: number): void {
-    this.propositionService.cancelLesson(lessonId).subscribe({
+    this.lessonService.cancelLesson(lessonId).subscribe({
       next: () => {
         this.alertService.successAlert('Lesson canceled successfully.', 'Success');
         

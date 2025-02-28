@@ -10,24 +10,24 @@ export class SubscriptionService {
   private apiUrl = `${environment.apiUrl}/subscriptions`;
 
   constructor(private http: HttpClient) { }
+  
+  createSubscription(request: any): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/create`, request);
+  }
 
   checkActiveSubscription(): Observable<{ isActive: boolean }> {
     return this.http.get<{ isActive: boolean }>(`${this.apiUrl}/check-active`);
   }
 
-  getSubscriptionDetails(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/details`);
+  getSubscriptionDetails(): Observable<void> {
+    return this.http.get<void>(`${this.apiUrl}/details`);
   }
-
-  cancelSubscription(): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/cancel`);
-  }
-
-  updateSubscription(): Observable<any> {
-    throw new Error('Method not implemented.');
-  }
-
-  validatePromoCode(promoCode: string): Observable<any> {
+  
+  validatePromoCode(promoCode: string): Observable<{
+    promoCode: string;
+    discountAmount: number;
+    discountPercentage: number;
+  }> {
     return this.http.get<{
       promoCode: string;
       discountAmount: number;
@@ -37,7 +37,11 @@ export class SubscriptionService {
     });
   }
 
-  createSubscription(request: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create`, request);
+  updateSubscription(): Observable<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  cancelSubscription(): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/cancel`);
   }
 }

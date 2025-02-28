@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Role } from '../../models/chat';
 import { CommonModule } from '@angular/common';
 import { Lesson, LessonStatus, LessonType } from '../../models/lesson';
-import { PropositionService } from '../../services/proposition.service';
+import { LessonService } from '../../services/lesson.service';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { AlertService } from '../../services/alert.service';
@@ -23,7 +23,7 @@ export class LessonsComponent {
 
   constructor(
     private alertService: AlertService,
-    private propositionService: PropositionService,
+    private lessonService: LessonService,
     private userService: UserService,
     private toastr: ToastrService
   ) { }
@@ -33,7 +33,7 @@ export class LessonsComponent {
   }
 
   loadPropositions(): void {
-    this.propositionService.getAllLessons().subscribe({
+    this.lessonService.getAllLessons().subscribe({
       next: (response) => {
         this.lessons = response.lessons.results;
       },
@@ -54,7 +54,7 @@ export class LessonsComponent {
       if (!confirmed) return;
     }
 
-    this.propositionService.respondToProposition(propositionId, accept).subscribe({
+    this.lessonService.respondToProposition(propositionId, accept).subscribe({
       next: () => {
         // Update the UI after successful response
         this.loadPropositions();
@@ -143,7 +143,7 @@ export class LessonsComponent {
     );
     if (!confirmed) return;
 
-    this.propositionService.cancelLesson(lessonId).subscribe({
+    this.lessonService.cancelLesson(lessonId).subscribe({
       next: () => {
         this.toastr.success('Lesson canceled successfully.', 'Success');
         // Update the lesson status locally to reflect the cancellation

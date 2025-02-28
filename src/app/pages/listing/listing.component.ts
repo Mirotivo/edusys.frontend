@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ListingService } from '../../services/listing.service';
 import { Listing } from '../../models/listing';
 import { ChatService } from '../../services/chat.service';
-import { PropositionService } from '../../services/proposition.service';
+import { LessonService } from '../../services/lesson.service';
 import { Proposition } from '../../models/proposition';
 import { SubscriptionService } from '../../services/subscription.service';
 
@@ -29,7 +29,7 @@ export class ListingComponent implements OnInit {
     private route: ActivatedRoute,
     private listingService: ListingService,
     private chatService: ChatService,
-    private propositionService: PropositionService,
+    private lessonService: LessonService,
     private subscriptionService: SubscriptionService,
     private router: Router
   ) { }

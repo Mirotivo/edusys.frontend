@@ -3,13 +3,8 @@ import { environment } from '../environments/environment';
 import { NotificationService } from './notification.service';
 import { catchError, from, map, Observable, tap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ApiResponse } from '../models/api-response';
 
-interface ApiResponse {
-  success: boolean;
-  message?: string;
-  data?: any;
-  details?: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -42,8 +37,8 @@ export class AuthService {
       );
   }
 
-  confirmEmail(userId: string, token: string): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(`${this.apiUrl}/ConfirmEmail`, {
+  confirmEmail(userId: string, token: string): Observable<ApiResponse<string>> {
+    return this.http.get<ApiResponse<string>>(`${this.apiUrl}/ConfirmEmail`, {
       params: { userId, token },
       headers: { 'Content-Type': 'application/json' },
     })

@@ -8,10 +8,14 @@ import { PagedResult } from '../models/paged-result';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
+export class LessonCategoryService {
   private apiUrl = `${environment.apiUrl}/lesson/categories`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
+
+  createCategory(category: { name: string }): Observable<LessonCategory> {
+    return this.http.post<LessonCategory>(`${this.apiUrl}`, category);
+  }
 
   getFilteredCategories(searchText: string): Observable<PagedResult<LessonCategory>> {
     let url = this.apiUrl;
@@ -21,8 +25,4 @@ export class CategoryService {
 
     return this.http.get<PagedResult<LessonCategory>>(url);
   }
-
-  createCategory(category: { name: string }): Observable<LessonCategory> {
-    return this.http.post<LessonCategory>(`${this.apiUrl}`, category);
-  }  
 }

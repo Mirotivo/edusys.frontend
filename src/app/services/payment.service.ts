@@ -21,24 +21,24 @@ export class PaymentService {
     return this.http.get<PaymentHistory>(`${this.apiUrl}/history`);
   }
 
-  createPayment(gateway: string, listingId: number | null, amount: number): Observable<any> {
+  createPayment(gateway: string, listingId: number | null, amount: number): Observable<{ id: string; approvalUrl: string }> {
     const returnUrl = `${environment.frontendUrl}/payment-result?success=true&listingId=${listingId}&gateway=${gateway}`;
     const cancelUrl = `${environment.frontendUrl}/payment-result?success=false&listingId=${listingId}&gateway=${gateway}`;
     const body = { gateway, amount, returnUrl, cancelUrl, listingId };
   
-    return this.http.post(`${this.apiUrl}/create-payment`, body);
+    return this.http.post<{ id: string; approvalUrl: string }>(`${this.apiUrl}/create-payment`, body);
   }
   
-  capturePayment(gateway: string, paymentId: string): Observable<any> {
+  capturePayment(gateway: string, paymentId: string): Observable<void> {
     const body = { gateway, paymentId };
 
-    return this.http.post(`${this.apiUrl}/capture-payment`, body);
+    return this.http.post<void>(`${this.apiUrl}/capture-payment`, body);
   }
 
-  addPayPalAccount(payPalEmail: string): Observable<any> {
+  addPayPalAccount(payPalEmail: string): Observable<void> {
     const body = { payPalEmail };
 
-    return this.http.post(`${this.apiUrl}/add-paypal-account`, body);
+    return this.http.post<void>(`${this.apiUrl}/add-paypal-account`, body);
   }
 
   loadPayPalScript(): Promise<void> {
@@ -56,21 +56,21 @@ export class PaymentService {
     return this.http.get<Card[]>(`${this.apiUrl}/saved-cards`);
   }
 
-  saveCard(stripeToken: string, purpose: CardType): Observable<any> {
+  saveCard(stripeToken: string, purpose: CardType): Observable<void> {
     const body = { stripeToken, purpose };
 
-    return this.http.post(`${this.apiUrl}/save-card`, body);
+    return this.http.post<void>(`${this.apiUrl}/save-card`, body);
   }
 
-  removeCard(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/remove-card/${id}`);
+  removeCard(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/remove-card/${id}`);
   }
 
-  connectAccount(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/connect-link`);
+  connectAccount(): Observable<{ url: string }> {
+    return this.http.get<{ url: string }>(`${this.apiUrl}/connect-link`);
   }
 
-  createPayout(amount: number, currency: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create-payout`, { amount, currency });
+  createPayout(amount: number, currency: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/create-payout`, { amount, currency });
   }
 }

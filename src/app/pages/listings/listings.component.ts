@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Listing } from '../../models/listing';
-import { CategoryService } from '../../services/category.service';
+import { LessonCategoryService } from '../../services/lesson-category.service';
 import { ListingService } from '../../services/listing.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -28,7 +28,7 @@ export class ListingsComponent {
 
   constructor(
     private alertService: AlertService,
-    private categoryService: CategoryService,
+    private lessonCategoryService: LessonCategoryService,
     private listingService: ListingService,
   ) { }
 

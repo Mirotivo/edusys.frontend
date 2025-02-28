@@ -12,15 +12,14 @@ export class EvaluationService {
 
   constructor(private http: HttpClient) { }
 
+  submitReview(review: Review): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/review`, review);
+  }
+
+  submitRecommendation(recommendation: Review): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/recommendation`, recommendation);
+  }
   getAllReviews(): Observable<{ pendingReviews: Review[]; receivedReviews: Review[]; sentReviews: Review[], recommendations: Review[] }> {
     return this.http.get<{ pendingReviews: Review[]; receivedReviews: Review[]; sentReviews: Review[], recommendations: Review[] }>(this.apiUrl);
-  }
-
-  submitReview(review: Review): Observable<any> {
-    return this.http.post(`${this.apiUrl}/review`, review);
-  }
-
-  submitRecommendation(recommendation: Review): Observable<any> {
-    return this.http.post(`${this.apiUrl}/recommendation`, recommendation);
   }
 }

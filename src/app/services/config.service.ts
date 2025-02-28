@@ -3,6 +3,16 @@ import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
+
+export interface Config {
+  stripePublishableKey: string;
+  payPalClientId: string;
+  googleMapsApiKey: string;
+  googleClientId: string;
+  googleClientSecret: string;
+  facebookAppId: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,8 +22,8 @@ export class ConfigService {
   constructor(private http: HttpClient) { }
 
   // Load configuration from backend API
-  loadConfig(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/configs`)
+  loadConfig(): Observable<Config> {
+    return this.http.get<Config>(`${environment.apiUrl}/configs`)
       .pipe(
         tap((config) => {
           this.config = config;
@@ -27,7 +37,7 @@ export class ConfigService {
   }
 
   // Retrieve a specific key from the config
-  get(key: string): any {
+  get(key: string): string {
     if (!this.config) {
       throw new Error('Configuration not loaded');
     }
@@ -35,7 +45,7 @@ export class ConfigService {
   }
 
   // Optional: Retrieve the entire configuration object
-  getConfig(): any {
+  getConfig(): Config {
     if (!this.config) {
       throw new Error('Configuration not loaded');
     }

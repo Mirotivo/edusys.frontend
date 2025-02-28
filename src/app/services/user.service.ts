@@ -20,16 +20,10 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/by-token/${recommendationToken}`);
   }
 
-  getDiplomaStatus(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/diploma-status`);
+  getDiplomaStatus(): Observable<{ status: DiplomaStatus }> {
+    return this.http.get<{ status: DiplomaStatus }>(`${this.apiUrl}/diploma-status`);
   }
 
-  submitDiploma(diplomaFile: File): Observable<void> {
-    const formData = new FormData();
-    formData.append('diplomaFile', diplomaFile);
-
-    return this.http.post<void>(`${this.apiUrl}/submit-diploma`, formData);
-  }
 
   updateUser(user: Partial<User>, imageFile?: File): Observable<void> {
     // Prepare FormData
@@ -82,36 +76,16 @@ export class UserService {
     return this.http.put<void>(`${this.apiUrl}/me`, formData);
   }
 
-  changePassword(oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/change-password`, {
-      oldPassword,
-      newPassword,
-      confirmNewPassword
-    });
-  }
-
-  requestPasswordReset(resetPasswordRequest: { email: string }): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/request-reset-password`, resetPasswordRequest);
-  }
-
-  resetPassword(data: { token: string; newPassword: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reset-password`, data);
-  }
-
-  deleteAccount(): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/me`);
-  }
-
   getCompensationPercentage(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/compensation-percentage`);
   }
 
-  updateCompensationPercentage(newPercentage: number): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/compensation-percentage`, { percentage: newPercentage });
-  }
-
   getPaymentPreference(): Observable<PaymentSchedule> {
     return this.http.get<PaymentSchedule>(`${this.apiUrl}/payment-schedule`);
+  }
+
+  updateCompensationPercentage(newPercentage: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/compensation-percentage`, { percentage: newPercentage });
   }
 
   updatePaymentPreference(paymentPreference: PaymentSchedule): Observable<void> {
@@ -119,5 +93,33 @@ export class UserService {
       `${this.apiUrl}/payment-schedule`,
       { paymentSchedule: paymentPreference }
     );
+  }
+
+  changePassword(oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/change-password`, {
+      oldPassword,
+      newPassword,
+      confirmNewPassword
+    });
+  }
+
+  requestPasswordReset(resetPasswordRequest: { email: string }): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/request-reset-password`, resetPasswordRequest);
+  }
+
+  resetPassword(data: { token: string; newPassword: string }): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/reset-password`, data);
+  }
+
+  submitDiploma(diplomaFile: File): Observable<void> {
+    const formData = new FormData();
+    formData.append('diplomaFile', diplomaFile);
+
+    return this.http.put<void>(`${this.apiUrl}/submit-diploma`, formData);
+  }
+
+
+  deleteAccount(): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/me`);
   }
 }

@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { Chat, Message } from '../models/chat';
 import { environment } from '../environments/environment';
 import { SendMessage } from '../models/send-message';
+import { ApiResponse } from '../models/api-response';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class ChatService {
     return this.http.get<Chat[]>(this.apiUrl);
   }
 
-  getMessages(): Observable<Message[]> {
+  getChatsLastMessage(): Observable<Message[]> {
     return this.getChats()
       .pipe(
         map((chats) =>
@@ -33,7 +34,7 @@ export class ChatService {
       );
   }
 
-  sendMessage(message: SendMessage): Observable<any> {
-    return this.http.post(`${this.apiUrl}/send`, message);
+  sendMessage(message: SendMessage): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/send`, message);
   }
 }

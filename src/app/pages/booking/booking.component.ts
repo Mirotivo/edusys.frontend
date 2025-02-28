@@ -6,7 +6,7 @@ import { ListingService } from '../../services/listing.service';
 import { Listing } from '../../models/listing';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PropositionService } from '../../services/proposition.service';
+import { LessonService } from '../../services/lesson.service';
 import { Proposition } from '../../models/proposition';
 import { AlertService } from '../../services/alert.service';
 
@@ -30,7 +30,7 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private alertService: AlertService,
-    private propositionService: PropositionService,
+    private lessonService: LessonService,
     private route: ActivatedRoute,
     private listingService: ListingService,
     private router: Router
@@ -96,7 +96,7 @@ export class BookingComponent implements OnInit {
       studentId: null,
     };
 
-    this.propositionService.proposeLesson(proposition).subscribe({
+    this.lessonService.proposeLesson(proposition).subscribe({
       next: (lesson) => {
         this.alertService.successAlert('Lesson proposed successfully!', 'Success');
         this.router.navigate(['/messages']);

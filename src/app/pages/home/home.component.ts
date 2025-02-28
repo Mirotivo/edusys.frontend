@@ -3,7 +3,7 @@ import * as AOS from 'aos';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { LessonCategory } from '../../models/lesson-category';
 import { Listing } from '../../models/listing';
-import { CategoryService } from '../../services/category.service';
+import { LessonCategoryService } from '../../services/lesson-category.service';
 import { ListingService } from '../../services/listing.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -139,7 +139,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   loadCourseCounts(): void {
-    this.landingService.getCourseCounts().subscribe({
+    this.landingService.getCourseStats().subscribe({
       next: (counts) => {
         this.totalCourses = counts.totalListings;
         this.newCoursesToday = counts.newListingsToday;
@@ -172,7 +172,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   loadTrendingCourses(): void {
-    this.landingService.getTrendingCourses().subscribe({
+    this.landingService.getTrendingListings().subscribe({
       next: (trendingCourses) => {
         this.trendingCourses = trendingCourses;
       },

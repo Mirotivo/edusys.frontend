@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PropositionService } from '../../services/proposition.service';
+import { LessonService } from '../../services/lesson.service';
 import { Proposition } from '../../models/proposition';
 import { Listing } from '../../models/listing';
 import { UserService } from '../../services/user.service';
@@ -27,7 +27,7 @@ export class ProposeLessonComponent {
   isButtonDisabled = false;
 
   constructor(
-    private propositionService: PropositionService,
+    private lessonService: LessonService,
     private userService: UserService,
     private router: Router
   ) {}
@@ -88,7 +88,7 @@ export class ProposeLessonComponent {
 
       this.isButtonDisabled = true;
 
-      this.propositionService.proposeLesson(proposition).subscribe({
+      this.lessonService.proposeLesson(proposition).subscribe({
         next: () => {
           this.onPropose.emit({
             date: this.lessonDateTime,
