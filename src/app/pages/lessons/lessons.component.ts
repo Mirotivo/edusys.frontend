@@ -17,10 +17,12 @@ export class LessonsComponent {
   LessonStatus = LessonStatus;
   LessonType = LessonType;
   Role = Role;
-  activeTab: string = 'all';
-  userId: number = 0;
   lessons: Lesson[] = [];
-
+  totalResults: number = 0;
+  page: number = 1;
+  pageSize: number = 10;
+  pageSizeOptions: number[] = [5, 10, 50, 100];
+  
   constructor(
     private alertService: AlertService,
     private lessonService: LessonService,
@@ -29,13 +31,14 @@ export class LessonsComponent {
   ) { }
 
   ngOnInit() {
-    this.loadPropositions();
+    this.loadLessons();
   }
 
-  loadPropositions(): void {
-    this.lessonService.getAllLessons().subscribe({
+  loadLessons(): void {
+    this.lessonService.getAllLessons(this.page, this.pageSize).subscribe({
       next: (response) => {
         this.lessons = response.lessons.results;
+        this.totalResults = response.lessons.totalResults;
       },
       error: (err) => {
         console.error('Failed to fetch lessons and propositions:', err);
@@ -57,7 +60,7 @@ export class LessonsComponent {
     this.lessonService.respondToProposition(propositionId, accept).subscribe({
       next: () => {
         // Update the UI after successful response
-        this.loadPropositions();
+        this.loadLessons();
       },
       error: (err) => {
         console.error('Failed to respond to proposition:', err);
@@ -158,4 +161,25 @@ export class LessonsComponent {
     });
   }
 
+  get totalPages(): number {
+    return Math.ceil(this.totalResults / this.pageSize);
+  }
+  
+    /**
+   * Handles page change event
+   */
+    onPageChange(newPage: number): void {
+      this.page = newPage;
+      this.loadLessons();
+    }
+  
+    /**
+     * Handles page size change event
+     */
+    onPageSizeChange(event: any): void {
+      this.pageSize = event.target.value;
+      this.page = 1; // Reset to first page when changing page size
+      this.loadLessons();
+    }
+  
 }

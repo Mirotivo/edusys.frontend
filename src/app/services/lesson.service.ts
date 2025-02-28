@@ -28,8 +28,13 @@ export class LessonService {
     return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}/${contactId}/${listingId}`);
   }
   
-  getAllLessons(): Observable<{ lessons: PagedResult<Lesson> }> {
-    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}`);
+  getAllLessons(page: number = 1, pageSize: number = 10): Observable<{ lessons: PagedResult<Lesson> }> {
+    const params = {
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    };
+
+    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}`, { params });
   }
 
   respondToProposition(propositionId: number, accept: boolean): Observable<void> {
