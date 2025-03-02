@@ -1,10 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { Chat } from '../../models/chat';
-import { ChatService } from '../../services/chat.service';
 import { CommonModule } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+import { ChatService } from '../../services/chat.service';
 import { NotificationService } from '../../services/notification.service';
+
 import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
+
+import { Chat } from '../../models/chat';
 
 @Component({
   selector: 'app-message-thread',

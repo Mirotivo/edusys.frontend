@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+
 import { AuthService } from '../../../services/auth.service';
 import { UserService } from '../../../services/user.service';
-import { User } from '../../../models/user';
+
 import { ImageFallbackDirective } from '../../../directives/image-fallback.directive';
+
+import { User } from '../../../models/user';
 
 @Component({
   selector: 'app-header',

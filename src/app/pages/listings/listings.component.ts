@@ -1,16 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { Listing } from '../../models/listing';
+import { FormsModule } from '@angular/forms';
+
+import { CreateListingComponent } from '../../components/create-listing/create-listing.component';
+import { EditListingComponent } from '../../components/edit-listing/edit-listing.component';
+import { TableComponent } from '../../layout/shared/table/table.component';
+
+import { AlertService } from '../../services/alert.service';
 import { LessonCategoryService } from '../../services/lesson-category.service';
 import { ListingService } from '../../services/listing.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../layout/shared/header/header.component';
-import { ModalComponent } from '../../components/modal/modal.component';
-import { CreateListingComponent } from '../../components/create-listing/create-listing.component';
-import { MultiStepModalComponent } from '../../components/multi-step-modal/multi-step-modal.component';
-import { EditListingComponent } from '../../components/edit-listing/edit-listing.component';
-import { AlertService } from '../../services/alert.service';
-import { TableComponent } from '../../layout/shared/table/table.component';
+
+import { Listing } from '../../models/listing';
 
 @Component({
   selector: 'app-listings',
@@ -81,6 +81,7 @@ export class ListingsComponent {
   ) { }
 
   ngOnInit(): void {
+    debugger
     this.loadListings();
   }
 
@@ -98,8 +99,8 @@ export class ListingsComponent {
     });
   }
 
-  editListing(_t16: Listing) {
-    throw new Error('Method not implemented.');
+  editListing(listing: Listing) {
+    this.selectedListing = listing;
   }
 
   selectListing(listing: Listing) {
@@ -112,7 +113,7 @@ export class ListingsComponent {
 
     this.listingService.updateListingVisibility(listing.id, updatedVisibility)
       .subscribe(
-        response => {
+        () => {
           listing.isVisible = updatedVisibility;
         },
         error => {

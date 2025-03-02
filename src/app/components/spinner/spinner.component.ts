@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { SpinnerService } from '../../services/spinner.service';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+
+import { SpinnerService } from '../../services/spinner.service';
 @Component({
   selector: 'app-spinner',
   imports:[CommonModule],

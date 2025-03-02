@@ -1,13 +1,18 @@
-import { Component } from '@angular/core';
-import { Role } from '../../models/chat';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Lesson, LessonStatus, LessonType } from '../../models/lesson';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+
+import { TableComponent } from '../../layout/shared/table/table.component';
+
+import { AlertService } from '../../services/alert.service';
 import { LessonService } from '../../services/lesson.service';
 import { UserService } from '../../services/user.service';
-import { ToastrService } from 'ngx-toastr';
-import { AlertService } from '../../services/alert.service';
-import { TableComponent } from '../../layout/shared/table/table.component';
-import { FormsModule } from '@angular/forms';
+
+import { LessonStatus } from '../../models/enums/lesson-status';
+import { LessonType } from '../../models/enums/lesson-type';
+import { UserRole } from '../../models/enums/user-role';
+import { Lesson } from '../../models/lesson';
 
 @Component({
   selector: 'app-lessons',
@@ -63,21 +68,21 @@ export class LessonsComponent {
       icon: 'fa-check',
       class: 'btn-sm bg-success-light',
       callback: (session: any) => this.respondToProposition(session.id, true),
-      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === Role.Student
+      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === UserRole.Student
     },
     {
       label: 'Refuse',
       icon: 'fa-times',
       class: 'btn-sm bg-danger-light',
       callback: (session: any) => this.respondToProposition(session.id, false),
-      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === Role.Student
+      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === UserRole.Student
     },
     {
       label: 'Cancel',
       icon: 'fa-ban',
       class: 'btn-sm bg-danger-light',
       callback: (session: any) => this.respondToProposition(session.id, false),
-      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === Role.Tutor
+      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === UserRole.Tutor
     }
   ];
   constructor(

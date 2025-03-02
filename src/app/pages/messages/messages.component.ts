@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NavigationBarComponent } from '../../components/navigation-bar/navigation-bar.component';
-import { Chat } from '../../models/chat';
+
+import { ManageLessonsComponent } from '../../components/manage-lessons/manage-lessons.component';
 import { MessageListComponent } from '../../components/message-list/message-list.component';
 import { MessageThreadComponent } from '../../components/message-thread/message-thread.component';
-import { ManageLessonsComponent } from '../../components/manage-lessons/manage-lessons.component';
+
+import { Chat } from '../../models/chat';
 
 @Component({
   selector: 'app-messages',

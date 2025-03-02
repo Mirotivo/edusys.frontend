@@ -1,15 +1,7 @@
+import { SubscriptionBillingFrequency } from "./enums/subscription-billing-frequency";
+import { SubscriptionStatus } from "./enums/subscription-status";
 import { User } from "./user";
 
-export enum BillingFrequency {
-  Monthly = 'Monthly',
-  Yearly = 'Yearly'
-}
-
-export enum SubscriptionStatus {
-  Active = 'Active',
-  Expired = 'Expired',
-  Cancelled = 'Cancelled'
-}
 
 export interface Subscription {
   id: number;
@@ -19,6 +11,6 @@ export interface Subscription {
   nextBillingDate: Date;
   cancellationDate?: Date | null;
   amount: number; // Decimal is handled as number in TS
-  billingFrequency: BillingFrequency;
+  billingFrequency: SubscriptionBillingFrequency;
   status: SubscriptionStatus; // Computed field
 }

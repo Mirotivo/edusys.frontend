@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../layout/shared/header/header.component';
-import { FooterComponent } from '../../layout/shared/footer/footer.component';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+import { FooterComponent } from '../../layout/shared/footer/footer.component';
+import { HeaderComponent } from '../../layout/shared/header/header.component';
 
 @Component({
   selector: 'app-categories',
@@ -15,7 +16,7 @@ import { Subscription } from 'rxjs';
 export class CategoriesComponent {
   categoryName: string = '';
   subcategories: { title: string; items: string[] }[] = [];
-  routeSubscription: Subscription | null = null; // To manage the subscription
+  routeSubscription: Subscription | null = null;
 
   allData = {
     'arts-hobbies': [

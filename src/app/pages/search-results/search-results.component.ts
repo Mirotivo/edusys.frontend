@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Listing } from '../../models/listing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ListingService } from '../../services/listing.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LessonCategory } from '../../models/lesson-category';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { LandingService } from '../../services/landing.service';
+import { ListingService } from '../../services/listing.service';
+
+import { LessonCategory } from '../../models/lesson-category';
+import { Listing } from '../../models/listing';
 
 @Component({
   selector: 'app-search-results',
@@ -117,7 +119,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
 
-  navigateToPayment(listingId: number): void {
+  navigateToPayment(): void {
     this.router.navigate(['/payment'], {
       queryParams: { referrer: this.router.url }
     });

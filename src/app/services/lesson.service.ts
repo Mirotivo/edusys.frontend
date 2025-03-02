@@ -1,10 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { environment } from '../environments/environment';
-import { Proposition } from '../models/proposition';
-import { PagedResult } from '../models/paged-result';
 import { Lesson } from '../models/lesson';
+import { PagedResult } from '../models/paged-result';
+import { Proposition } from '../models/proposition';
 
 @Injectable({
   providedIn: 'root',

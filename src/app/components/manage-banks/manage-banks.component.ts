@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { loadStripe, Stripe, StripeIbanElement } from '@stripe/stripe-js';
-import { ConfigService } from '../../services/config.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { loadStripe, Stripe, StripeIbanElement } from '@stripe/stripe-js';
+
+import { ConfigService } from '../../services/config.service';
 import { PaymentService } from '../../services/payment.service';
 
 @Component({
@@ -57,7 +58,7 @@ export class ManageBanksComponent implements OnInit {
   }
 
   async saveBankAccount(event: Event): Promise<void> {
-    // event.preventDefault();
+    event.preventDefault();
 
     // if (!this.stripe || !this.ibanElement) {
     //   alert('Stripe is not initialized.');
@@ -89,6 +90,7 @@ export class ManageBanksComponent implements OnInit {
   }
 
   removeBank(bankId: number): void {
+    console.log(bankId);
     // this.paymentService.removeBank(bankId).subscribe({
     //   next: () => this.loadSavedBanks(),
     //   error: (err) => console.error('Failed to remove bank account', err),

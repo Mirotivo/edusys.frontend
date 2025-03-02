@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { loadStripe } from '@stripe/stripe-js';
-import { environment } from '../../environments/environment';
-import { PaymentService } from '../../services/payment.service';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Card, CardType } from '../../models/card';
-import { SubscriptionService } from '../../services/subscription.service';
-import { PaymentType } from '../../models/payment-type';
+import { Router } from '@angular/router';
+import { loadStripe } from '@stripe/stripe-js';
+
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
-import { ConfigService } from '../../services/config.service';
+
 import { AlertService } from '../../services/alert.service';
+import { ConfigService } from '../../services/config.service';
+import { PaymentService } from '../../services/payment.service';
+import { SubscriptionService } from '../../services/subscription.service';
+
+import { Card } from '../../models/card';
+import { TransactionPaymentType } from '../../models/enums/transaction-payment-type';
+import { UserCardType } from '../../models/enums/user-card-type';
 
 @Component({
   selector: 'app-premium-subscription',
@@ -31,7 +34,7 @@ export class PremiumSubscriptionComponent implements OnInit {
     ],
   };
 
-  CardType: CardType = CardType.Paying;
+  CardType: UserCardType = UserCardType.Paying;
   isLoggedIn = false;
   paymentMethod: 'card' | 'paypal' = 'paypal';
   stripePromise: Promise<any> | null = null; 
@@ -128,7 +131,7 @@ export class PremiumSubscriptionComponent implements OnInit {
     const subscriptionRequest = {
       amount: this.subscription.price, // Use the subscription price dynamically
       paymentMethod: `Card ending in ${this.selectedCard.last4}`, // Describe the payment method,
-      paymentType: PaymentType.TutorMembership
+      paymentType: TransactionPaymentType.TutorMembership
     };
 
     // Call the subscription service to create a subscription
@@ -141,7 +144,7 @@ export class PremiumSubscriptionComponent implements OnInit {
             success: true,
             listingId: 0,
             gateway: 'Stripe',
-            paymentType: PaymentType.TutorMembership
+            paymentType: TransactionPaymentType.TutorMembership
           }
         });
       },
@@ -153,7 +156,7 @@ export class PremiumSubscriptionComponent implements OnInit {
             success: false,
             listingId: 0,
             gateway: 'Stripe',
-            paymentType: PaymentType.TutorMembership
+            paymentType: TransactionPaymentType.TutorMembership
           }
         });
       },

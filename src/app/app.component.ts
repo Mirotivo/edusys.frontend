@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { NotificationService } from './services/notification.service';
-import { AuthService } from './services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { ConfigService } from './services/config.service';
+
 import { SpinnerComponent } from './components/spinner/spinner.component';
+
+import { AuthService } from './services/auth.service';
+import { ConfigService } from './services/config.service';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',

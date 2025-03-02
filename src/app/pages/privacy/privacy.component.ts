@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { PlatformService } from '../../services/platform.service';
+
 @Component({
   selector: 'app-privacy',
   imports: [],
@@ -7,9 +9,11 @@ import { Component } from '@angular/core';
   styleUrl: './privacy.component.scss'
 })
 export class PrivacyComponent {
-  platformName = 'Avancira';
-  email = 'privacy@avancira.com';
-  dpoEmail = 'dpo@avancira.com';
-  address = '35 Cave Rd, Strathfield, Sydney, Australia';
-  lastUpdated = '9 January 2025';
+  platformInfo: any = {};
+
+  constructor(private platformService: PlatformService) {}
+
+  ngOnInit() {
+    this.platformInfo = this.platformService.getPlatformInfo();
+  }
 }

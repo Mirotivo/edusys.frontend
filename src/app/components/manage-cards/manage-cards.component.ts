@@ -1,12 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
-import { environment } from '../../environments/environment';
-import { PaymentService } from '../../services/payment.service';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Card, CardType } from '../../models/card';
-import { ConfigService } from '../../services/config.service';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
+
 import { AlertService } from '../../services/alert.service';
+import { ConfigService } from '../../services/config.service';
+import { PaymentService } from '../../services/payment.service';
+
+import { Card } from '../../models/card';
+import { UserCardType } from '../../models/enums/user-card-type';
 
 @Component({
   selector: 'app-manage-cards',
@@ -15,7 +17,7 @@ import { AlertService } from '../../services/alert.service';
   styleUrl: './manage-cards.component.scss'
 })
 export class ManageCardsComponent implements OnInit {
-  CardType: CardType = CardType.Paying;
+  CardType: UserCardType = UserCardType.Paying;
   stripe: Stripe | null = null;
   cardNumber: any;
   cardExpiry: any;
@@ -27,7 +29,7 @@ export class ManageCardsComponent implements OnInit {
   savedCards: Card[] = [];
   showAddCardSection = false; // Show/Hide Add Card Section
 
-  @Input() cardPurpose: CardType = CardType.Receiving; // Input for card purpose
+  @Input() cardPurpose: UserCardType = UserCardType.Receiving; // Input for card purpose
   @Output() cardSelected = new EventEmitter<Card | null>(); // Emit the selected card to the parent
   @Output() selectedCard: Card | null = null; // Track the selected card
 

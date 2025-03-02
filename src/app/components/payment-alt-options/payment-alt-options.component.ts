@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { PaymentService } from '../../services/payment.service';
-import { loadStripe } from '@stripe/stripe-js';
-import { environment } from '../../environments/environment';
-import { SubscriptionService } from '../../services/subscription.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ListingService } from '../../services/listing.service';
+import { loadStripe } from '@stripe/stripe-js';
+
 import { ConfigService } from '../../services/config.service';
+import { ListingService } from '../../services/listing.service';
+import { PaymentService } from '../../services/payment.service';
+import { SubscriptionService } from '../../services/subscription.service';
+
+
 
 @Component({
   selector: 'app-payment-alt-options',
@@ -86,16 +88,16 @@ export class PaymentAltOptionsComponent implements OnInit {
 
     if (paypal && paypal.Buttons) {
       paypal.Buttons({
-        createOrder: (data: any, actions: any) => {
+        createOrder: () => {
           return new Promise<string>((resolve, reject) => {
             this.paymentService.createPayment("PayPal", this.listingId, 69.00).subscribe({
               next: (order) => {
-                if (!order || !order.paymentId) {
+                if (!order || !order.id) {
                   console.error('Payment Id not returned from the server.');
                   reject('Payment Id not returned from the server.');
                   return;
                 }
-                resolve(order.paymentId);
+                resolve(order.id);
               },
               error: (error) => {
                 console.error('Error creating order:', error);
@@ -104,7 +106,7 @@ export class PaymentAltOptionsComponent implements OnInit {
             });
           });
         },
-        onApprove: (data: any, actions: any) => {
+        onApprove: (data: any) => {
           this.router.navigate(['/payment-result'], {
             queryParams: {
               success: true,

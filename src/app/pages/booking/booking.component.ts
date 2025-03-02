@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
-import { Card, CardType } from '../../models/card';
-import { ListingService } from '../../services/listing.service';
-import { Listing } from '../../models/listing';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LessonService } from '../../services/lesson.service';
-import { Proposition } from '../../models/proposition';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
+
 import { AlertService } from '../../services/alert.service';
+import { LessonService } from '../../services/lesson.service';
+import { ListingService } from '../../services/listing.service';
+
+import { Card } from '../../models/card';
+import { UserCardType } from '../../models/enums/user-card-type';
+import { Listing } from '../../models/listing';
+import { Proposition } from '../../models/proposition';
 
 @Component({
   selector: 'app-booking',
@@ -17,7 +21,7 @@ import { AlertService } from '../../services/alert.service';
   styleUrl: './booking.component.scss'
 })
 export class BookingComponent implements OnInit {
-  CardType: CardType = CardType.Paying;
+  CardType: UserCardType = UserCardType.Paying;
   selectedCard: Card | null = null;
 
   listing!: Listing;
@@ -91,7 +95,7 @@ export class BookingComponent implements OnInit {
     };
 
     this.lessonService.proposeLesson(proposition).subscribe({
-      next: (lesson) => {
+      next: () => {
         this.alertService.successAlert('Lesson proposed successfully!', 'Success');
         this.router.navigate(['/messages']);
       },

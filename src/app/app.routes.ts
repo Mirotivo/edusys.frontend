@@ -1,38 +1,27 @@
 import { Routes } from '@angular/router';
-import { SigninComponent } from './pages/signin/signin.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { AuthGuard } from './guards/auth.guard';
-import { MessagesComponent } from './pages/messages/messages.component';
-import { PremiumComponent } from './pages/premium/premium.component';
-import { SignupComponent } from './pages/signup/signup.component';
-import { PaymentComponent } from './pages/payment/payment.component';
-import { ListingComponent } from './pages/listing/listing.component';
-import { SearchResultsComponent } from './pages/search-results/search-results.component';
-import { PaymentResultComponent } from './pages/payment-result/payment-result.component';
-import { RecommendationSubmissionComponent } from './pages/recommendation-submission/recommendation-submission.component';
-import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-import { GoodbyeComponent } from './pages/goodbye/goodbye.component';
-import { TermsComponent } from './pages/terms/terms.component';
-import { PremiumSubscriptionComponent } from './pages/premium-subscription/premium-subscription.component';
-import { PrivacyComponent } from './pages/privacy/privacy.component';
-import { CategoriesComponent } from './components/categories/categories.component';
-import { AboutUsComponent } from './pages/about-us/about-us.component';
-import { HelpCenterComponent } from './pages/help-center/help-center.component';
-import { StatesComponent } from './pages/states/states.component';
-import { CareersComponent } from './pages/careers/careers.component';
-import { OnlineCoursesComponent } from './pages/online-courses/online-courses.component';
-import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
-import { CompleteRegistrationComponent } from './pages/complete-registration/complete-registration.component';
-import { HomeComponent } from './pages/home/home.component';
-import { SidebarLayoutComponent } from './layout/sidebar-layout/sidebar-layout.component';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { InvoicesComponent } from './pages/invoices/invoices.component';
-import { NewPaymentsComponent } from './pages/new-payments/new-payments.component';
-import { EvaluationsComponent } from './pages/evaluations/evaluations.component';
-import { ListingsComponent } from './pages/listings/listings.component';
+
 import { FooterLayoutComponent } from './layout/footer-layout/footer-layout.component';
 import { HeaderLayoutComponent } from './layout/header-layout/header-layout.component';
+import { SidebarLayoutComponent } from './layout/sidebar-layout/sidebar-layout.component';
+import { CompleteRegistrationComponent } from './pages/complete-registration/complete-registration.component';
+import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { EvaluationsComponent } from './pages/evaluations/evaluations.component';
+import { GoodbyeComponent } from './pages/goodbye/goodbye.component';
+import { HomeComponent } from './pages/home/home.component';
+import { InvoicesComponent } from './pages/invoices/invoices.component';
 import { LessonsComponent } from './pages/lessons/lessons.component';
+import { ListingsComponent } from './pages/listings/listings.component';
+import { MessagesComponent } from './pages/messages/messages.component';
+import { PaymentsComponent } from './pages/payments/payments.component';
+import { PrivacyComponent } from './pages/privacy/privacy.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { SigninComponent } from './pages/signin/signin.component';
+import { SignupComponent } from './pages/signup/signup.component';
+import { TermsComponent } from './pages/terms/terms.component';
+
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -84,7 +73,7 @@ export const routes: Routes = [
               { path: 'listings', component: ListingsComponent, data: { title: 'Listings' } },
               { path: 'lessons', component: LessonsComponent, data: { title: 'Lessons' } },
               { path: 'evaluations', component: EvaluationsComponent, data: { title: 'Evaluations' } },
-              { path: 'payments', component: NewPaymentsComponent, data: { title: 'Payments' } },
+              { path: 'payments', component: PaymentsComponent, data: { title: 'Payments' } },
               { path: 'invoices', component: InvoicesComponent, data: { title: 'Invoices' } },
               { path: 'profile', component: ProfileComponent, data: { title: 'Profile' } },
             ]

@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ListingService } from '../../services/listing.service';
-import { Listing } from '../../models/listing';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { ChatService } from '../../services/chat.service';
 import { LessonService } from '../../services/lesson.service';
-import { Proposition } from '../../models/proposition';
+import { ListingService } from '../../services/listing.service';
 import { SubscriptionService } from '../../services/subscription.service';
+
+import { Listing } from '../../models/listing';
 
 @Component({
   selector: 'app-listing',

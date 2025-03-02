@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap } from 'rxjs/operators';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user';
+
 import { SidebarComponent } from "../shared/sidebar/sidebar.component";
 
 @Component({

@@ -1,10 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Chat, Message } from '../models/chat';
+
 import { environment } from '../environments/environment';
+import { Chat, Message } from '../models/chat';
 import { SendMessage } from '../models/send-message';
-import { ApiResponse } from '../models/api-response';
 
 @Injectable({
   providedIn: 'root',

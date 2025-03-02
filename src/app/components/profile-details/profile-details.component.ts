@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DiplomaStatus, PaymentSchedule, User } from '../../models/user';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { MapAddressComponent } from '../map-address/map-address.component';
 import { ProfileImageComponent } from '../profile-image/profile-image.component';
-import { PaymentHistory } from '../../models/payment-history';
-import { CardType } from '../../models/card';
-import { PaymentService } from '../../services/payment.service';
+
 import { AlertService } from '../../services/alert.service';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+
+import { PaymentHistory } from '../../models/payment-history';
+import { DiplomaStatus, PaymentSchedule, User } from '../../models/user';
 
 @Component({
   selector: 'app-profile-details',

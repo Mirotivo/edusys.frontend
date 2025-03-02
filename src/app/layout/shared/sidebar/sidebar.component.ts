@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ProfileImageComponent } from '../../../components/profile-image/profile-image.component';
-import { User } from '../../../models/user';
-import { UserService } from '../../../services/user.service';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
+
+import { ProfileImageComponent } from '../../../components/profile-image/profile-image.component';
+
+import { UserService } from '../../../services/user.service';
+
+import { User } from '../../../models/user';
 
 @Component({
   selector: 'app-sidebar',

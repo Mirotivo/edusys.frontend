@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { PlatformService } from '../../services/platform.service';
+
 @Component({
   selector: 'app-terms',
   imports: [],
@@ -7,10 +9,11 @@ import { Component } from '@angular/core';
   styleUrl: './terms.component.scss'
 })
 export class TermsComponent {
-  platformName = 'Avancira';
-  email = 'support@avancira.com';
-  address = '35 Cave Rd, Strathfield, Sydney';
-  phone = '+61 4688 90 677';
-  registrationNumber = '683 548 763';
-  president = 'Amr Badr';
+  platformInfo: any = {};
+
+  constructor(private platformService: PlatformService) {}
+
+  ngOnInit() {
+    this.platformInfo = this.platformService.getPlatformInfo();
+  }
 }

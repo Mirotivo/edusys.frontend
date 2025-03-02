@@ -1,8 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Listing } from '../models/listing';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
+
 import { environment } from '../environments/environment';
+import { Listing } from '../models/listing';
 import { PagedResult } from '../models/paged-result';
 
 @Injectable({

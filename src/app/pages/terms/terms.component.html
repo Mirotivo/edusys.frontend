@@ -1,26 +1,26 @@
 <div class="terms-container">
     <h1>Terms & Conditions</h1>
-    <p><strong>{{ platformName }}</strong> is a platform designed to connect users with expert tutors and service providers.</p>
+    <p><strong>{{ platformInfo.platformName }}</strong> is a platform designed to connect users with expert tutors and service providers.</p>
   
     <section>
       <h2>Contact Information</h2>
-      <p><strong>Email:</strong> <a href="mailto:{{ email }}">{{ email }}</a></p>
-      <p><strong>Address:</strong> {{ address }}</p>
-      <p><strong>Phone:</strong> {{ phone }}</p>
+      <p><strong>Email:</strong> <a href="mailto:{{ platformInfo.email }}">{{ platformInfo.email }}</a></p>
+      <p><strong>Address:</strong> {{ platformInfo.address }}</p>
+      <p><strong>Phone:</strong> {{ platformInfo.phone }}</p>
     </section>
   
     <section>
       <h2>Platform Ownership</h2>
       <p>
-        {{ platformName }} is owned and operated by {{ president }}. Our registration number is 
-        <strong>{{ registrationNumber }}</strong>.
+        {{ platformInfo.platformName }} is owned and operated by {{ platformInfo.president }}. Our registration number is 
+        <strong>{{ platformInfo.registrationNumber }}</strong>.
       </p>
     </section>
     
     <section>
       <h2>General Terms</h2>
       <p>
-        By using <strong>{{ platformName }}</strong>, you agree to adhere to the terms outlined below. Violations may 
+        By using <strong>{{ platformInfo.platformName }}</strong>, you agree to adhere to the terms outlined below. Violations may 
         result in account suspension.
       </p>
       <ul>
@@ -35,7 +35,7 @@
       <h2>Refund Policy</h2>
       <p>
         Refunds will be processed only under specific circumstances, such as the unavailability of a tutor or services. 
-        For more details, contact us at <a href="mailto:{{ email }}">{{ email }}</a>.
+        For more details, contact us at <a href="mailto:{{ platformInfo.email }}">{{ platformInfo.email }}</a>.
       </p>
     </section>
   
@@ -48,8 +48,8 @@
     </section>
   
     <footer>
-      <p>© {{ platformName }} - All rights reserved. For any inquiries, email us at 
-        <a href="mailto:{{ email }}">{{ email }}</a>.
+      <p>© {{ platformInfo.platformName }} - All rights reserved. For any inquiries, email us at 
+        <a href="mailto:{{ platformInfo.email }}">{{ platformInfo.email }}</a>.
       </p>
     </footer>
   </div>

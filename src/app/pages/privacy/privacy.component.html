@@ -1,13 +1,13 @@
 <div class="privacy-container">
     <h1>Privacy Policy</h1>
     <p>
-      Welcome to <strong>{{ platformName }}</strong>. Your privacy is important to us, and this policy outlines how we collect, use, and protect your data.
+      Welcome to <strong>{{ platformInfo.platformName }}</strong>. Your privacy is important to us, and this policy outlines how we collect, use, and protect your data.
     </p>
   
     <section>
       <h2>1. General</h2>
       <p>
-        <strong>{{ platformName }}</strong> is committed to protecting and respecting your privacy. We act as a data controller and ensure compliance with data protection laws. If you have any concerns, feel free to reach out to our Data Protection Officer at <a href="mailto:{{ dpoEmail }}">{{ dpoEmail }}</a>.
+        <strong>{{ platformInfo.platformName }}</strong> is committed to protecting and respecting your privacy. We act as a data controller and ensure compliance with data protection laws. If you have any concerns, feel free to reach out to our Data Protection Officer at <a href="mailto:{{ platformInfo.dpoEmail }}">{{ platformInfo.dpoEmail }}</a>.
       </p>
     </section>
   
@@ -27,14 +27,14 @@
         <li>Technical information such as IP address, browser type, and device details.</li>
       </ul>
       <p>
-        Your data will be retained securely unless you explicitly request its deletion by emailing <a href="mailto:{{ email }}">{{ email }}</a>.
+        Your data will be retained securely unless you explicitly request its deletion by emailing <a href="mailto:{{ platformInfo.privacyEmail }}">{{ platformInfo.privacyEmail }}</a>.
       </p>
     </section>
   
     <section>
       <h2>3. How We Use Your Information</h2>
       <p>
-        <strong>{{ platformName }}</strong> uses your data for the following purposes:
+        <strong>{{ platformInfo.platformName }}</strong> uses your data for the following purposes:
       </p>
       <ul>
         <li>To fulfill contractual obligations and provide requested services.</li>
@@ -59,23 +59,23 @@
     <section>
       <h2>5. Your Rights</h2>
       <p>
-        You have the right to access, correct, delete, or restrict the processing of your personal data. To exercise your rights, contact us at <a href="mailto:{{ dpoEmail }}">{{ dpoEmail }}</a>.
+        You have the right to access, correct, delete, or restrict the processing of your personal data. To exercise your rights, contact us at <a href="mailto:{{ platformInfo.dpoEmail }}">{{ platformInfo.dpoEmail }}</a>.
       </p>
     </section>
   
     <section>
       <h2>6. Updates to This Policy</h2>
       <p>
-        We may update this policy periodically. The latest update was made on {{ lastUpdated }}.
+        We may update this policy periodically. The latest update was made on {{ platformInfo.lastUpdated }}.
       </p>
     </section>
   
     <footer>
       <p>
-        For any inquiries, please contact our Data Protection Officer at <a href="mailto:{{ dpoEmail }}">{{ dpoEmail }}</a> or by mail at:
+        For any inquiries, please contact our Data Protection Officer at <a href="mailto:{{ platformInfo.dpoEmail }}">{{ platformInfo.dpoEmail }}</a> or by mail at:
       </p>
       <address>
-        {{ address }}
+        {{ platformInfo.address }}
       </address>
     </footer>
   </div>

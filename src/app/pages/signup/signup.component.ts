@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { ValidatorService } from '../../validators/password-validator.service';
-import { ConfigService } from '../../services/config.service';
 import { gapi, loadGapiInsideDOM } from 'gapi-script';
 import { FacebookService, InitParams, LoginResponse } from 'ngx-facebook';
+
+import { AuthService } from '../../services/auth.service';
+import { ConfigService } from '../../services/config.service';
+import { ValidatorService } from '../../validators/password-validator.service';
 
 @Component({
   selector: 'app-signup',

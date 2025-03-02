@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LessonService } from '../../services/lesson.service';
-import { Proposition } from '../../models/proposition';
-import { Listing } from '../../models/listing';
-import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+
+import { LessonService } from '../../services/lesson.service';
+import { UserService } from '../../services/user.service';
+
+import { Listing } from '../../models/listing';
+import { Proposition } from '../../models/proposition';
+
 
 @Component({
   selector: 'app-propose-lesson',

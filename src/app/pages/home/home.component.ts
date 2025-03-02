@@ -1,16 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import * as AOS from 'aos';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { LessonCategory } from '../../models/lesson-category';
-import { Listing } from '../../models/listing';
-import { LessonCategoryService } from '../../services/lesson-category.service';
-import { ListingService } from '../../services/listing.service';
-import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-owl-carousel-o';
-import { LandingService } from '../../services/landing.service';
+
 import { GoogleMapsService } from '../../services/google-maps.service';
+import { LandingService } from '../../services/landing.service';
+
+import { LessonCategory } from '../../models/lesson-category';
 @Component({
   selector: 'app-home',
   imports: [CommonModule, FormsModule, CarouselModule, RouterModule],

@@ -1,8 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable, of, tap } from 'rxjs';
+
 import { environment } from '../environments/environment';
-import { DiplomaStatus, PaymentSchedule, User } from '../models/user';
+import { UserDiplomaStatus } from '../models/enums/user-diploma-status';
+import { UserPaymentSchedule } from '../models/enums/user-payment-schedule';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -61,8 +64,8 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/by-token/${recommendationToken}`);
   }
 
-  getDiplomaStatus(): Observable<{ status: DiplomaStatus }> {
-    return this.http.get<{ status: DiplomaStatus }>(`${this.apiUrl}/diploma-status`);
+  getDiplomaStatus(): Observable<{ status: UserDiplomaStatus }> {
+    return this.http.get<{ status: UserDiplomaStatus }>(`${this.apiUrl}/diploma-status`);
   }
 
 
@@ -122,15 +125,15 @@ export class UserService {
     return this.http.get<number>(`${this.apiUrl}/compensation-percentage`);
   }
 
-  getPaymentPreference(): Observable<PaymentSchedule> {
-    return this.http.get<PaymentSchedule>(`${this.apiUrl}/payment-schedule`);
+  getPaymentPreference(): Observable<UserPaymentSchedule> {
+    return this.http.get<UserPaymentSchedule>(`${this.apiUrl}/payment-schedule`);
   }
 
   updateCompensationPercentage(newPercentage: number): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/compensation-percentage`, { percentage: newPercentage });
   }
 
-  updatePaymentPreference(paymentPreference: PaymentSchedule): Observable<void> {
+  updatePaymentPreference(paymentPreference: UserPaymentSchedule): Observable<void> {
     return this.http.put<void>(
       `${this.apiUrl}/payment-schedule`,
       { paymentSchedule: paymentPreference }

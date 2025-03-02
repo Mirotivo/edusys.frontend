@@ -1,19 +1,9 @@
-import { Role } from "./chat";
+import { LessonStatus } from "./enums/lesson-status";
+import { LessonType } from "./enums/lesson-type";
+import { UserRole } from "./enums/user-role";
 
-export enum LessonStatus
-{
-    Proposed,
-    Booked,
-    Completed,
-    Canceled
-}
-export enum LessonType
-{
-    Proposition,
-    Lesson
-}
 export interface Lesson {
-    recipientRole: Role;
+    recipientRole: UserRole;
     recipientName: string;
     id: number;
     topic: string; // e.g., "Math Basics"

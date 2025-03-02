@@ -1,8 +1,4 @@
-export enum CardType
-{
-    Receiving,
-    Paying
-}
+import { UserCardType } from "./enums/user-card-type";
 
 export interface Card {
     id: number;
@@ -14,6 +10,6 @@ export interface Card {
     icon: string; // Path to the icon
     cardType?: string; // Optional, e.g., 'visa', 'mastercard'
     isDefault: boolean; // Indicates if this is the default payment method,
-    purpose: CardType; // 'Receiving' or 'Paying'
+    purpose: UserCardType; // 'Receiving' or 'Paying'
   }
   

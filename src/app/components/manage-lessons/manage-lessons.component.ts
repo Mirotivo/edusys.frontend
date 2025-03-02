@@ -1,16 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Chat, Role } from '../../models/chat';
-import { Lesson, LessonStatus, LessonType } from '../../models/lesson';
-import { LessonService } from '../../services/lesson.service';
-import { ListingService } from '../../services/listing.service';
+
 import { ModalComponent } from '../modal/modal.component';
 import { ProposeLessonComponent } from '../propose-lesson/propose-lesson.component';
-import { Listing } from '../../models/listing';
+
+import { AlertService } from '../../services/alert.service';
+import { LessonService } from '../../services/lesson.service';
+import { ListingService } from '../../services/listing.service';
 import { NotificationService } from '../../services/notification.service';
 import { UserService } from '../../services/user.service';
-import { AlertService } from '../../services/alert.service';
+
+import { Chat } from '../../models/chat';
+import { LessonStatus } from '../../models/enums/lesson-status';
+import { LessonType } from '../../models/enums/lesson-type';
+import { UserRole } from '../../models/enums/user-role';
+import { Lesson } from '../../models/lesson';
+import { Listing } from '../../models/listing';
 
 @Component({
   selector: 'app-manage-lessons',
@@ -20,7 +26,7 @@ import { AlertService } from '../../services/alert.service';
 })
 export class ManageLessonsComponent implements OnInit, OnChanges {
   LessonStatus = LessonStatus;
-  Role = Role;
+  Role = UserRole;
   @Input() selectedContact: Chat | null = null;
   activeTab: string = 'propositions'; // Default active tab
   propositions: Lesson[] = [];
@@ -37,7 +43,7 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     // Listen for notifications
-    this.notificationService.onReceiveNotification((notification) => {
+    this.notificationService.onReceiveNotification(() => {
       // if (this.selectedContact && notification.data.senderId === this.selectedContact.recipientId) {
       if (this.selectedContact) {
         this.loadListing(this.selectedContact.listingId);
@@ -198,10 +204,4 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
     //   this.selectContact(this.selectedContact);
     // }
   }
-
-  handleProposeLesson(event: { date: Date; duration: number; price: number }): void {
-    // Perform the action, e.g., send the proposal to the backend
-  }
-
-
 }

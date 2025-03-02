@@ -1,10 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { PaymentService } from '../../services/payment.service';
 import { SubscriptionService } from '../../services/subscription.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { PaymentType } from '../../models/payment-type';
+
+import { TransactionPaymentType } from '../../models/enums/transaction-payment-type';
+
 
 @Component({
   selector: 'app-payment-result',
@@ -46,7 +49,7 @@ export class PaymentResultComponent implements OnInit {
   }
 
   handlePaymentSuccess(): void {
-    if (this.paymentType == PaymentType.StudentMembership){
+    if (this.paymentType == TransactionPaymentType.StudentMembership){
       if (this.gateway === 'PayPal') {
         const paymentId = this.route.snapshot.queryParams['paymentId'] || '0';
   
@@ -94,7 +97,7 @@ export class PaymentResultComponent implements OnInit {
     };
 
     this.subscriptionService.createSubscription(subscriptionRequest).subscribe({
-      next: (response) => {
+      next: () => {
         this.router.navigate(['/booking', this.listingId]);
       },
       error: (err) => {

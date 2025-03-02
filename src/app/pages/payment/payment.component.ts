@@ -2,15 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ListingService } from '../../services/listing.service';
-import { Listing } from '../../models/listing';
-import { PaymentService } from '../../services/payment.service';
-import { SubscriptionService } from '../../services/subscription.service';
-import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
+
 import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
-import { Card, CardType } from '../../models/card';
-import { PaymentType } from '../../models/payment-type';
+
 import { AlertService } from '../../services/alert.service';
+import { ListingService } from '../../services/listing.service';
+import { SubscriptionService } from '../../services/subscription.service';
+
+import { Card } from '../../models/card';
+import { TransactionPaymentType } from '../../models/enums/transaction-payment-type';
+import { UserCardType } from '../../models/enums/user-card-type';
 
 @Component({
   selector: 'app-payment',
@@ -19,7 +20,7 @@ import { AlertService } from '../../services/alert.service';
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent implements OnInit {
-  CardType: CardType = CardType.Paying;
+  CardType: UserCardType = UserCardType.Paying;
   referrer: string | null = null;
   loading = true;
   isLoggedIn = false;
@@ -40,7 +41,7 @@ export class PaymentComponent implements OnInit {
       this.referrer = params['referrer'] || '/';
     });
 
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe(() => {
       this.checkSubscriptionStatus();
     });
   }
@@ -79,12 +80,12 @@ export class PaymentComponent implements OnInit {
       promoCode: this.promoCode,
       amount: this.finalPrice,
       paymentMethod: `Card ending in ${this.selectedCard.last4}`,
-      paymentType: PaymentType.StudentMembership,
+      paymentType: TransactionPaymentType.StudentMembership,
       billingFrequency: this.selectedPlan
     };
 
     this.subscriptionService.createSubscription(subscriptionRequest).subscribe({
-      next: (response) => {
+      next: () => {
         this.alertService.successAlert('Subscription created successfully!', 'Success');
 
         const referrerUrl = new URL(this.referrer || '/', window.location.origin);

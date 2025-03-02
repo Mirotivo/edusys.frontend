@@ -1,10 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PaymentHistory } from '../models/payment-history';
-import { Card, CardType } from '../models/card';
+
 import { ConfigService } from './config.service';
+
+import { environment } from '../environments/environment';
+import { Card } from '../models/card';
+import { UserCardType } from '../models/enums/user-card-type';
+import { PaymentHistory } from '../models/payment-history';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +59,7 @@ export class PaymentService {
     return this.http.get<Card[]>(`${this.apiUrl}/saved-cards`);
   }
 
-  saveCard(stripeToken: string, purpose: CardType): Observable<void> {
+  saveCard(stripeToken: string, purpose: UserCardType): Observable<void> {
     const body = { stripeToken, purpose };
 
     return this.http.post<void>(`${this.apiUrl}/save-card`, body);

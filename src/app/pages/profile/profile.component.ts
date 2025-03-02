@@ -1,17 +1,21 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Address, DiplomaStatus, PaymentSchedule, User } from '../../models/user';
 import { CommonModule } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { MapAddressComponent } from '../../components/map-address/map-address.component';
-import { PaymentHistory } from '../../models/payment-history';
-import { CardType } from '../../models/card';
-import { PaymentService } from '../../services/payment.service';
+
 import { AlertService } from '../../services/alert.service';
-import { ImageFallbackDirective } from '../../directives/image-fallback.directive';
+import { AuthService } from '../../services/auth.service';
 import { SpinnerService } from '../../services/spinner.service'; 
+import { UserService } from '../../services/user.service';
+
+import { ImageFallbackDirective } from '../../directives/image-fallback.directive';
+
+import { UserDiplomaStatus } from '../../models/enums/user-diploma-status';
+import { UserPaymentSchedule } from '../../models/enums/user-payment-schedule';
+import { PaymentHistory } from '../../models/payment-history';
+import { Address, User } from '../../models/user';
 
 
 @Component({
@@ -25,7 +29,7 @@ export class ProfileComponent implements OnInit {
   timezones: { id: string; label: string }[] = [];
 
   // Enums and Data Models
-  DiplomaStatus = DiplomaStatus;
+  DiplomaStatus = UserDiplomaStatus;
 
   // States
   profile: User = {} as User;
@@ -44,11 +48,11 @@ export class ProfileComponent implements OnInit {
 
   // Payment
   paypalAccountAdded: boolean = false;
-  paymentPreference: PaymentSchedule = PaymentSchedule.PerLesson;
+  paymentPreference: UserPaymentSchedule = UserPaymentSchedule.PerLesson;
   compensationPercentage: number = 50;
 
   // Diploma
-  diplomaStatus: DiplomaStatus = DiplomaStatus.NotSubmitted;
+  diplomaStatus: UserDiplomaStatus = UserDiplomaStatus.NotSubmitted;
   selectedFile: File | null = null;
 
   // Delete Confirmation
@@ -196,7 +200,7 @@ export class ProfileComponent implements OnInit {
     this.userService.submitDiploma(this.selectedFile).subscribe({
       next: () => {
         this.alertService.successAlert('Diploma submitted for review.');
-        this.diplomaStatus = DiplomaStatus.UnderReview;
+        this.diplomaStatus = UserDiplomaStatus.UnderReview;
       },
       error: (err) => {
         console.error('Error submitting diploma:', err);

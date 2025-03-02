@@ -37,13 +37,13 @@ export class AutoCompleteInputComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    this.filterOptions('');
+    this.filterOptions();
   }
   onInputChange(): void {
     this.searchTextSubject.next(this.searchText);
   }
 
-  filterOptions(searchTerm: string): void {
+  filterOptions(): void {
     // Convert search text to lowercase for case-insensitive comparison
     const searchTextLower = this.searchText.toLowerCase();
   
@@ -96,7 +96,7 @@ export class AutoCompleteInputComponent implements OnChanges {
   createNewOption(): void {
     if (this.searchText.trim()) {
       this.newOptionCreated.emit(this.searchText.trim());
-      this.filterOptions('');
+      this.filterOptions();
     }
   }
 }

@@ -1,14 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Chat } from '../../models/chat';
-import { ChatService } from '../../services/chat.service';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { User } from '../../models/user';
 import { Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
+
 import { AuthService } from '../../services/auth.service';
-import { ImageFallbackDirective } from '../../directives/image-fallback.directive';
+import { ChatService } from '../../services/chat.service';
+import { UserService } from '../../services/user.service';
+
 import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
+
+import { ImageFallbackDirective } from '../../directives/image-fallback.directive';
+
+import { Chat } from '../../models/chat';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-message-list',

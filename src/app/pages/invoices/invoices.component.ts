@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { PaymentHistory } from '../../models/payment-history';
-import { PaymentService } from '../../services/payment.service';
-import { Transaction } from '../../models/transaction';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+
+import { PaymentService } from '../../services/payment.service';
+
+import { PaymentHistory } from '../../models/payment-history';
+import { Transaction } from '../../models/transaction';
 
 @Component({
   selector: 'app-invoices',
@@ -11,7 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './invoices.component.scss'
 })
 export class InvoicesComponent {
-  payment: PaymentHistory | null = null;
+  paymentHistory: PaymentHistory | null = null;
   invoices: Transaction[] = [];
 
   constructor(
@@ -29,14 +31,14 @@ export class InvoicesComponent {
     this.paymentService.getPaymentHistory().subscribe({
       next: (data) => 
         {
-          this.payment = data,
-          this.invoices = this.payment.invoices;
+          this.paymentHistory = data,
+          this.invoices = this.paymentHistory.invoices;
         },
       error: (err) => console.error('Failed to fetch payment history', err)
     });
   }
 
-  printInvoice(invoiceId: number): void {
+  printInvoice(): void {
     window.print();
   }  
 }

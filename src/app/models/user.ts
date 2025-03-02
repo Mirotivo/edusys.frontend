@@ -1,14 +1,3 @@
-export enum DiplomaStatus
-{
-    NotSubmitted,
-    UnderReview,
-    Verified
-}
-export enum PaymentSchedule
-{
-    Monthly,
-    PerLesson
-}
 
 export interface Address {
   postalCode: string;

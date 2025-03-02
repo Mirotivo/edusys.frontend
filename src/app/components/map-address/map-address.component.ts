@@ -1,7 +1,9 @@
 /// <reference types="google.maps" />
-import { Component, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, EventEmitter,Input, Output } from '@angular/core';
+
 import { GoogleMapsService } from '../../services/google-maps.service';
+
 import { Address } from '../../models/user';
 
 @Component({

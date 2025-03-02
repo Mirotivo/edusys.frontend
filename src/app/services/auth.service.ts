@@ -1,10 +1,12 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
-import { NotificationService } from './notification.service';
-import { catchError, from, map, Observable, tap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ApiResponse } from '../models/api-response';
+import { Injectable } from '@angular/core';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
+
+import { NotificationService } from './notification.service';
 import { UserService } from './user.service';
+
+import { environment } from '../environments/environment';
+import { ApiResponse } from '../models/api-response';
 
 
 @Injectable({

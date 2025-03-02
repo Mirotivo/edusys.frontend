@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Review } from '../../models/review';
-import { EvaluationService } from '../../services/evaluation.service';
+
 import { RatingComponent } from '../rating/rating.component';
+
+import { EvaluationService } from '../../services/evaluation.service';
+
+import { Review } from '../../models/review';
 
 @Component({
   selector: 'app-leave-review',

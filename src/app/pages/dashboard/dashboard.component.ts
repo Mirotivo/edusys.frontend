@@ -1,30 +1,26 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 // Services
-import { UserService } from '../../services/user.service';
-import { ChatService } from '../../services/chat.service';
-import { PaymentService } from '../../services/payment.service';
-import { ListingService } from '../../services/listing.service';
-import { EvaluationService } from '../../services/evaluation.service';
-
 // Models
-import { Listing } from '../../models/listing';
-import { Review } from '../../models/review';
-import { Transaction } from '../../models/transaction';
-import { User } from '../../models/user';
-
-// Components
-import { HeaderComponent } from '../../layout/shared/header/header.component';
-import { NavigationBarComponent } from '../../components/navigation-bar/navigation-bar.component';
 import { LeaveReviewComponent } from '../../components/leave-review/leave-review.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { ProfileImageComponent } from '../../components/profile-image/profile-image.component';
 
+import { ChatService } from '../../services/chat.service';
+import { EvaluationService } from '../../services/evaluation.service';
+import { ListingService } from '../../services/listing.service';
+import { PaymentService } from '../../services/payment.service';
+
+// Components
 // Pipes
 import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
+
 import { Message } from '../../models/chat';
+import { Listing } from '../../models/listing';
+import { Review } from '../../models/review';
+import { Transaction } from '../../models/transaction';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +31,7 @@ import { Message } from '../../models/chat';
 export class DashboardComponent implements OnInit {
   messages: Message[] = [];
   reviewsPending: Review[] = [];
-  payments: Transaction[] = [];
+  transactions: Transaction[] = [];
   listings: Listing[] = [];
   selectedRevieweeId!: string;
 
@@ -60,7 +56,7 @@ export class DashboardComponent implements OnInit {
       error: (err) => console.error('Failed to load reviews:', err),
     });
     this.paymentService.getPaymentHistory().subscribe({
-      next: (response) => (this.payments = response.transactions),
+      next: (response) => (this.transactions = response.transactions),
       error: (err) => console.error('Failed to load payment history:', err),
     });
     this.listingService.getListings().subscribe({

@@ -1,9 +1,4 @@
-export enum Role
-{
-    None = 0,
-    Student = 1,
-    Tutor = 2
-}
+import { UserRole } from "./enums/user-role";
 
 export interface Chat {
     id: number;
@@ -16,8 +11,7 @@ export interface Chat {
     timestamp: Date;
     details: string;
     messages: Message[];
-    requestDetails: string;
-    myRole: Role;
+    myRole: UserRole;
   }
 
   

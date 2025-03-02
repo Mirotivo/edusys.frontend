@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+
+import { environment } from '../environments/environment';
 
 
 export interface Config {

@@ -1,12 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ModalComponent } from '../modal/modal.component';
-import { Listing } from '../../models/listing';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { AutoCompleteInputComponent } from '../auto-complete-input/auto-complete-input.component';
+import { ModalComponent } from '../modal/modal.component';
+
 import { LessonCategoryService } from '../../services/lesson-category.service';
 import { ListingService } from '../../services/listing.service';
+
 import { LessonCategory } from '../../models/lesson-category';
+import { Listing } from '../../models/listing';
 
 @Component({
   selector: 'app-edit-listing',

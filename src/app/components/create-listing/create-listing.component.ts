@@ -1,13 +1,15 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Listing } from '../../models/listing';
-import { ListingService } from '../../services/listing.service';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LessonCategory } from '../../models/lesson-category';
-import { LessonCategoryService } from '../../services/lesson-category.service';
+
 import { AutoCompleteInputComponent } from '../auto-complete-input/auto-complete-input.component';
-import { ModalComponent } from '../modal/modal.component';
 import { MultiStepModalComponent } from '../multi-step-modal/multi-step-modal.component';
+
+import { LessonCategoryService } from '../../services/lesson-category.service';
+import { ListingService } from '../../services/listing.service';
+
+import { LessonCategory } from '../../models/lesson-category';
+import { Listing } from '../../models/listing';
 
 @Component({
   selector: 'app-create-listing',
@@ -140,7 +142,7 @@ export class CreateListingComponent implements OnInit {
 
 
     this.listingService.createListing(processedListing).subscribe({
-      next: (newListing) => {
+      next: () => {
         this.closeModal();
       },
       error: (err) => {

@@ -1,17 +1,20 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Review } from '../../models/review';
-import { UserService } from '../../services/user.service';
+import { FormsModule } from '@angular/forms';
+
+import { LeaveReviewComponent } from '../../components/leave-review/leave-review.component';
+import { ModalComponent } from '../../components/modal/modal.component';
+
+import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
 import { EvaluationService } from '../../services/evaluation.service';
-import { environment } from '../../environments/environment';
-import { User } from '../../models/user';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../layout/shared/header/header.component';
-import { ModalComponent } from '../../components/modal/modal.component';
-import { LeaveReviewComponent } from '../../components/leave-review/leave-review.component';
-import { AlertService } from '../../services/alert.service';
+import { UserService } from '../../services/user.service';
+
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
+
+import { environment } from '../../environments/environment';
+import { Review } from '../../models/review';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-evaluations',
@@ -86,10 +89,6 @@ export class EvaluationsComponent {
 
   closeModal(): void {
     this.isModalOpen = false;
-  }
-
-  handleProposeLesson(event: { date: Date; duration: number; price: number }): void {
-    // Perform the action, e.g., send the proposal to the backend
   }
 
 }

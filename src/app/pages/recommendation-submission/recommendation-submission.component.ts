@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { EvaluationService } from '../../services/evaluation.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Review } from '../../models/review';
-import { UserService } from '../../services/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { AlertService } from '../../services/alert.service';
+import { EvaluationService } from '../../services/evaluation.service';
+import { UserService } from '../../services/user.service';
+
+import { Review } from '../../models/review';
 
 @Component({
   selector: 'app-recommendation-submission',

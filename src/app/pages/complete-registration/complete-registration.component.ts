@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CompleteProfile, DiplomaStatus, User } from '../../models/user';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-complete-registration',

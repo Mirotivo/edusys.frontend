@@ -87,5 +87,5 @@
   </div>
   <app-modal *ngIf="isModalOpen" [isOpen]="isModalOpen" (onClose)="closeModal()">
     <app-propose-lesson [listing]="selectedListing" [studentId]="selectedContact?.studentId ?? null"
-      (onPropose)="handleProposeLesson($event)" (onClose)="closeModal()"></app-propose-lesson>
+      (onClose)="closeModal()"></app-propose-lesson>
   </app-modal>

@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { FacebookService, InitParams, LoginResponse } from 'ngx-facebook';
-import { ConfigService } from '../../services/config.service';
 import { loadGapiInsideDOM } from 'gapi-script';
+import { FacebookService, InitParams, LoginResponse } from 'ngx-facebook';
 import { ToastrService } from 'ngx-toastr';
-import { SpinnerService } from '../../services/spinner.service'; 
+
 import { AlertService } from '../../services/alert.service';
+import { AuthService } from '../../services/auth.service';
+import { ConfigService } from '../../services/config.service';
+import { SpinnerService } from '../../services/spinner.service'; 
 import { UserService } from '../../services/user.service';
 
 

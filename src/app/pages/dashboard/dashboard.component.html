@@ -36,10 +36,10 @@
       <div class="payments-section">
         <h3>My Payments</h3>
         <ul>
-          <li *ngFor="let payment of payments">
-            <p>{{ payment.date | timeAgo }} - {{ payment.description }}</p>
-            <span [ngClass]="{ 'text-success': payment.amount > 0, 'text-danger': payment.amount < 0 }">
-              {{ payment.amount | currency:'AUD' }}
+          <li *ngFor="let transaction of transactions">
+            <p>{{ transaction.date | timeAgo }} - {{ transaction.description }}</p>
+            <span [ngClass]="{ 'text-success': transaction.amount > 0, 'text-danger': transaction.amount < 0 }">
+              {{ transaction.amount | currency:'AUD' }}
             </span>
           </li>
         </ul>

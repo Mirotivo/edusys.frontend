@@ -1,25 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CardType } from '../../models/card';
-import { DiplomaStatus, PaymentSchedule, User } from '../../models/user';
-import { PaymentHistory } from '../../models/payment-history';
-import { PaymentService } from '../../services/payment.service';
-import { ManageCardsComponent } from '../manage-cards/manage-cards.component';
-import { UserService } from '../../services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
+
 import { AlertService } from '../../services/alert.service';
+import { PaymentService } from '../../services/payment.service';
+import { SubscriptionService } from '../../services/subscription.service';
+import { UserService } from '../../services/user.service';
+
+import { UserCardType } from '../../models/enums/user-card-type';
+import { UserPaymentSchedule } from '../../models/enums/user-payment-schedule';
+import { PaymentHistory } from '../../models/payment-history';
+import { User } from '../../models/user';
 
 @Component({
-  selector: 'app-profile-payments',
+  selector: 'app-payments',
   imports: [CommonModule, FormsModule, ManageCardsComponent],
-  templateUrl: './profile-payments.component.html',
-  styleUrl: './profile-payments.component.scss'
+  templateUrl: './payments.component.html',
+  styleUrl: './payments.component.scss'
 })
-export class ProfilePaymentsComponent {
+export class PaymentsComponent {
   // Enums and Data Models
-  CardType = CardType;
-  PaymentSchedule = PaymentSchedule;
+  CardType = UserCardType;
+  PaymentSchedule = UserPaymentSchedule;
 
   // States
   activeTab: string = 'profile';
@@ -30,14 +35,19 @@ export class ProfilePaymentsComponent {
 
   // Payment
   paypalAccountAdded: boolean = false;
-  paymentPreference: PaymentSchedule = PaymentSchedule.PerLesson;
+  paymentPreference: UserPaymentSchedule = UserPaymentSchedule.PerLesson;
   compensationPercentage: number = 50;
+
+  // Subscription Management
+  subscriptionDetails: any = null;
 
   constructor(
     private alertService: AlertService,
     private userService: UserService,
     private paymentService: PaymentService,
-    private route: ActivatedRoute
+    private subscriptionService: SubscriptionService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
 
   }
@@ -52,6 +62,7 @@ export class ProfilePaymentsComponent {
     this.loadPaymentPreference();
     this.loadUserProfile();
     this.loadPaymentHistory();
+    this.loadSubscriptionDetails();
   }
 
   // 2. User Profile Management
@@ -84,10 +95,10 @@ export class ProfilePaymentsComponent {
               this.paypalAccountAdded = true;
             });
           },
-          error: (err: any) => {
-            console.error('Failed to link PayPal account:', err);
+          onError: (err: any) => {
+            console.error('Error linking PayPal account:', err);
             this.alertService.errorAlert('Failed to link your PayPal account. Please try again.', 'Error');
-          }
+          },
         })
         .render('#paypal-button-container');
     });
@@ -99,6 +110,69 @@ export class ProfilePaymentsComponent {
       error: (err) => console.error('Failed to load payment preference', err),
     });
   }
+
+  // Subscription Management
+  loadSubscriptionDetails(): void {
+    this.subscriptionService.getSubscriptionDetails().subscribe({
+      next: (details) => {
+        this.subscriptionDetails = details;
+      },
+      error: (err) => console.error('Failed to load subscription details', err)
+    });
+  }
+
+  subscribeNow() {
+    this.router.navigate(['/payment'], {
+      queryParams: { referrer: this.router.url }
+    });
+  }
+
+  updateSubscription(): void {
+    this.subscriptionService.updateSubscription().subscribe({
+      next: () => {
+        this.alertService.successAlert('Subscription updated successfully!', 'Success');
+      },
+      error: (err) => {
+        console.error('Failed to update subscription', err);
+        this.alertService.errorAlert('Failed to update subscription. Please try again.', 'Error');
+      },
+    });
+  }
+
+  cancelSubscription(): void {
+    this.subscriptionService.cancelSubscription().subscribe({
+      next: () => {
+        this.loadSubscriptionDetails();
+        this.alertService.successAlert('Subscription cancelled successfully!', 'Success');
+      },
+      error: (err) => {
+        console.error('Failed to cancel subscription', err);
+        this.alertService.errorAlert('Failed to cancel subscription. Please try again.', 'Error');
+      },
+    });
+  }
+  
+  editBillingFrequency() {
+    throw new Error('Method not implemented.');
+  }
+  cancelPlan(): void {
+    this.subscriptionService.cancelSubscription().subscribe({
+      next: () => {
+        this.alertService.successAlert('Subscription cancelled successfully!', 'Success');
+      },
+      error: (err) => {
+        console.error('Failed to cancel subscription', err);
+        this.alertService.errorAlert('Failed to cancel subscription. Please try again.', 'Error');
+      },
+    });
+  }  
+  switchPlans() {
+    throw new Error('Method not implemented.');
+  }
+  changePaymentMethod() {
+    throw new Error('Method not implemented.');
+  }
+
 
   savePaymentPreference(): void {
     this.userService.updatePaymentPreference(this.paymentPreference).subscribe({
