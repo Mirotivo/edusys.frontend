@@ -22,6 +22,7 @@ import { SpinnerService } from '../../services/spinner.service';
 })
 export class ProfileComponent implements OnInit {
   @ViewChild('inputFile') inputFile!: ElementRef<HTMLInputElement>;
+  timezones: { id: string; label: string }[] = [];
 
   // Enums and Data Models
   DiplomaStatus = DiplomaStatus;
@@ -67,8 +68,38 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.fetchDiplomaStatus();
     this.loadUserProfile();
+    this.loadTimezones();
   }
 
+  loadTimezones(): void {
+    const timezones = Intl.supportedValuesOf ? Intl.supportedValuesOf('timeZone') : [
+      'Australia/Sydney', 'America/New_York', 'Europe/London'
+    ];
+  
+    this.timezones = timezones.map(tz => ({
+      id: tz,
+      label: this.formatTimezone(tz)
+    }));
+  }
+  
+  /**
+   * Converts "America/New_York" → "New York (GMT-5:00)"
+   */
+  formatTimezone(timezone: string): string {
+    try {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        timeZoneName: 'short'
+      });
+  
+      const formatted = formatter.formatToParts(now).find(part => part.type === 'timeZoneName')?.value || timezone;
+      return `${timezone.replace(/_/g, ' ')} (${formatted})`;
+    } catch {
+      return timezone.replace(/_/g, ' '); // Fallback
+    }
+  }
+  
   // 2. User Profile Management
   loadUserProfile(): void {
     this.userService.getUser().subscribe({
@@ -76,6 +107,9 @@ export class ProfileComponent implements OnInit {
         this.profile = user;
         if (!this.profile.address) {
           this.profile.address = this.profile.address || {} as Address;
+        }
+        if (!this.profile.timeZoneId) {
+          this.profile.timeZoneId = 'Australia/Sydney';
         }
       },
       error: (err) => console.error('Failed to fetch user profile', err)

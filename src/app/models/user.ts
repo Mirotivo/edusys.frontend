@@ -26,6 +26,7 @@ export interface User {
   lastName: string;
   fullName: string;
   address: Address|null;
+  timeZoneId: string;
   bio: string|null;
   dateOfBirth: string;
   email: string;

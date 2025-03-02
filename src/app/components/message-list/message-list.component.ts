@@ -8,10 +8,11 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { ImageFallbackDirective } from '../../directives/image-fallback.directive';
+import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
 
 @Component({
   selector: 'app-message-list',
-  imports: [CommonModule, FormsModule, ImageFallbackDirective],
+  imports: [CommonModule, FormsModule, ImageFallbackDirective, TimeAgoPipe],
   templateUrl: './message-list.component.html',
   styleUrl: './message-list.component.scss'
 })

@@ -18,7 +18,7 @@ import { SubscriptionService } from '../../services/subscription.service';
 export class ListingComponent implements OnInit {
   listing!: Listing;
   newMessage: string = '';
-  lessonDate: string = ''; // ISO date string
+  lessonDate: Date = new Date(); // ISO date string
   lessonDuration: number = 1; // Duration in hours
   lessonPrice: number = 0; // Price in dollars
   loading: boolean = true;

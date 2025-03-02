@@ -16,10 +16,10 @@ import { Router } from '@angular/router';
 export class ProposeLessonComponent {
   @Input() listing!: Listing;
   @Input() studentId: string | null = null;
-  @Output() onPropose = new EventEmitter<{ date: string; duration: number; price: number }>();
+  @Output() onPropose = new EventEmitter<{ date: Date; duration: number; price: number }>();
   @Output() onClose = new EventEmitter<void>();
-  minDateTime: string = this.getTodayDateTime();
-  lessonDateTime: string = this.getTodayDateTime();
+  minDateTime: Date = new Date()
+  lessonDateTime: Date = new Date()
   lessonDuration: number = 1;
   lessonPrice: number = 0;
   proposeSuccess = false;
@@ -64,11 +64,6 @@ export class ProposeLessonComponent {
     if (this.listing && this.listing.rates.hourly) {
       this.lessonPrice = this.lessonDuration * this.listing.rates.hourly;
     }
-  }
-
-  private getTodayDateTime(): string {
-    const now = new Date();
-    return now.toISOString().slice(0, 16);
   }
   
   proposeLesson(): void {

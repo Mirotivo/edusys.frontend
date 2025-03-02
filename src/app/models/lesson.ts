@@ -17,7 +17,7 @@ export interface Lesson {
     recipientName: string;
     id: number;
     topic: string; // e.g., "Math Basics"
-    date: string; // ISO date string
+    date: Date;
     price: number;
     duration: string; // e.g., "1 hour"
     status: LessonStatus; // e.g., "Completed", "Upcoming"

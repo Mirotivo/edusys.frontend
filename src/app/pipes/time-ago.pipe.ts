@@ -6,7 +6,6 @@ import { formatDistanceToNowStrict, parseISO } from 'date-fns';
 })
 export class TimeAgoPipe implements PipeTransform {
   transform(value: string | Date): string {
-    debugger
     if (!value) return 'time ago';
 
     const date = typeof value === 'string' ? parseISO(value) : value;

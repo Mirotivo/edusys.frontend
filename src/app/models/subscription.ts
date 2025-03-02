@@ -15,9 +15,9 @@ export interface Subscription {
   id: number;
   userId: string;
   user?: User | null;
-  startDate: string; // ISO string (e.g., "2024-02-27T10:30:00Z")
-  nextBillingDate: string; // ISO string for scheduled charge
-  cancellationDate?: string | null; // Nullable
+  startDate: Date;
+  nextBillingDate: Date;
+  cancellationDate?: Date | null;
   amount: number; // Decimal is handled as number in TS
   billingFrequency: BillingFrequency;
   status: SubscriptionStatus; // Computed field

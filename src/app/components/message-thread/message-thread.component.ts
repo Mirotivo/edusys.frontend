@@ -4,10 +4,11 @@ import { ChatService } from '../../services/chat.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NotificationService } from '../../services/notification.service';
+import { TimeAgoPipe } from "../../pipes/time-ago.pipe";
 
 @Component({
   selector: 'app-message-thread',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TimeAgoPipe],
   templateUrl: './message-thread.component.html',
   styleUrl: './message-thread.component.scss'
 })

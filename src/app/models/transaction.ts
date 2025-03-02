@@ -10,8 +10,8 @@ export interface Transaction {
     status: string;
     transactionType: string;
     description: string;
-    transactionDate: string; // ISO date string
-    date: string; // Formatted date string, optional
+    transactionDate: Date;
+    date: Date;
     type: string;
   }
   

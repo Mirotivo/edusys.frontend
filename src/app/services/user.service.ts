@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '../environments/environment';
 import { DiplomaStatus, PaymentSchedule, User } from '../models/user';
 
@@ -9,13 +9,54 @@ import { DiplomaStatus, PaymentSchedule, User } from '../models/user';
 })
 export class UserService {
   private apiUrl = `${environment.apiUrl}/users`;
+  private cachedUser: User | null = null;
 
   constructor(private http: HttpClient) { }
 
   getUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/me`);
+    if (this.cachedUser) {
+      return of(this.cachedUser);
+    }
+
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.cachedUser = JSON.parse(storedUser);
+      if (this.cachedUser) {
+        return of(this.cachedUser);
+      }
+    }
+
+    // Fetch from backend if not found locally
+    return this.http.get<User>(`${this.apiUrl}/me`).pipe(
+      tap(user => {
+        this.cachedUser = user;
+        localStorage.setItem('user', JSON.stringify(user));
+      })
+    );
   }
 
+  getTimeZone(): Observable<string> {
+    if (this.cachedUser?.timeZoneId) {
+      return of(this.cachedUser.timeZoneId);
+    }
+
+    return this.getUser().pipe(
+      map(user => user.timeZoneId || Intl.DateTimeFormat().resolvedOptions().timeZone)
+    );
+  }
+
+  setUser(user: User): void {
+    this.cachedUser = user;
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+  refreshCachedUser(): void {
+    this.getUser().subscribe();
+  }  
+  clearCachedUser(): void {
+    this.cachedUser = null;
+    localStorage.removeItem('user');
+  }
+  
   getUserByToken(recommendationToken: string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/by-token/${recommendationToken}`);
   }
@@ -41,6 +82,7 @@ export class UserService {
     if (user.phoneNumber) formData.append('phoneNumber', user.phoneNumber);
     if (user.skypeId) formData.append('skypeId', user.skypeId);
     if (user.hangoutId) formData.append('hangoutId', user.hangoutId);
+    if (user.timeZoneId) formData.append('timeZoneId', user.timeZoneId);
 
     if (user.address) {
       if (user.address.formattedAddress) formData.append('address.formattedAddress', user.address.formattedAddress);

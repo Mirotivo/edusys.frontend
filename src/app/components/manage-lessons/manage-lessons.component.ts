@@ -199,7 +199,7 @@ export class ManageLessonsComponent implements OnInit, OnChanges {
     // }
   }
 
-  handleProposeLesson(event: { date: string; duration: number; price: number }): void {
+  handleProposeLesson(event: { date: Date; duration: number; price: number }): void {
     // Perform the action, e.g., send the proposal to the backend
   }
 

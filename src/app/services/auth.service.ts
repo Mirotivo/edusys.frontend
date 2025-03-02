@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { NotificationService } from './notification.service';
 import { catchError, from, map, Observable, tap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ApiResponse } from '../models/api-response';
+import { UserService } from './user.service';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ import { ApiResponse } from '../models/api-response';
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/users`;
 
-  constructor(private http: HttpClient, private notificationService: NotificationService) { }
+  constructor(private http: HttpClient, private userService: UserService, private notificationService: NotificationService) { }
 
   register(
     email: string,
@@ -20,11 +21,14 @@ export class AuthService {
     confirmPassword: string,
     referralToken: string | null
   ): Observable<string | null> {
+    const timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     return this.http.post<{ errors?: string[] }>(`${this.apiUrl}/register`, {
       email,
       password,
       confirmPassword,
       referralToken,
+      timeZoneId
     })
       .pipe(
         map(() => null), // Registration successful
@@ -55,6 +59,14 @@ export class AuthService {
     return this.http
       .post<{ token: string; roles: string[] }>(`${this.apiUrl}/login`, { email, password })
       .pipe(
+        tap(response => {
+          if (response) {
+            this.saveToken(response.token);
+            this.saveEmail(email);
+            this.saveRoles(response.roles);
+            this.userService.refreshCachedUser();
+          }
+        }),
         map(response => response ?? null),
         catchError((error: HttpErrorResponse) => {
           console.error('Login error:', error.message);
@@ -112,6 +124,7 @@ export class AuthService {
     localStorage.removeItem('email');
     localStorage.removeItem('roles');
     localStorage.removeItem('currentRole');
+    this.userService.clearCachedUser();
     this.notificationService.stopConnection();
   }
 }

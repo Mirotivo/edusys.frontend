@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { httpInterceptorFn } from './interceptors/httpInterceptorFn';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { dateInterceptorFn } from './interceptors/dateInterceptorFn';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
 
     // HTTP client and interceptors
     provideHttpClient(
-      withInterceptors([httpInterceptorFn])
+      withInterceptors([httpInterceptorFn, dateInterceptorFn])
     ),
 
     // Toastr configuration

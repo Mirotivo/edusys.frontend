@@ -28,7 +28,7 @@
           <div class="user-last-chat">{{ contact.lastMessage }}</div>
         </div>
         <div>
-          <div class="last-chat-time block">{{ contact.timestamp }}</div>
+          <div class="last-chat-time block">{{ contact.timestamp | timeAgo }}</div>
         </div>
       </div>
     </a>

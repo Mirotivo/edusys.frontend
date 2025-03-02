@@ -19,7 +19,8 @@
                             <div class="form-group">
                                 <div class="change-avatar">
                                     <div class="profile-img">
-                                        <img [src]="profile.profileImagePath" alt="User Image" [imageFallback]="profile.firstName + ' ' + profile.lastName">
+                                        <img [src]="profile.profileImagePath" alt="User Image"
+                                            [imageFallback]="profile.firstName + ' ' + profile.lastName">
                                     </div>
                                     <div class="upload-img">
                                         <div class="change-photo-btn">
@@ -80,7 +81,13 @@
 
                         </div>
                         <div class="col-md-6">
-                            
+                            <div class="mb-3">
+                                <label class="form-label">Timezone</label>
+                                <select class="form-select" [(ngModel)]="profile.timeZoneId" name="timeZoneId">
+                                  <option *ngFor="let tz of timezones" [value]="tz.id">{{ tz.label }}</option>
+                                </select>
+                              </div>
+                              
                             <div class="mb-3">
                                 <app-map-address [initialAddress]="profile.address?.formattedAddress || null"
                                     (addressSelected)="updateAddress($event)"></app-map-address>

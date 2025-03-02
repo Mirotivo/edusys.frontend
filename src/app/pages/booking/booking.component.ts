@@ -22,11 +22,11 @@ export class BookingComponent implements OnInit {
 
   listing!: Listing;
   loading: boolean = true;
-  selectedDate: string = ''; // Selected lesson date
+  selectedDate: Date = new Date(); // Selected lesson date
   selectedTime: string = ''; // Selected lesson time
   lessonDuration: number = 1; // Default 1 hour
   totalPrice: number = 0; // Total price calculated dynamically
-  minDate: string = ''; // Minimum selectable date
+  minDate: Date = new Date(); // Minimum selectable date
 
   constructor(
     private alertService: AlertService,
@@ -37,7 +37,6 @@ export class BookingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.setMinDate();
     // Fetch the listing ID from route parameters
     this.route.paramMap.subscribe((params) => {
       const listingId = Number(params.get('id'));
@@ -48,11 +47,6 @@ export class BookingComponent implements OnInit {
         this.loading = false;
       }
     });
-  }
-
-  setMinDate(): void {
-    const today = new Date();
-    this.minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
   }
 
   loadListing(listingId: number): void {
@@ -89,7 +83,7 @@ export class BookingComponent implements OnInit {
     }
     // Navigate to payment page with listing ID
     const proposition: Proposition = {
-      date: `${this.selectedDate}T${this.selectedTime}:00Z`, // Convert to ISO format
+      date: new Date(`${this.selectedDate}T${this.selectedTime}:00`),
       duration: this.lessonDuration,
       price: this.totalPrice,
       listingId: this.listing.id,

@@ -81,7 +81,6 @@ export class ListingsComponent {
   ) { }
 
   ngOnInit(): void {
-    debugger
     this.loadListings();
   }
 
