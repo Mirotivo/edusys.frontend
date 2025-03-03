@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ title }}</h4>
+    <button type="button" class="close" (click)="close()"></button>
+  </div>
+  
+  <div class="modal-body">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+  </div>
+  
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="close()">{{ closeButtonLabel }}</button>
+    <button class="btn btn-primary" (click)="save()">{{saveButtonLabel}}</button>
+  </div>
+  
