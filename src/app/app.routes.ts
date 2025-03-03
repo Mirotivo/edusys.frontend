@@ -22,6 +22,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { TermsComponent } from './pages/terms/terms.component';
 
 import { AuthGuard } from './guards/auth.guard';
+import { TabletestComponent } from './pages/tabletest/tabletest.component';
 
 export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -69,6 +70,7 @@ export const routes: Routes = [
             component: SidebarLayoutComponent,
             canActivate: [AuthGuard],
             children: [
+              { path: 'tabletest', component: TabletestComponent, data: { title: 'tabletest' } },
               { path: '', component: DashboardComponent, data: { title: 'Dashboard' } },
               { path: 'listings', component: ListingsComponent, data: { title: 'Listings' } },
               { path: 'lessons', component: LessonsComponent, data: { title: 'Lessons' } },
