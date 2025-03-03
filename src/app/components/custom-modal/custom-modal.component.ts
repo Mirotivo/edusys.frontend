@@ -15,6 +15,10 @@ export class CustomModalComponent {
   @Input() saveButtonLabel: string = 'Save';
   @Input() closeButtonLabel: string = 'Close';
 
+  // Add Confirmation Properties
+  @Input() isConfirmation: boolean = false;
+  @Input() confirmationMessage: string = '';
+
   @Output() onSave = new EventEmitter<void>();
   @Output() onClose = new EventEmitter<void>();
 

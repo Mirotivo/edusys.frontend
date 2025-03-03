@@ -13,9 +13,9 @@ export class ModalService {
     content: TemplateRef<any>,
     onSaveCallback?: () => void,
     onCloseCallback?: () => void,
+    size: 'sm' | 'md' | 'lg' | 'xl' = 'lg',
     saveLabel = 'Save',
-    closeLabel = 'Close',
-    size: 'sm' | 'lg' | 'xl' = 'lg') {
+    closeLabel = 'Close') {
     const modalRef = this.modalService.open(CustomModalComponent,
       {
         size: size,
@@ -34,6 +34,32 @@ export class ModalService {
 
     if (onCloseCallback) {
       modalRef.componentInstance.onClose.subscribe(onCloseCallback);
+    }
+  }
+
+  /** Opens a simple confirmation modal */
+  openConfirmation(
+    title: string,
+    message: string,
+    onConfirm: () => void,
+    onCancel?: () => void
+  ) {
+    const modalRef = this.modalService.open(CustomModalComponent, {
+      size: 'md',
+      backdrop: 'static',
+      keyboard: false,
+      centered: true
+    });
+
+    modalRef.componentInstance.title = title;
+    modalRef.componentInstance.isConfirmation = true;
+    modalRef.componentInstance.confirmationMessage = message;
+    modalRef.componentInstance.saveButtonLabel = 'Confirm';
+    modalRef.componentInstance.closeButtonLabel = 'Cancel';
+
+    modalRef.componentInstance.onSave.subscribe(onConfirm);
+    if (onCancel) {
+      modalRef.componentInstance.onClose.subscribe(onCancel);
     }
   }
 }

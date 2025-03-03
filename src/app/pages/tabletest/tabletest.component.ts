@@ -53,7 +53,7 @@ export class TabletestComponent implements OnInit {
 
   onAdd(): void {
     console.log('Add button clicked! Implement logic here...');
-    this.modalService.open('Add Item', this.addModalContent, this.saveEditItem.bind(this), this.closeModal.bind(this));
+    this.modalService.open('Add Item', this.addModalContent, this.saveEditItem.bind(this), this.closeModal.bind(this),"md");
   }
   
   onEdit(item: any) {
@@ -63,6 +63,17 @@ export class TabletestComponent implements OnInit {
 
   onDelete(item: any) {
     console.log('🗑️ Delete clicked:', item);
+    this.modalService.openConfirmation(
+      'Delete Item',
+      'Are you sure you want to delete this item?',
+      () => {
+        console.log('Item deleted');
+        // Perform delete action
+      },
+      () => {
+        console.log('Action canceled');
+      }
+    );
   }
   saveEditItem() {
     console.log('✅ Edit Item: Saving updated data...');
