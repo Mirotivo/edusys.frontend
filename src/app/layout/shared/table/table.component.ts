@@ -39,4 +39,35 @@ export class TableComponent<T extends Record<string, any>> {
     const value = key.split('.').reduce((obj, prop) => obj?.[prop], item);
     return column.formatter ? column.formatter(value, item) : value ?? '';
   }
+
+
+
+  sortColumn: string = '';
+  sortDirection: string = 'asc';
+
+  toggleSort(columnKey: string) {
+      if (this.sortColumn === columnKey) {
+          this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+          this.sortColumn = columnKey;
+          this.sortDirection = 'asc';
+      }
+  }
+
+  sortedData() {
+      if (!this.sortColumn) {
+          return this.data;
+      }
+      return [...this.data].sort((a, b) => {
+          const aValue = this.getValue(a, this.sortColumn);
+          const bValue = this.getValue(b, this.sortColumn);
+
+          if (typeof aValue === 'string') {
+              return this.sortDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+          } else {
+              return this.sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+          }
+      });
+  }
+
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { CreateListingComponent } from '../../components/create-listing/create-listing.component';
@@ -18,8 +18,8 @@ import { Listing } from '../../models/listing';
   templateUrl: './listings.component.html',
   styleUrl: './listings.component.scss'
 })
-export class ListingsComponent {
-  @ViewChild('visibilityCell', { static: true }) visibilityCell!: TemplateRef<any>;
+export class ListingsComponent implements OnInit, AfterViewInit {
+  @ViewChild('visibilityCell', { static: false }) visibilityCell!: TemplateRef<any>;
 
   page: number = 1;
   pageSize: number = 10;
@@ -27,8 +27,34 @@ export class ListingsComponent {
   totalResults: number = 0;
   listings: Listing[] = []; // Listings array can contain null
   selectedListing: Listing | null = null; // Selected listing can be null
-  get listingColumns() {
-    return [
+  listingColumns: any[] = [];
+  listingActions = [
+    {
+      label: 'Edit',
+      icon: 'fa-edit',
+      class: 'btn-sm btn-outline-secondary',
+      callback: (listing: any) => this.editListing(listing)
+    },
+    {
+      label: 'Delete',
+      icon: 'fa-trash',
+      class: 'btn-sm btn-outline-danger',
+      callback: (listing: any) => this.deleteListing(listing)
+    }
+  ];
+
+  constructor(
+    private alertService: AlertService,
+    private lessonCategoryService: LessonCategoryService,
+    private listingService: ListingService,
+  ) { }
+
+  ngOnInit(): void {
+    this.loadListings();
+  }
+
+  ngAfterViewInit(): void {
+    this.listingColumns = [
       { key: 'title', label: 'Title' },
       { key: 'lessonCategory', label: 'Category' },
       {
@@ -55,40 +81,14 @@ export class ListingsComponent {
         key: 'isVisible',
         label: 'Visibility',
         cellTemplate: this.visibilityCell
-      }
-    ]
-  };
-
-  listingActions = [
-    {
-      label: 'Edit',
-      icon: 'fa-edit',
-      class: 'btn-sm btn-outline-secondary',
-      callback: (listing: any) => this.editListing(listing)
-    },
-    {
-      label: 'Delete',
-      icon: 'fa-trash',
-      class: 'btn-sm btn-outline-danger',
-      callback: (listing: any) => this.deleteListing(listing)
-    }
-  ];
-
-  constructor(
-    private alertService: AlertService,
-    private lessonCategoryService: LessonCategoryService,
-    private listingService: ListingService,
-  ) { }
-
-  ngOnInit(): void {
-    debugger
-    this.loadListings();
+      }];
   }
 
   loadListings(): void {
     this.listingService.getListings(this.page, this.pageSize).subscribe({
       next: (data) => {
         this.listings = data.results;
+        this.totalResults = data.totalResults;
         if (this.listings.length > 0) {
           this.selectedListing = this.listings[0];
         }
