@@ -23,10 +23,12 @@ import { TermsComponent } from './pages/terms/terms.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { TabletestComponent } from './pages/tabletest/tabletest.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
+  { path: 'forget-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'confirm-email', component: ConfirmEmailComponent },
   { path: 'complete-registration', component: CompleteRegistrationComponent },
@@ -86,7 +88,7 @@ export const routes: Routes = [
         path: 'messages',
         component: MessagesComponent,
         canActivate: [AuthGuard]
-      },
+      }
     ]
   },
   
