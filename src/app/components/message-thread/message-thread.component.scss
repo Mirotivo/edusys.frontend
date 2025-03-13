@@ -214,3 +214,26 @@
   bottom: 0;
   display: flex;
 }
+
+
+
+.slider {
+  position: fixed;
+  top: 0;
+  right: -300px; /* Hidden by default */
+  width: 300px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+.show-slider {
+  right: 0;
+}
+
+.show-slider-desktop {
+  right: 0;
+  width: 400px; /* Adjust width for desktop */
+}
