@@ -1,11 +1,23 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+    GridModule,
+    GridComponent,
+    PageSettingsModel,
+    DataStateChangeEventArgs,
+    PageService,
+    SortService,
+    FilterService,
+    ToolbarService
+} from '@syncfusion/ej2-angular-grids';
 import { FormsModule } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { DialogModule, Dialog } from '@syncfusion/ej2-angular-popups';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { GridStateService, GridState } from '../../services/grid-state.service.service';
 
-import { TableComponent } from '../../layout/shared/table/table.component';
-
-import { AlertService } from '../../services/alert.service';
 import { LessonService } from '../../services/lesson.service';
 import { UserService } from '../../services/user.service';
 
@@ -15,221 +27,179 @@ import { UserRole } from '../../models/enums/user-role';
 import { Lesson } from '../../models/lesson';
 
 @Component({
-  selector: 'app-lessons',
-  imports: [CommonModule, FormsModule, TableComponent],
-  templateUrl: './lessons.component.html',
-  styleUrl: './lessons.component.scss'
+    selector: 'app-lessons',
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        GridModule,
+        DatePickerModule,
+        DropDownListModule,
+        TextBoxModule,
+        DialogModule,
+        ButtonModule
+    ],
+    providers: [ToolbarService, PageService, SortService, FilterService],
+    templateUrl: './lessons.component.html',
+    styleUrls: ['./lessons.component.scss']
 })
-export class LessonsComponent {
-  lessons: Lesson[] = [];
-  page: number = 1;
-  pageSize: number = 10;
-  pageSizeOptions: number[] = [5, 10, 50, 100];
-  totalResults: number = 0;
-  lessonColumns = [
-    { key: 'recipientName', label: 'With' },
-    { key: 'topic', label: 'Topic' },
-    { key: 'date', label: 'Date', formatter: (value: any) => new DatePipe('en-US').transform(value, 'dd MMM yyyy, h:mm a') || 'N/A' },
-    { key: 'duration', label: 'Duration' },
-    { key: 'price', label: 'Price', formatter: (value: any) => value ? `$${value}` : 'N/A' },
-    {
-      key: 'status',
-      label: 'Status',
-      formatter: (value: any) => {
-        const statusText = LessonStatus[value as keyof typeof LessonStatus]; // ✅ Convert to string
-        const statusClass: Record<string, string> = {  // ✅ Allow string-based indexing
-          [LessonStatus.Proposed]: 'bg-warning',
-          [LessonStatus.Booked]: 'bg-success',
-          [LessonStatus.Canceled]: 'bg-danger',
-          [LessonStatus.Completed]: 'bg-info'
-        };
+export class LessonsComponent implements OnInit {
+    //#region ViewChild References
+    @ViewChild('grid') grid!: GridComponent;
+    @ViewChild('editDialog') editDialog!: Dialog;
+    @ViewChild('deleteDialog') deleteDialog!: Dialog;
+    //#endregion
 
-        return `<span class="badge ${statusClass[value as keyof typeof LessonStatus] || 'bg-secondary'}">${statusText}</span>`;
-      }
-    }
-  ];
-  lessonActions = [
-    {
-      label: 'Start Call',
-      icon: 'fa-video',
-      class: 'btn-sm bg-primary-light',
-      callback: (session: any) => this.startVideoCall(session),
-      condition: (session: any) => session.type === LessonType.Lesson && session.status === LessonStatus.Booked
-    },
-    {
-      label: 'Cancel Lesson',
-      icon: 'fa-times-circle',
-      class: 'btn-sm bg-warning-light',
-      callback: (session: any) => this.cancelLesson(session.id),
-      condition: (session: any) => session.type === LessonType.Lesson && session.status === LessonStatus.Booked
-    },
-    {
-      label: 'Accept',
-      icon: 'fa-check',
-      class: 'btn-sm bg-success-light',
-      callback: (session: any) => this.respondToProposition(session.id, true),
-      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === UserRole.Student
-    },
-    {
-      label: 'Refuse',
-      icon: 'fa-times',
-      class: 'btn-sm bg-danger-light',
-      callback: (session: any) => this.respondToProposition(session.id, false),
-      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === UserRole.Student
-    },
-    {
-      label: 'Cancel',
-      icon: 'fa-ban',
-      class: 'btn-sm bg-danger-light',
-      callback: (session: any) => this.respondToProposition(session.id, false),
-      condition: (session: any) => session.type === LessonType.Proposition && session.recipientRole === UserRole.Tutor
-    }
-  ];
-  constructor(
-    private alertService: AlertService,
-    private lessonService: LessonService,
-    private userService: UserService,
-    private toastr: ToastrService
-  ) { }
+    //#region Public Properties
+    // Grid data must follow { result: User[], count: number }
+    public gridData: { result: Lesson[]; count: number } = { result: [], count: 0 };
+    public pageSettings: PageSettingsModel = { pageSize: 10, pageSizes: [5, 10, 20, 50, 100] };
 
-  ngOnInit() {
-    this.loadLessons();
-  }
+    // Toolbar: only a custom "Add" button is used.
+    public toolbar: string[] = ['Add'];
 
-  loadLessons(): void {
-    this.lessonService.getAllLessons(this.page, this.pageSize).subscribe({
-      next: (response) => {
-        this.lessons = response.lessons.results;
-        this.totalResults = response.lessons.totalResults;
-      },
-      error: (err) => {
-        console.error('Failed to fetch lessons and propositions:', err);
-      }
-    });
-  }
+    // Custom dialog properties for Add/Edit.
+    public isEditMode = false; // true for Edit; false for Add.
+    public currentRecord: Lesson = {} as Lesson;
+
+    // Delete confirmation: store record to be deleted.
+    public selectedRecord: Lesson | null = null;
+
+    // Filtering configuration as a partial of User.
+    public searchParams: Partial<Lesson> = {};
+
+    public statusDefault: string = 'All';
+    public LessonStatus = LessonStatus;
+    //#endregion
+
+    //#region Internal State
+    private currentPage = 1;
+    private sortField?: keyof Lesson;
+    private sortDirection: string = 'Ascending';
+    //#endregion
 
 
-  async respondToProposition(propositionId: number, accept: boolean) {
-    if (!accept) {
-      const confirmed = await this.alertService.confirm(
-        'This lesson will be canceled.',
-        'Cancel Lesson',
-        'Yes, cancel it!'
-      );
-      if (!confirmed) return;
+    //#region Constructor & Lifecycle Hooks
+    constructor(
+        private lessonService: LessonService,
+        private userService: UserService,
+        private gridStateService: GridStateService) { }
+
+
+    ngOnInit(): void {
+        this.loadData();
     }
 
-    this.lessonService.respondToProposition(propositionId, accept).subscribe({
-      next: () => {
-        // Update the UI after successful response
-        this.loadLessons();
-      },
-      error: (err) => {
-        console.error('Failed to respond to proposition:', err);
-      }
-    });
-  }
 
-  startVideoCall(lesson: Lesson) {
-    this.userService.getUser().subscribe({
-      next: (user) => {
-        const displayName = user.firstName ? `${user.firstName} ${user.lastName}`.trim() : user.email;
-
-        const contentWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        const contentHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-
-        const newWindow = window.open('', '', `width=${contentWidth},height=${contentHeight},toolbar=0,location=0,status=0,menubar=0,scrollbars=yes,resizable=yes`);
-        const rawHtml = `
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Jitsi Video Call</title>
-            <!-- jQuery Library -->
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <!-- Jitsi External API -->
-            <script src="${lesson.meetingUrl}/external_api.js"></script>
-          </head>
-          <body>
-            <div id="jitsi-container" style="height: 100vh; width: 100%;"></div>
-            <script>
-              document.addEventListener('DOMContentLoaded', function () {
-                  const options = {
-                      roomName: "${lesson.meetingRoomName}",
-                      parentNode: document.getElementById('jitsi-container'),
-                      userInfo: {
-                        displayName: "${displayName}"
-                      },
-                      jwt: "${lesson.meetingToken}",
-                      configOverwrite: {
-                          enableWelcomePage: false,
-                          prejoinPageEnabled: false,
-                          startWithAudioMuted: false,
-                          startWithVideoMuted: false
-                      },
-                      interfaceConfigOverwrite: {
-                          filmStripOnly: false
-                      }
-                  };
-
-                  const api = new JitsiMeetExternalAPI("${lesson.meetingDomain}", options);
-
-                  api.addEventListener('videoConferenceJoined', function () {
-                      console.log("${displayName} has joined the video conference");
-                  });
-
-                  api.addEventListener('videoConferenceLeft', function () {
-                      console.log("${displayName} has left the video conference");
-                      api.dispose();
-                      window.close();
-                  });
-              });
-            </script>
-          </body>
-          </html>
-        `;
-        if (newWindow) {
-          newWindow.document.write(rawHtml);
-          newWindow.document.close();
+    onGridCreated(): void {
+        if (this.grid) {
+            setTimeout(() => {
+                this.grid.pageSettings.pageSize = this.pageSettings.pageSize;
+                this.grid.dataBind();
+            }, 0);
         }
-      },
-      error: (err: any) => {
-        console.error('Failed to fetch user:', err);
+    }
+
+    public get statusData(): string[] {
+        return ['All', ...Object.keys(LessonStatus).filter(key => isNaN(Number(key)))];
       }
-    });
-  }
 
-  async cancelLesson(lessonId: number) {
-    const confirmed = await this.alertService.confirm(
-      'This lesson will be canceled.',
-      'Cancel Lesson',
-      'Yes, cancel it!'
-    );
-    if (!confirmed) return;
+    /**
+     * Handles grid state changes by delegating to the GridStateService.
+     */
+    onDataStateChange(state: DataStateChangeEventArgs): void {
+        const gridState: GridState<Lesson> = this.gridStateService.updateState<Lesson>(state);
+        this.currentPage = gridState.currentPage;
+        this.pageSettings.pageSize = gridState.pageSize;
+        this.sortField = gridState.sortField;
+        this.sortDirection = gridState.sortDirection || 'Ascending';
+        this.searchParams = gridState.searchParams;
+        this.loadData();
+    }
 
-    this.lessonService.cancelLesson(lessonId).subscribe({
-      next: () => {
-        this.toastr.success('Lesson canceled successfully.', 'Success');
-        // Update the lesson status locally to reflect the cancellation
-        const lesson = this.lessons.find((l) => l.id === lessonId);
-        if (lesson) {
-          lesson.status = LessonStatus.Canceled;
+    /**
+     * Loads grid data based on current state.
+     */
+    loadData(): void {
+        this.lessonService.getAllLessons(this.currentPage, this.pageSettings.pageSize).subscribe({
+            next: (response) => {
+
+                this.gridData = { result: response.lessons.results, count: response.lessons.totalResults }
+            },
+            error: (err) => {
+                console.error('Failed to fetch lessons and propositions:', err);
+            }
+        });
+    }
+    //#endregion
+
+    //#region Custom Filter Handlers
+    onDateFilterChange(args: any, field: string): void {
+        if (args.value) {
+            this.grid.filterByColumn('date', 'equal', args.value);
+        } else {
+            this.grid.clearFiltering([field]);
         }
-      },
-      error: (err) => {
-        console.error('Failed to cancel lesson:', err);
-      },
-    });
-  }
+    }
 
-  onPageChange(newPage: number) {
-    this.page = newPage;
-    this.loadLessons();
-  }
+    onStatusFilterChange(args: any, field: string): void {
+        if (args.value && args.value !== 'All') {
+            this.grid.filterByColumn('status', 'equal', args.value);
+        } else {
+            this.grid.clearFiltering([field]);
+        }
+    }
+    //#endregion
 
-  onPageSizeChange(newSize: number) {
-    this.pageSize = newSize;
-    this.loadLessons();
-  }
+    //#region Command Column & Toolbar Handlers
+    onAddClick(): void {
+        this.isEditMode = false;
+        this.currentRecord = {} as Lesson;
+        this.editDialog.show();
+    }
+
+    onEdit(user: Lesson): void {
+        this.isEditMode = true;
+        this.currentRecord = { ...user };
+        this.editDialog.show();
+    }
+
+    onDelete(user: Lesson): void {
+        this.selectedRecord = user;
+        this.deleteDialog.show();
+    }
+
+    saveRecord(): void {
+        if (this.isEditMode) {
+            const index = this.gridData.result.findIndex(item => item.id === this.currentRecord.id);
+            if (index > -1) {
+                this.gridData.result[index] = this.currentRecord;
+            }
+        } else {
+            this.gridData.result.push(this.currentRecord);
+            this.gridData.count++;
+        }
+        this.editDialog.hide();
+        this.grid.refresh();
+    }
+
+    cancelRecord(): void {
+        this.editDialog.hide();
+    }
+
+    confirmDelete(): void {
+        if (this.selectedRecord) {
+            const index = this.gridData.result.findIndex(item => item.id === this.selectedRecord!.id);
+            if (index > -1) {
+                this.gridData.result.splice(index, 1);
+                this.gridData.count--;
+            }
+        }
+        this.deleteDialog.hide();
+        this.grid.refresh();
+    }
+
+    cancelDelete(): void {
+        this.deleteDialog.hide();
+    }
 }
