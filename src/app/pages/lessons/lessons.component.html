@@ -1,9 +1,12 @@
-<ejs-grid #grid height="400px" 
+<ejs-grid #grid 
+    height="400px" 
     [dataSource]="gridData" 
+    allowResizing= 'true' 
     [pageSettings]="pageSettings" 
     [allowPaging]="true" 
     [allowSorting]="true" 
     [allowFiltering]="true" 
+    autoFit= 'true'
     (dataStateChange)="onDataStateChange($event)"
     (created)="onGridCreated()">
     <!-- Custom Toolbar Template -->
@@ -16,7 +19,7 @@
 
     <e-columns>
         <e-column field="recipientName" headerText="With" textAlign="left" width="150"></e-column>
-        <e-column field="topic" headerText="Topic" textAlign="left" width="100"></e-column>
+        <e-column field="topic" headerText="Topic" textAlign="left" minWidth="100" width="150" maxWidth="200"></e-column>
         <e-column field="date" headerText="Date" textAlign="left" width="150" format="yMd">
             <ng-template #filterTemplate let-data>
                 <div>
@@ -47,9 +50,9 @@
               </ng-template>
         </e-column>
         <!-- Command Column: Filtering disabled -->
-        <e-column headerText="Actions" textAlign="center" width="150" [allowFiltering]="false">
+        <e-column headerText="Actions" textAlign="center" width="200" [allowFiltering]="false">
             <ng-template #template let-data>
-                <button ejs-button cssClass="e-flat" iconCss="e-icons e-edit" (click)="onEdit(data)">Edit</button>
+                <button ejs-button cssClass="e-flat" iconCss="e-icons e-close" (click)="onEdit(data)">Cancel</button>
                 <button ejs-button cssClass="e-flat" iconCss="e-icons e-delete" (click)="onDelete(data)">Delete</button>
             </ng-template>
             <ng-template #filterTemplate></ng-template>

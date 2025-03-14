@@ -8,7 +8,8 @@ import {
     PageService,
     SortService,
     FilterService,
-    ToolbarService
+    ToolbarService,
+    ResizeService
 } from '@syncfusion/ej2-angular-grids';
 import { FormsModule } from '@angular/forms';
 import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
@@ -39,7 +40,7 @@ import { Lesson } from '../../models/lesson';
         DialogModule,
         ButtonModule
     ],
-    providers: [ToolbarService, PageService, SortService, FilterService],
+    providers: [ToolbarService, PageService, SortService, FilterService, ResizeService],
     templateUrl: './lessons.component.html',
     styleUrls: ['./lessons.component.scss']
 })
@@ -125,6 +126,7 @@ export class LessonsComponent implements OnInit {
             next: (response) => {
 
                 this.gridData = { result: response.lessons.results, count: response.lessons.totalResults }
+              console.log("data", this.gridData);
             },
             error: (err) => {
                 console.error('Failed to fetch lessons and propositions:', err);
