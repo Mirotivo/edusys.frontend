@@ -52,8 +52,8 @@
         <!-- Command Column: Filtering disabled -->
         <e-column headerText="Actions" textAlign="center" width="200" [allowFiltering]="false">
             <ng-template #template let-data>
-                <button ejs-button cssClass="e-flat" iconCss="e-icons e-close" (click)="onEdit(data)">Cancel</button>
-                <button ejs-button cssClass="e-flat" iconCss="e-icons e-delete" (click)="onDelete(data)">Delete</button>
+                <button ejs-button cssClass="e-flat e-danger" iconCss="e-icons e-close" (click)="onEdit(data)">Cancel</button>
+                <button ejs-button cssClass="e-flat e-success" iconCss="e-icons e-check" (click)="onDelete(data)">Accept</button>
             </ng-template>
             <ng-template #filterTemplate></ng-template>
         </e-column>
