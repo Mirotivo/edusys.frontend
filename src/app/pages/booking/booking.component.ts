@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
+import { PaymentMethodComponent } from '../../components/payment-method/payment-method.component';
 
 import { AlertService } from '../../services/alert.service';
 import { LessonService } from '../../services/lesson.service';
 import { ListingService } from '../../services/listing.service';
+import { PaymentService } from '../../services/payment.service';
 
 import { Card } from '../../models/card';
 import { UserCardType } from '../../models/enums/user-card-type';
@@ -16,14 +17,13 @@ import { Proposition } from '../../models/proposition';
 
 @Component({
   selector: 'app-booking',
-  imports: [CommonModule, FormsModule, ManageCardsComponent],
+  imports: [CommonModule, FormsModule, PaymentMethodComponent],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss'
 })
 export class BookingComponent implements OnInit {
   CardType: UserCardType = UserCardType.Paying;
   selectedCard: Card | null = null;
-
   listing!: Listing;
   loading: boolean = true;
   selectedDate: Date = new Date(); // Selected lesson date
@@ -33,6 +33,7 @@ export class BookingComponent implements OnInit {
   minDate: Date = new Date(); // Minimum selectable date
 
   constructor(
+    private paymentService: PaymentService,
     private alertService: AlertService,
     private lessonService: LessonService,
     private route: ActivatedRoute,
@@ -52,7 +53,7 @@ export class BookingComponent implements OnInit {
       }
     });
   }
-
+  
   loadListing(listingId: number): void {
     this.listingService.getListing(listingId).subscribe({
       next: (listing) => {
@@ -64,10 +65,6 @@ export class BookingComponent implements OnInit {
         console.error('Failed to fetch listing:', err);
       }
     });
-  }
-
-  onCardSelected(card: Card | null): void {
-    this.selectedCard = card;
   }
 
   updateTotalPrice(): void {

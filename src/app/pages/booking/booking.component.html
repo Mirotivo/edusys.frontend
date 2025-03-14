@@ -31,20 +31,19 @@
                 <!-- Select Lesson Duration -->
                 <div class="form-group">
                   <label for="lessonDuration">Duration (hours)</label>
-                  <select id="lessonDuration" class="form-control" [(ngModel)]="lessonDuration" (change)="updateTotalPrice()">
+                  <select id="lessonDuration" class="form-control" [(ngModel)]="lessonDuration"
+                    (change)="updateTotalPrice()">
                     <option *ngFor="let hours of [1, 2, 3, 4, 5]" [value]="hours">{{ hours }} hour(s)</option>
                   </select>
                 </div>
 
-                <!-- Payment Method -->
-                <app-manage-cards [cardPurpose]="CardType" (cardSelected)="onCardSelected($event)"></app-manage-cards>
+                <app-payment-method 
+                  [totalPrice]="totalPrice"
+                  [listingId]="listing.id"
+                  [returnUrl]="'/messages'"
+                  (paymentConfirmed)="confirmAndPay()">
+                </app-payment-method>
 
-                <!-- Submit Section -->
-                <div class="submit-section mt-4">
-                  <button type="button" class="btn btn-primary submit-btn" (click)="confirmAndPay()">
-                    Confirm and Pay {{ totalPrice | currency: 'USD' }}
-                  </button>
-                </div>
               </div>
             </ng-template>
           </div>

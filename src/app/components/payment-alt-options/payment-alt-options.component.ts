@@ -92,12 +92,12 @@ export class PaymentAltOptionsComponent implements OnInit {
           return new Promise<string>((resolve, reject) => {
             this.paymentService.createPayment("PayPal", this.listingId, 69.00).subscribe({
               next: (order) => {
-                if (!order || !order.id) {
+                if (!order || !order.paymentId) {
                   console.error('Payment Id not returned from the server.');
                   reject('Payment Id not returned from the server.');
                   return;
                 }
-                resolve(order.id);
+                resolve(order.paymentId);
               },
               error: (error) => {
                 console.error('Error creating order:', error);

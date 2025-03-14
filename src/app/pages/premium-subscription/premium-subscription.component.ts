@@ -77,7 +77,7 @@ export class PremiumSubscriptionComponent implements OnInit {
 
     try {
       this.paymentService.createPayment('Stripe', 0, this.subscription.price).subscribe({
-        next: (session: { id: string; approvalUrl: string }) => {
+        next: (session: { paymentId: string; approvalUrl: string }) => {
           if (session.approvalUrl) {
             window.location.href = session.approvalUrl; // Redirect to Stripe
           }

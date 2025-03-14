@@ -45,36 +45,12 @@
                             </div>
                             <!-- /Subscription Options -->
 
-                            <!-- Stripe Payment -->
-                            <div class="payment-list">
-                                <label class="payment-radio stripe-option">
-
-
-                                    Pay with Credit/Debit Card
-                                    <img src="https://e7.pngegg.com/pngimages/633/870/png-clipart-powerd-by-stripe-payment-methods-credit-cards-tech-companies-payments-thumbnail.png"
-                                        alt="Stripe Logo" style="height: 24px;"></label>
-
-                                <app-manage-cards [cardPurpose]="CardType"
-                                    (cardSelected)="onCardSelected($event)"></app-manage-cards>
-                            </div>
-                            <!-- /Stripe Payment -->
-
-                            <!-- Terms Accept -->
-                            <div class="terms-accept">
-                                <div class="custom-checkbox">
-                                    <input type="checkbox" id="terms_accept">
-                                    <label for="terms_accept">I have read and accepted <a href="terms">Terms &amp;
-                                            Conditions</a></label>
-                                </div>
-                            </div>
-                            <!-- /Terms Accept -->
-
-                            <!-- Submit Section -->
-                            <div class="submit-section mt-4">
-                                <button type="submit" class="btn btn-primary submit-btn" [disabled]="!selectedCard"
-                                    (click)="payWithSelectedCard()">Subscribe Now</button>
-                            </div>
-                            <!-- /Submit Section -->
+                            <app-payment-method
+                                [totalPrice]="totalPrice"
+                                [returnUrl]="'/messages'"
+                                [(selectedCard)]="selectedCard"
+                                (paymentConfirmed)="payWithSelectedCard()">
+                            </app-payment-method>
                         </div>
                         <!-- /Subscription Form -->
                     </div>
@@ -118,7 +94,7 @@
 
                                 <div class="booking-total">
                                     <ul class="booking-total-list">
-                                        <li><span>Total</span><span class="total-cost">${{ finalPrice.toFixed(2)
+                                        <li><span>Total</span><span class="total-cost">${{ totalPrice.toFixed(2)
                                                 }}</span></li>
                                     </ul>
                                 </div>

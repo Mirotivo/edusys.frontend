@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ManageCardsComponent } from '../../components/manage-cards/manage-cards.component';
+import { PaymentMethodComponent } from "../../components/payment-method/payment-method.component";
 
 import { AlertService } from '../../services/alert.service';
 import { ListingService } from '../../services/listing.service';
@@ -15,7 +15,7 @@ import { UserCardType } from '../../models/enums/user-card-type';
 
 @Component({
   selector: 'app-payment',
-  imports: [CommonModule, FormsModule, ManageCardsComponent],
+  imports: [CommonModule, FormsModule, PaymentMethodComponent],
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss']
 })
@@ -78,7 +78,7 @@ export class PaymentComponent implements OnInit {
 
     const subscriptionRequest = {
       promoCode: this.promoCode,
-      amount: this.finalPrice,
+      amount: this.totalPrice,
       paymentMethod: `Card ending in ${this.selectedCard.last4}`,
       paymentType: TransactionPaymentType.StudentMembership,
       billingFrequency: this.selectedPlan
@@ -132,7 +132,7 @@ export class PaymentComponent implements OnInit {
 
   promoCode: string = '';
   discountAmount: number = 0;
-  finalPrice: number = this.getSelectedPlanPrice();
+  totalPrice: number = this.getSelectedPlanPrice();
   promoMessage: string = '';
 
   getSelectedPlan(): any {
@@ -144,7 +144,7 @@ export class PaymentComponent implements OnInit {
   }
 
   updatePlan(): void {
-    this.finalPrice = this.getSelectedPlanPrice();
+    this.totalPrice = this.getSelectedPlanPrice();
     this.applyPromoCode();
   }
 
@@ -152,7 +152,7 @@ export class PaymentComponent implements OnInit {
     if (!this.promoCode.trim()) {
       this.promoMessage = "Please enter a promo code.";
       this.discountAmount = 0;
-      this.finalPrice = this.getSelectedPlanPrice();
+      this.totalPrice = this.getSelectedPlanPrice();
       return;
     }
 
@@ -160,13 +160,13 @@ export class PaymentComponent implements OnInit {
       next: (response) => {
         const planPrice = this.getSelectedPlanPrice();
         this.discountAmount = response.discountAmount || (planPrice * response.discountPercentage) / 100;
-        this.finalPrice = Math.max(0, planPrice - this.discountAmount);
+        this.totalPrice = Math.max(0, planPrice - this.discountAmount);
         this.promoMessage = `Promo applied! You saved $${this.discountAmount.toFixed(2)}.`;
       },
       error: () => {
         this.promoMessage = "Invalid or expired promo code.";
         this.discountAmount = 0;
-        this.finalPrice = this.getSelectedPlanPrice();
+        this.totalPrice = this.getSelectedPlanPrice();
       },
     });
   }
