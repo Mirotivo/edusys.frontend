@@ -40,8 +40,10 @@
                 <app-payment-method 
                   [totalPrice]="totalPrice"
                   [listingId]="listing.id"
+                  [(selectedCard)]="selectedCard"
                   [returnUrl]="'/messages'"
-                  (paymentConfirmed)="confirmAndPay()">
+                  (paymentConfirmed)="payWithSelectedCard()"
+                  [onApproval]="handlePayment">
                 </app-payment-method>
 
               </div>

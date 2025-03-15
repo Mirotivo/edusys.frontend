@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentMethodComponent } from "../../components/payment-method/payment-method.component";
 
 import { AlertService } from '../../services/alert.service';
-import { ListingService } from '../../services/listing.service';
 import { SubscriptionService } from '../../services/subscription.service';
 
 import { Card } from '../../models/card';
@@ -31,10 +30,9 @@ export class PaymentComponent implements OnInit {
     private alertService: AlertService,
     private route: ActivatedRoute,
     private router: Router,
-    private listingService: ListingService,
     private subscriptionService: SubscriptionService
   ) {
-    this.handleApproval = this.handleApproval.bind(this);
+    this.handlePayment = this.handlePayment.bind(this);
   }
 
   ngOnInit(): void {
@@ -79,14 +77,14 @@ export class PaymentComponent implements OnInit {
       return;
     }
 
-    this.handleApproval(null);
+    this.handlePayment(null);
   }
 
-  handleApproval(data: any) {
+  handlePayment(data: any) {
     console.log('PayPal Payment Approved!', data);
 
     const subscriptionRequest = {
-      paymentId: data ? data.paymentID : null,
+      payPalPaymentId: data ? data.paymentID : null,
       promoCode: this.promoCode,
       amount: this.totalPrice,
       paymentMethod: this.selectedCard

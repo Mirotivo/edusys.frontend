@@ -10,8 +10,10 @@ export const httpInterceptorFn: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
-  console.log('Intercepted request:', req);
-
+  // console.log('Intercepted request:', req);
+  const router = inject(Router);
+  const authService = inject(AuthService);
+  
   // Add the Authorization header if the token exists
   const token = localStorage.getItem('token');
   if (token) {
@@ -21,14 +23,12 @@ export const httpInterceptorFn: HttpInterceptorFn = (
       },
     });
   }
-  const router = inject(Router);
-  const authService = inject(AuthService);
 
   // Intercept the response and map to `response.data` if applicable
   return next(req).pipe(
     map((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse && event.body && event.body.data !== undefined) {
-        console.log('Intercepted response body:', event.body);
+        // console.log('Intercepted response body:', event.body);
         // Map the response body to `response.data`
         return event.clone({ body: event.body.data });
       }

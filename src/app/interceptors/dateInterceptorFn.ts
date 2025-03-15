@@ -6,22 +6,22 @@ import { toZonedTime } from 'date-fns-tz';
 
 import { UserService } from '../services/user.service';
 
+
 export const dateInterceptorFn: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
-  console.log('Date Interceptor - Checking request:', req);
+  // console.log('Date Interceptor - Checking request:', req);
+  const userService = inject(UserService);
 
   // If request has no date fields, do nothing
   if (!hasDateFields(req.body)) {
     return next(req);
   }
 
-  const userService = inject(UserService);
-
   return userService.getTimeZone().pipe(
     switchMap(userTimeZone => {
-      console.log('User Time Zone:', userTimeZone);
+      // console.log('User Time Zone:', userTimeZone);
       // Convert only new Date objects (skip already formatted strings)
       const body = convertDatesToUTC(req.body);
       req = req.clone({ body });

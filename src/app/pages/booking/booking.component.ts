@@ -11,6 +11,7 @@ import { ListingService } from '../../services/listing.service';
 import { PaymentService } from '../../services/payment.service';
 
 import { Card } from '../../models/card';
+import { TransactionPaymentMethod } from '../../models/enums/transaction-payment-method';
 import { UserCardType } from '../../models/enums/user-card-type';
 import { Listing } from '../../models/listing';
 import { Proposition } from '../../models/proposition';
@@ -39,7 +40,9 @@ export class BookingComponent implements OnInit {
     private route: ActivatedRoute,
     private listingService: ListingService,
     private router: Router
-  ) { }
+  ) {
+    this.handlePayment = this.handlePayment.bind(this);
+  }
 
   ngOnInit(): void {
     // Fetch the listing ID from route parameters
@@ -73,7 +76,7 @@ export class BookingComponent implements OnInit {
     }
   }
 
-  confirmAndPay(): void {
+  payWithSelectedCard(): void {
     if (!this.selectedDate || !this.selectedTime) {
       this.alertService.warningAlert('Please select a date and time for the lesson.');
       return;
@@ -82,8 +85,17 @@ export class BookingComponent implements OnInit {
       this.alertService.warningAlert('Please select a payment card.');
       return;
     }
+
+    this.handlePayment(null);
+  }
+
+  handlePayment(data: any) {
+    console.log('PayPal Payment Approved!', data);
+
     // Navigate to payment page with listing ID
     const proposition: Proposition = {
+      paymentMethod: data ? TransactionPaymentMethod.PayPal : TransactionPaymentMethod.Stripe,
+      payPalPaymentId: data ? data.paymentID : null,
       date: new Date(`${this.selectedDate}T${this.selectedTime}:00`),
       duration: this.lessonDuration,
       price: this.totalPrice,

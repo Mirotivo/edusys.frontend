@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LessonService } from '../../services/lesson.service';
 import { UserService } from '../../services/user.service';
 
+import { TransactionPaymentMethod } from '../../models/enums/transaction-payment-method';
 import { Listing } from '../../models/listing';
 import { Proposition } from '../../models/proposition';
 
@@ -77,6 +78,8 @@ export class ProposeLessonComponent {
 
     if (this.lessonDateTime && this.lessonDuration && this.lessonPrice !== null) {
       const proposition: Proposition = {
+        paymentMethod: TransactionPaymentMethod.Card,
+        payPalPaymentId: null,
         date: this.lessonDateTime,
         duration: this.lessonDuration,
         price: this.lessonPrice,
