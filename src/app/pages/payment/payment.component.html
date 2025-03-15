@@ -49,7 +49,8 @@
                                 [totalPrice]="totalPrice"
                                 [returnUrl]="'/messages'"
                                 [(selectedCard)]="selectedCard"
-                                (paymentConfirmed)="payWithSelectedCard()">
+                                (paymentConfirmed)="payWithSelectedCard()"
+                                [onApproval]="handleApproval">
                             </app-payment-method>
                         </div>
                         <!-- /Subscription Form -->

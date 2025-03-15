@@ -19,13 +19,16 @@ export class PaymentMethodComponent {
   @Input() totalPrice: number = 0;
   @Input() listingId: number | null = null;
   @Input() returnUrl: string = '/payment-result';
+  @Input() onApproval!: (data: any) => void;
   @Output() paymentConfirmed = new EventEmitter<void>();
   CardType: UserCardType = UserCardType.Paying;
   @Input() selectedCard: Card | null = null;
   @Output() selectedCardChange = new EventEmitter<Card | null>();
   selectedPaymentMethod: string = 'card';
 
-  constructor(private paymentService: PaymentService) { }
+  constructor(
+    private paymentService: PaymentService
+  ) { }
 
   onCardSelected(card: Card | null): void {
     this.selectedCard = card;
@@ -36,17 +39,18 @@ export class PaymentMethodComponent {
     this.selectedPaymentMethod = method;
     if (method === 'paypal') {
       this.paymentService.loadPayPalScript().then(() => {
-        this.paymentService.renderPayPalButton(
+        return this.paymentService.renderPayPalButton(
           '#paypal-button-container',
           'PayPal',
           this.listingId ?? 0,
           this.totalPrice,
-          '/messages'
+          '/messages',
+          this.onApproval
         );
       });  
     }
   }
-
+  
   confirmAndPay() {
     if (this.selectedPaymentMethod === 'card') {
       console.log('Processing card payment...');

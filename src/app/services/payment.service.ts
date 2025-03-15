@@ -70,7 +70,8 @@ export class PaymentService {
     paymentMethod: string,
     listingId: number,
     amount: number,
-    returnUrl: string
+    returnUrl: string,
+    onApprove: (data: any) => void | null
   ): void {
     const paypal = (window as any).paypal;
     if (!paypal || !paypal.Buttons) {
@@ -98,14 +99,18 @@ export class PaymentService {
         });
       },
       onApprove: (data: any) => {
-        const urlWithParams = this.buildReturnUrl(returnUrl, {
-          success: true,
-          listingId: listingId,
-          gateway: paymentMethod,
-          paymentId: data.orderID
-        });
-
-        this.router.navigateByUrl(urlWithParams);
+        // Use the passed onApprove callback if provided, otherwise use default logic
+        if (onApprove) {
+          onApprove(data);
+        } else {
+          const urlWithParams = this.buildReturnUrl(returnUrl, {
+            success: true,
+            listingId: listingId,
+            gateway: paymentMethod,
+            paymentId: data.orderID
+          });
+          this.router.navigateByUrl(urlWithParams);
+        }
       },
       onError: (err: any) => {
         console.error('PayPal Button Error:', err);

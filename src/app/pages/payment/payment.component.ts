@@ -10,6 +10,7 @@ import { ListingService } from '../../services/listing.service';
 import { SubscriptionService } from '../../services/subscription.service';
 
 import { Card } from '../../models/card';
+import { TransactionPaymentMethod } from '../../models/enums/transaction-payment-method';
 import { TransactionPaymentType } from '../../models/enums/transaction-payment-type';
 import { UserCardType } from '../../models/enums/user-card-type';
 
@@ -32,7 +33,9 @@ export class PaymentComponent implements OnInit {
     private router: Router,
     private listingService: ListingService,
     private subscriptionService: SubscriptionService
-  ) { }
+  ) {
+    this.handleApproval = this.handleApproval.bind(this);
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = !!localStorage.getItem('token');
@@ -76,14 +79,27 @@ export class PaymentComponent implements OnInit {
       return;
     }
 
+    this.handleApproval(null);
+  }
+
+  handleApproval(data: any) {
+    console.log('PayPal Payment Approved!', data);
+
     const subscriptionRequest = {
+      paymentId: data ? data.paymentID : null,
       promoCode: this.promoCode,
       amount: this.totalPrice,
-      paymentMethod: `Card ending in ${this.selectedCard.last4}`,
+      paymentMethod: this.selectedCard
+      ? TransactionPaymentMethod.Stripe
+      : TransactionPaymentMethod.PayPal,
+      description: this.selectedCard
+        ? `Card ending in ${this.selectedCard.last4}`
+        : `PayPal - Transaction ID: ${data.orderID}`,
       paymentType: TransactionPaymentType.StudentMembership,
       billingFrequency: this.selectedPlan
     };
 
+    // Capture the payment and then create the subscription
     this.subscriptionService.createSubscription(subscriptionRequest).subscribe({
       next: () => {
         this.alertService.successAlert('Subscription created successfully!', 'Success');
@@ -92,22 +108,20 @@ export class PaymentComponent implements OnInit {
         const queryParams = Object.fromEntries(referrerUrl.searchParams.entries());
         delete queryParams['referrer'];
         queryParams['success'] = 'true';
-        this.router.navigate([referrerUrl.pathname], {
-          queryParams
-        });
+
+        this.router.navigate([referrerUrl.pathname], { queryParams });
       },
       error: (err) => {
         console.error('Error creating subscription:', err);
-        this.alertService.errorAlert('Failed to process payment. Please try again.', 'Payment Failed');
+        this.alertService.errorAlert('Failed to process subscription. Please try again.', 'Subscription Failed');
 
         const referrerUrl = new URL(this.referrer || '/', window.location.origin);
         const queryParams = Object.fromEntries(referrerUrl.searchParams.entries());
         delete queryParams['referrer'];
         queryParams['success'] = 'false';
-        this.router.navigate([referrerUrl.pathname], {
-          queryParams
-        });
-      },
+
+        this.router.navigate([referrerUrl.pathname], { queryParams });
+      }
     });
   }
 
