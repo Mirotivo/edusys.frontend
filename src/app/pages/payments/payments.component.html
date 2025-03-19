@@ -87,15 +87,25 @@
         <div class="card p-4 mb-4">
           <h2 class="mb-3">Stripe Connect</h2>
           <div class="text-center">
-            <button *ngIf="!isConnected" class="btn btn-primary" (click)="connectStripe()">
+            <button *ngIf="!isStripeConnected" class="btn btn-primary" (click)="connectStripe()">
               Connect with Stripe
             </button>
-            <div *ngIf="isConnected" class="mt-3">
+            <div *ngIf="isStripeConnected" class="mt-3">
               <p class="text-success">You are connected to Stripe</p>
               <button class="btn btn-outline-secondary" (click)="connectStripe()">
                 Connect with a Different Account
               </button>
             </div>
+          </div>
+        </div>
+        <div class="card p-4 mb-4">
+          <h2 class="mb-3">Paypal Connect</h2>
+          <div *ngIf="!isPayPalConnected" class="text-center">
+            <span id='paypal-button-container'></span>
+          </div>
+          <div *ngIf="isPayPalConnected" class="mt-3">
+            <p class="text-success">You are connected to PayPal</p>
+            <span id='paypal-button-container'></span>
           </div>
         </div>
 

@@ -7,6 +7,7 @@ import { CompleteRegistrationComponent } from './pages/complete-registration/com
 import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { EvaluationsComponent } from './pages/evaluations/evaluations.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { GoodbyeComponent } from './pages/goodbye/goodbye.component';
 import { HomeComponent } from './pages/home/home.component';
 import { InvoicesComponent } from './pages/invoices/invoices.component';
@@ -19,11 +20,10 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { SigninComponent } from './pages/signin/signin.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { TabletestComponent } from './pages/tabletest/tabletest.component';
 import { TermsComponent } from './pages/terms/terms.component';
 
 import { AuthGuard } from './guards/auth.guard';
-import { TabletestComponent } from './pages/tabletest/tabletest.component';
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   { path: 'signup', component: SignupComponent },

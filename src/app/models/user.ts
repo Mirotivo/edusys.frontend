@@ -28,7 +28,8 @@ export interface User {
   profileImagePath: string; // Path or URL to the profile image
   profileImage: File; // Path or URL to the profile image
   recommendationToken: string;
-  paymentDetailsAvailable: boolean;
+  isStripeConnected: boolean;
+  isPayPalConnected: boolean;
   profileCompletion: number;
 }
 export interface CompleteProfile {

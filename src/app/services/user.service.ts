@@ -114,8 +114,8 @@ export class UserService {
       formData.append('recommendationToken', user.recommendationToken);
     }
 
-    if (user.paymentDetailsAvailable !== undefined) {
-      formData.append('paymentDetailsAvailable', String(user.paymentDetailsAvailable));
+    if (user.isStripeConnected !== undefined) {
+      formData.append('isStripeConnected', String(user.isStripeConnected));
     }
 
     return this.http.put<void>(`${this.apiUrl}/me`, formData);

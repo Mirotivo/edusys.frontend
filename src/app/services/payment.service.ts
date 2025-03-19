@@ -118,6 +118,11 @@ export class PaymentService {
     }).render(containerId);
   }
 
+  connectPayPalAccount(authCode: string): Observable<{ success: boolean }> {
+    const body = { authCode };
+    return this.http.post<{ success: boolean }>(`${this.apiUrl}/connect-paypal-account`, body);
+  }
+      
   /**
    * Helper function to construct a return URL with query parameters.
    * @param baseUrl - Base return URL (e.g., "/payment-result")
@@ -143,8 +148,8 @@ export class PaymentService {
     return this.http.delete<void>(`${this.apiUrl}/remove-card/${id}`);
   }
 
-  connectAccount(): Observable<{ url: string }> {
-    return this.http.get<{ url: string }>(`${this.apiUrl}/connect-link`);
+  connectStripeAccount(): Observable<{ url: string }> {
+    return this.http.get<{ url: string }>(`${this.apiUrl}/connect-stripe-account`);
   }
 
   createPayout(amount: number, currency: string): Observable<void> {

@@ -52,7 +52,7 @@ export class ProposeLessonComponent {
   checkPaymentDetails(): void {
     this.userService.getUser().subscribe({
       next: (user) => {
-        this.paymentDetailsAvailable = user.paymentDetailsAvailable;
+        this.paymentDetailsAvailable = user.isStripeConnected;
       },
       error: (err) => {
         console.error('Failed to check payment details:', err);

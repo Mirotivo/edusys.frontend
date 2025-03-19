@@ -34,7 +34,7 @@ export class PaymentsComponent {
 
 
   // Payment
-  paypalAccountAdded: boolean = false;
+  isPayPalConnected: boolean = false;
   paymentPreference: UserPaymentSchedule = UserPaymentSchedule.PerLesson;
   compensationPercentage: number = 50;
 
@@ -56,6 +56,11 @@ export class PaymentsComponent {
     this.route.queryParams.subscribe((params) => {
       this.activeTab = params['section'] || 'profile';
       this.activeSubTab = params['detail'] || 'history';
+
+      const paypalCode = params['code'];
+      if (paypalCode) {
+        this.handlePayPalAuth(paypalCode);
+      }  
     });
 
     this.fetchCompensationPercentage();
@@ -63,14 +68,71 @@ export class PaymentsComponent {
     this.loadUserProfile();
     this.loadPaymentHistory();
     this.loadSubscriptionDetails();
+
+    this.loadPayPalScript().then(paypal => {
+      paypal.use(['login'], function (login: any) {
+        login.render({
+          "appid": "AeGRDU26BUwiEgw_MZr4GV3FR8Ge5-0MVM8XOEcTMUNo-ZbhsN7jTQk0W68_Ts-fSIxDDBYyhSrhCu54",
+          "authend": "sandbox",
+          "scopes": "openid email https://uri.paypal.com/services/paypalattributes",
+          "containerid": "paypal-button-container",
+          "responseType": "code",
+          "locale": "en-us",
+          "buttonType": "CWP",
+          "buttonShape": "rectangle",
+          "buttonSize": "md",
+          "fullPage": "true",
+          "returnurl": "https://www.avancira.com/dashboard/payments?section=payments&detail=receiving"
+        });
+      });
+    });
+
+  }
+
+  loadPayPalScript(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if ((window as any).paypal) {
+        resolve((window as any).paypal);
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://www.paypalobjects.com/js/external/api.js';
+      script.async = true;
+      script.onload = () => {
+        const paypal = (window as any).paypal;
+        if (paypal) {
+          resolve(paypal);
+        } else {
+          reject('PayPal OAuth SDK not available after loading.');
+        }
+      };
+      script.onerror = () => reject('PayPal OAuth SDK failed to load.');
+      document.body.appendChild(script);
+    });
+  }
+  // Function to send the code to backend
+  handlePayPalAuth(authCode: string): void {
+    this.paymentService.connectPayPalAccount(authCode).subscribe({
+      next: (res) => {
+        console.log('PayPal account linked successfully:', res);
+        this.isPayPalConnected = true;
+        this.alertService.successAlert('Your PayPal account is linked!', 'Success');
+      },
+      error: (err) => {
+        console.error('Failed to exchange PayPal code:', err);
+        this.alertService.errorAlert('Failed to link your PayPal account.', 'Error');
+      }
+    });
   }
 
   // 2. User Profile Management
   loadUserProfile(): void {
     this.userService.getUser().subscribe({
       next: (user) => {
-        this.profile = user
-        this.isConnected = user.paymentDetailsAvailable
+        this.profile = user;
+        this.isStripeConnected = user.isStripeConnected;
+        this.isPayPalConnected = user.isPayPalConnected;
       },
       error: (err) => console.error('Failed to fetch user profile', err)
     });
@@ -92,7 +154,7 @@ export class PaymentsComponent {
           onApprove: () => {
             this.paymentService.addPayPalAccount('example@paypal.com').subscribe(() => {
               this.alertService.successAlert('Your PayPal account has been linked successfully!', 'Success');
-              this.paypalAccountAdded = true;
+              this.isPayPalConnected = true;
             });
           },
           onError: (err: any) => {
@@ -151,7 +213,7 @@ export class PaymentsComponent {
       },
     });
   }
-  
+
   editBillingFrequency() {
     throw new Error('Method not implemented.');
   }
@@ -165,7 +227,7 @@ export class PaymentsComponent {
         this.alertService.errorAlert('Failed to cancel subscription. Please try again.', 'Error');
       },
     });
-  }  
+  }
   switchPlans() {
     throw new Error('Method not implemented.');
   }
@@ -208,12 +270,12 @@ export class PaymentsComponent {
   }
 
 
-  isConnected = false;
+  isStripeConnected = false;
   amount: number = 0;
   currency: string = 'aud';
 
   connectStripe(): void {
-    this.paymentService.connectAccount().subscribe((data) => {
+    this.paymentService.connectStripeAccount().subscribe((data) => {
       window.location.href = data.url;
     });
   }
