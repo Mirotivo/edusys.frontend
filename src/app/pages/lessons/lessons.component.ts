@@ -1,31 +1,38 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-    GridModule,
-    GridComponent,
-    PageSettingsModel,
-    DataStateChangeEventArgs,
-    PageService,
-    SortService,
-    FilterService,
-    ToolbarService,
-    ResizeService
-} from '@syncfusion/ej2-angular-grids';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
-import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
-import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
-import { DialogModule, Dialog } from '@syncfusion/ej2-angular-popups';
+import { finalize } from 'rxjs';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
-import { GridStateService, GridState } from '../../services/grid-state.service.service';
+import { DatePickerModule, DateRangePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import {
+    DataStateChangeEventArgs,
+    FilterService,
+    GridComponent,
+    GridModule,
+    PageService,
+    PageSettingsModel,
+    ResizeService,
+    SortService,
+    ToolbarService
+} from '@syncfusion/ej2-angular-grids';
+import { NumericTextBoxModule,TextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
+import { ConfirmationDialogService } from '../../services/confirmation-dialog.service';
+import { GridState, GridStateService } from '../../services/grid-state.service.service';
 import { LessonService } from '../../services/lesson.service';
+import { SpinnerService } from '../../services/spinner.service';
+import { ToastService } from '../../services/toast.service';
 import { UserService } from '../../services/user.service';
+
+import { DurationPipe } from '../../pipes/duration.pipe';
 
 import { LessonStatus } from '../../models/enums/lesson-status';
 import { LessonType } from '../../models/enums/lesson-type';
 import { UserRole } from '../../models/enums/user-role';
 import { Lesson } from '../../models/lesson';
+import { LessonFilter } from '../../models/lesson-filter';
 
 @Component({
     selector: 'app-lessons',
@@ -35,42 +42,38 @@ import { Lesson } from '../../models/lesson';
         FormsModule,
         GridModule,
         DatePickerModule,
+        DateRangePickerModule,
+        NumericTextBoxModule,
         DropDownListModule,
         TextBoxModule,
         DialogModule,
-        ButtonModule
+        ButtonModule,
+        DurationPipe
     ],
     providers: [ToolbarService, PageService, SortService, FilterService, ResizeService],
     templateUrl: './lessons.component.html',
     styleUrls: ['./lessons.component.scss']
 })
+
 export class LessonsComponent implements OnInit {
     //#region ViewChild References
     @ViewChild('grid') grid!: GridComponent;
-    @ViewChild('editDialog') editDialog!: Dialog;
-    @ViewChild('deleteDialog') deleteDialog!: Dialog;
     //#endregion
 
     //#region Public Properties
     // Grid data must follow { result: User[], count: number }
     public gridData: { result: Lesson[]; count: number } = { result: [], count: 0 };
     public pageSettings: PageSettingsModel = { pageSize: 10, pageSizes: [5, 10, 20, 50, 100] };
-
-    // Toolbar: only a custom "Add" button is used.
-    public toolbar: string[] = ['Add'];
-
-    // Custom dialog properties for Add/Edit.
-    public isEditMode = false; // true for Edit; false for Add.
-    public currentRecord: Lesson = {} as Lesson;
-
-    // Delete confirmation: store record to be deleted.
-    public selectedRecord: Lesson | null = null;
+    lessonFilter: LessonFilter = {
+        status: -1 
+      };
 
     // Filtering configuration as a partial of User.
-    public searchParams: Partial<Lesson> = {};
-
     public statusDefault: string = 'All';
     public LessonStatus = LessonStatus;
+    public LessonType = LessonType;
+    public UserRole = UserRole;
+
     //#endregion
 
     //#region Internal State
@@ -82,9 +85,13 @@ export class LessonsComponent implements OnInit {
 
     //#region Constructor & Lifecycle Hooks
     constructor(
+        private spinnerService: SpinnerService,
+        private toastService: ToastService,
         private lessonService: LessonService,
         private userService: UserService,
-        private gridStateService: GridStateService) { }
+        private gridStateService: GridStateService,
+        private confirmationDialogService: ConfirmationDialogService,
+    ) { }
 
 
     ngOnInit(): void {
@@ -101,107 +108,98 @@ export class LessonsComponent implements OnInit {
         }
     }
 
-    public get statusData(): string[] {
-        return ['All', ...Object.keys(LessonStatus).filter(key => isNaN(Number(key)))];
-      }
+    statusList = [
+        { text: "All", value: -1 }, 
+        ...Object.keys(LessonStatus)
+          .filter(key => isNaN(Number(key)))
+          .map(key => ({
+            text: key,
+            value: LessonStatus[key as keyof typeof LessonStatus]
+          }))
+      ];
 
-    /**
-     * Handles grid state changes by delegating to the GridStateService.
-     */
+    applyCustomFilter(): void {
+        this.loadData();
+    }
+
     onDataStateChange(state: DataStateChangeEventArgs): void {
         const gridState: GridState<Lesson> = this.gridStateService.updateState<Lesson>(state);
         this.currentPage = gridState.currentPage;
         this.pageSettings.pageSize = gridState.pageSize;
         this.sortField = gridState.sortField;
         this.sortDirection = gridState.sortDirection || 'Ascending';
-        this.searchParams = gridState.searchParams;
         this.loadData();
     }
 
-    /**
-     * Loads grid data based on current state.
-     */
     loadData(): void {
-        this.lessonService.getAllLessons(this.currentPage, this.pageSettings.pageSize).subscribe({
-            next: (response) => {
-
-                this.gridData = { result: response.lessons.results, count: response.lessons.totalResults }
-              console.log("data", this.gridData);
-            },
-            error: (err) => {
-                console.error('Failed to fetch lessons and propositions:', err);
-            }
-        });
+        this.spinnerService.show();
+        this.lessonService.getAllLessons(this.currentPage, this.pageSettings.pageSize, this.lessonFilter)
+            .pipe(finalize(() => this.spinnerService.hide()))
+            .subscribe({
+                next: (response) => {
+                    this.gridData = { result: response.lessons.results, count: response.lessons.totalResults };
+                },
+                error: (err) => {
+                    console.error('Failed to fetch lessons:', err);
+                    this.toastService.showError('Failed to load lessons. Please try again.');
+                }
+            });
     }
-    //#endregion
+    
 
-    //#region Custom Filter Handlers
-    onDateFilterChange(args: any, field: string): void {
-        if (args.value) {
-            this.grid.filterByColumn('date', 'equal', args.value);
-        } else {
-            this.grid.clearFiltering([field]);
+    async cancelLesson(lesson: Lesson) {
+        const confirmed = await this.confirmationDialogService.confirm(
+            'Are you sure you want to cancel this lesson?',
+            'Cancel Lesson',
+            'Yes',
+            'No'
+        );
+    
+        if (!confirmed) return;
+    
+        this.spinnerService.show(); // Show loader
+    
+        this.lessonService.cancelLesson(lesson.id).pipe(finalize(() => this.spinnerService.hide())) // Hide loader after API call
+            .subscribe({
+                next: () => {
+                    lesson.status = LessonStatus.Canceled;
+                    this.grid.refresh();
+                    this.toastService.showSuccess('Lesson canceled successfully.');
+                },
+                error: (err) => {
+                    console.error('Failed to cancel lesson:', err);
+                    this.toastService.showError('Failed to cancel lesson. Please try again.');
+                },
+            });
+    }
+    
+    async respondToProposition(lesson: Lesson, accept: boolean) {
+        if (!accept) {
+            const confirmed = await this.confirmationDialogService.confirm(
+                'Are you sure you want to cancel this lesson?',
+                'Cancel Lesson',
+                'Yes',
+                'No'
+            );
+            if (!confirmed) return;
         }
+    
+        this.spinnerService.show(); // Show loader
+    
+        this.lessonService.respondToProposition(lesson.id, accept).pipe(finalize(() => this.spinnerService.hide())) // Hide loader after API call
+            .subscribe({
+                next: () => {
+                    lesson.status = accept ? LessonStatus.Booked : LessonStatus.Canceled;
+                    this.grid.refresh();
+                    const message = accept ? 'Lesson accepted successfully.' : 'Lesson canceled successfully.';
+                    this.toastService.showSuccess(message);
+                },
+                error: (err) => {
+                    console.error('Failed to respond to proposition:', err);
+                    this.toastService.showError('Failed to respond to proposition. Please try again.');
+                }
+            });
     }
-
-    onStatusFilterChange(args: any, field: string): void {
-        if (args.value && args.value !== 'All') {
-            this.grid.filterByColumn('status', 'equal', args.value);
-        } else {
-            this.grid.clearFiltering([field]);
-        }
-    }
-    //#endregion
-
-    //#region Command Column & Toolbar Handlers
-    onAddClick(): void {
-        this.isEditMode = false;
-        this.currentRecord = {} as Lesson;
-        this.editDialog.show();
-    }
-
-    onEdit(user: Lesson): void {
-        this.isEditMode = true;
-        this.currentRecord = { ...user };
-        this.editDialog.show();
-    }
-
-    onDelete(user: Lesson): void {
-        this.selectedRecord = user;
-        this.deleteDialog.show();
-    }
-
-    saveRecord(): void {
-        if (this.isEditMode) {
-            const index = this.gridData.result.findIndex(item => item.id === this.currentRecord.id);
-            if (index > -1) {
-                this.gridData.result[index] = this.currentRecord;
-            }
-        } else {
-            this.gridData.result.push(this.currentRecord);
-            this.gridData.count++;
-        }
-        this.editDialog.hide();
-        this.grid.refresh();
-    }
-
-    cancelRecord(): void {
-        this.editDialog.hide();
-    }
-
-    confirmDelete(): void {
-        if (this.selectedRecord) {
-            const index = this.gridData.result.findIndex(item => item.id === this.selectedRecord!.id);
-            if (index > -1) {
-                this.gridData.result.splice(index, 1);
-                this.gridData.count--;
-            }
-        }
-        this.deleteDialog.hide();
-        this.grid.refresh();
-    }
-
-    cancelDelete(): void {
-        this.deleteDialog.hide();
-    }
+    
 }
+

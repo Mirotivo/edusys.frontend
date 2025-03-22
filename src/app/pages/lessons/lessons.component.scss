@@ -17,4 +17,18 @@
     background-color: #0275d8; /* Blue */
     color: #fff;
   }
+
+  .price-filter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.e-grid .e-spinner-pane{    //hide the Grid spinner 
+  display:none; 
+} 
+
+  
+
+
   

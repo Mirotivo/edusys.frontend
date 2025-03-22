@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../environments/environment';
 import { Lesson } from '../models/lesson';
+import { LessonFilter } from '../models/lesson-filter';
 import { PagedResult } from '../models/paged-result';
 import { Proposition } from '../models/proposition';
 
@@ -13,7 +14,7 @@ import { Proposition } from '../models/proposition';
 export class LessonService {
   private apiUrl = `${environment.apiUrl}/lessons`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   proposeLesson(lesson: Proposition): Observable<void> {
     // Ensure duration is in "HH:mm:ss" format
@@ -24,24 +25,41 @@ export class LessonService {
 
     return this.http.post<void>(`${this.apiUrl}/proposeLesson`, formattedLesson);
   }
-  
+
   getLessons(contactId: string, listingId: number): Observable<{ lessons: PagedResult<Lesson> }> {
     return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}/${contactId}/${listingId}`);
   }
-  
-  getAllLessons(page: number = 1, pageSize: number = 10): Observable<{ lessons: PagedResult<Lesson> }> {
-    const params = {
-      page: page.toString(),
-      pageSize: pageSize.toString(),
-    };
 
-    return this.http.get<{ lessons: PagedResult<Lesson> }>(`${this.apiUrl}`, { params });
+  getAllLessons(
+    page: number = 1, 
+    pageSize: number = 10, 
+    filters: LessonFilter = {}
+  ): Observable<{ lessons: PagedResult<Lesson> }> {
+  
+    const { dateRange, ...filteredParams } = filters;
+  
+    // Add startDate & endDate if dateRange exists
+    if (dateRange?.length === 2) {
+      Object.assign(filteredParams, {
+        startDate: dateRange[0].toISOString(),
+        endDate: dateRange[1].toISOString(),
+      });
+    }
+  
+    // Remove undefined values
+    const cleanFilters = Object.fromEntries(
+      Object.entries(filteredParams).filter(([_, value]) => value != null)
+    );
+  
+    const params = new HttpParams({ fromObject: { page, pageSize, ...cleanFilters } });
+  
+    return this.http.get<{ lessons: PagedResult<Lesson> }>(this.apiUrl, { params });
   }
 
   respondToProposition(propositionId: number, accept: boolean): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/respondToProposition/${propositionId}`, accept);
   }
-  
+
   cancelLesson(lessonId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${lessonId}/cancel`);
   }

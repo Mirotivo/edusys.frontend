@@ -1,107 +1,141 @@
-<ejs-grid #grid 
-    height="400px" 
-    [dataSource]="gridData" 
-    allowResizing= 'true' 
-    [pageSettings]="pageSettings" 
-    [allowPaging]="true" 
-    [allowSorting]="true" 
-    [allowFiltering]="true" 
-    autoFit= 'true'
-    (dataStateChange)="onDataStateChange($event)"
-    (created)="onGridCreated()">
-    <!-- Custom Toolbar Template -->
-    <!-- <ng-template #toolbarTemplate>
-        <div class="custom-toolbar">
-            <button ejs-button cssClass="e-primary g-add-btn" iconCss="e-icons e-add" [isPrimary]="true"
-                (click)="onAddClick()">Add</button>
-        </div>
-    </ng-template> -->
+<div >
+    <ejs-grid #grid height="auto" width="auto" [dataSource]="gridData" allowResizing='true'
+        [pageSettings]="pageSettings" [allowPaging]="true" [allowFiltering]="true" [allowSorting]="true"
+        [filterSettings]="{ type: 'FilterBar' }" autoFit='true' (dataStateChange)="onDataStateChange($event)"
+        (created)="onGridCreated()">
+        <e-columns>
+            <e-column field="recipientName" headerText="With" textAlign="left" minWidth="100" width="100">
+                <ng-template #filterTemplate let-data>
+                    <ejs-textbox [(value)]="lessonFilter.recipientName" (keydown.enter)="applyCustomFilter()"
+                        [showClearButton]="true">
+                    </ejs-textbox>
+                </ng-template>
+            </e-column>
+            <e-column field="topic" headerText="Topic" textAlign="left" minWidth="100">
+                <ng-template #filterTemplate let-data>
+                    <ejs-textbox [(value)]="lessonFilter.topic" (keydown.enter)="applyCustomFilter()"
+                        [showClearButton]="true">
+                    </ejs-textbox>
+                </ng-template>
+            </e-column>
+            <e-column field="date" headerText="Date" textAlign="left" format="dd/MM/yyyy" minWidth="100">
+                <ng-template #template let-data>
+                    {{ data.date | date: 'dd/MM/yyyy' }}
+                </ng-template>
+                <ng-template #filterTemplate let-data>
+                    <div>
+                        <ejs-daterangepicker [(value)]="lessonFilter.dateRange" (change)="applyCustomFilter()">
+                        </ejs-daterangepicker>
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column field="duration" headerText="Duration" textAlign="left" minWidth="100">
+                <ng-template #template let-data>
+                    {{ data.duration | duration }}
+                </ng-template>
+                <ng-template #filterTemplate let-data>
+                    <div class="price-filter">
+                        <ejs-numerictextbox [(value)]="lessonFilter.minDuration" placeholder="Min" format="N0" [min]="1"
+                            (keydown.enter)="applyCustomFilter()"></ejs-numerictextbox>
+                        <span>-</span>
+                        <ejs-numerictextbox [(value)]="lessonFilter.maxDuration" placeholder="Max" format="N0"
+                            (keydown.enter)="applyCustomFilter()"></ejs-numerictextbox>
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column field="price" headerText="Price" textAlign="left" format="C2" minWidth="100">
+                <ng-template #filterTemplate let-data>
+                    <div class="price-filter">
+                        <ejs-numerictextbox [(value)]="lessonFilter.minPrice" placeholder="Min" format="C2" [min]="1"
+                            (keydown.enter)="applyCustomFilter()"></ejs-numerictextbox>
+                        <span>-</span>
+                        <ejs-numerictextbox [(value)]="lessonFilter.maxPrice" placeholder="Max" format="C2"
+                            (keydown.enter)="applyCustomFilter()"></ejs-numerictextbox>
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column field="status" headerText="Status" textAlign="left" minWidth="120">
+                <ng-template #filterTemplate let-data>
+                    <ejs-dropdownlist
+                        [(value)]="lessonFilter.status"
+                        [dataSource]="statusList"
+                        [fields]="{ text: 'text', value: 'value' }"
+                        (change)="applyCustomFilter()">
+                    </ejs-dropdownlist>
+                </ng-template>
+            
+                <ng-template #template let-data>
+                    <span class="e-badge" [ngClass]="{
+                        'badge-Proposed': data.status === LessonStatus.Proposed,
+                        'badge-Booked': data.status === LessonStatus.Booked,
+                        'badge-Completed': data.status === LessonStatus.Completed,
+                        'badge-Canceled': data.status === LessonStatus.Canceled
+                    }">
+                        {{ LessonStatus[data.status] }}
+                    </span>
+                </ng-template>
+            </e-column>
+            
+            <!-- Command Column: Filtering disabled -->
+            <e-column headerText="Actions" textAlign="center" [allowFiltering]="false" minWidth="300">
+                <ng-template #template let-data>
+                    <div class="action-buttons">
+                        <!-- Cancel Button -->
+                        <button *ngIf="data.type === LessonType.Lesson && data.status === LessonStatus.Booked"
+                            ejs-button cssClass="e-flat e-danger" iconCss="e-icons e-close"
+                            (click)="cancelLesson(data)">
+                            Cancel
+                        </button>
 
-    <e-columns>
-        <e-column field="recipientName" headerText="With" textAlign="left" width="150"></e-column>
-        <e-column field="topic" headerText="Topic" textAlign="left" minWidth="100" width="150" maxWidth="200"></e-column>
-        <e-column field="date" headerText="Date" textAlign="left" width="150" format="yMd">
-            <ng-template #filterTemplate let-data>
-                <div>
-                    <ejs-datepicker (change)="onDateFilterChange($event, 'date')"></ejs-datepicker>
+                        <!-- Start Call -->
+                        <button *ngIf="data.type === LessonType.Lesson && data.status === LessonStatus.Booked"
+                            ejs-button cssClass="e-flat e-primary" iconCss="fa fa-video">
+                            Start Call
+                        </button>
+
+                        <!-- Accept Proposition -->
+                        <button *ngIf="data.type === LessonType.Proposition && data.recipientRole === UserRole.Student"
+                            ejs-button cssClass="e-flat e-success" iconCss="fa fa-check"
+                            (click)="respondToProposition(data, true)">
+                            Accept
+                        </button>
+
+                        <!-- Refuse Proposition -->
+                        <button *ngIf="data.type === LessonType.Proposition && data.recipientRole === UserRole.Student"
+                            ejs-button cssClass="e-flat e-danger" iconCss="fa fa-times"
+                            (click)="respondToProposition(data, false)">
+                            Refuse
+                        </button>
+
+                        <!-- Cancel Proposition (for Tutor) -->
+                        <button *ngIf="data.type === LessonType.Proposition && data.recipientRole === UserRole.Tutor"
+                            ejs-button cssClass="e-flat e-danger" iconCss="fa fa-ban">
+                            Cancel
+                        </button>
+                    </div>
+                </ng-template>
+                <ng-template #filterTemplate></ng-template>
+            </e-column>
+
+        </e-columns>
+    </ejs-grid>
+</div>
+
+<!-- Show this if gridData is empty -->
+<ng-template #noDataTemplate>
+    <div class="no-data-container">
+        <div class="e-card">
+            <div class="e-card-header">
+                <div class="e-card-header-title">
+                    <span class="e-icons e-warning"></span> No Lessons Found
                 </div>
-            </ng-template>
-        </e-column>
-        <e-column field="duration" headerText="Duration" textAlign="left" width="100"></e-column>
-        <e-column field="price" headerText="Price" textAlign="left" width="120" format="C2"></e-column>
-        <e-column field="status" headerText="Status" textAlign="left" width="120">
-            <ng-template #filterTemplate let-data>
-                <div>
-                    <ejs-dropdownlist 
-                        [dataSource]="statusData" 
-                        [value]="statusDefault"
-                        (change)="onStatusFilterChange($event, 'status')"></ejs-dropdownlist>
-                </div>
-            </ng-template>
-            <ng-template #template let-data>
-                <span class="e-badge" [ngClass]="{
-                    'badge-Proposed': data.status === LessonStatus.Proposed,
-                    'badge-Booked': data.status === LessonStatus.Booked,
-                    'badge-Completed': data.status === LessonStatus.Completed,
-                    'badge-Canceled': data.status === LessonStatus.Canceled
-                  }">
-                  {{ LessonStatus[data.status] }}
-                </span>
-              </ng-template>
-        </e-column>
-        <!-- Command Column: Filtering disabled -->
-        <e-column headerText="Actions" textAlign="center" width="200" [allowFiltering]="false">
-            <ng-template #template let-data>
-                <button ejs-button cssClass="e-flat e-danger" iconCss="e-icons e-close" (click)="onEdit(data)">Cancel</button>
-                <button ejs-button cssClass="e-flat e-success" iconCss="e-icons e-check" (click)="onDelete(data)">Accept</button>
-            </ng-template>
-            <ng-template #filterTemplate></ng-template>
-        </e-column>
-    </e-columns>
-</ejs-grid>
-
-<!-- Custom Edit Dialog (for Add & Edit) -->
-<ejs-dialog #editDialog header="{{ isEditMode ? 'Edit Record' : 'Add Record' }}" [visible]="false" [width]="'400px'"
-    [isModal]="true" [showCloseIcon]="true">
-    <ng-template #content>
-        <div class="custom-edit-dialog">
-            <!-- <div class="form-group">
-                <label for="name">Name</label>
-                <input id="name" name="name" type="text" class="e-input" [(ngModel)]="currentRecord.name" />
             </div>
-            <div class="form-group">
-                <label for="age">Age</label>
-                <input id="age" name="age" type="number" class="e-input" [(ngModel)]="currentRecord.age" />
+            <div class="e-card-content">
+                <p>There are no lessons available. Try reloading?</p>
             </div>
-            <div class="form-group">
-                <label for="date">Date</label>
-                <ejs-datepicker id="date" name="date" [(ngModel)]="currentRecord.date"></ejs-datepicker>
+            <div class="e-card-actions">
+                <button ejs-button cssClass="e-outline e-primary" (click)="loadData()">🔄 Reload</button>
             </div>
-            <div class="form-group">
-                <label for="price">Price</label>
-                <input id="price" name="price" type="number" class="e-input" [(ngModel)]="currentRecord.price" />
-            </div>
-            <div class="form-group">
-                <label for="status">Status</label>
-                <ejs-dropdownlist id="status" name="status" [dataSource]="statusData"
-                    [(ngModel)]="currentRecord.status"></ejs-dropdownlist>
-            </div> -->
         </div>
-    </ng-template>
-    <ng-template #footerTemplate>
-        <button ejs-button cssClass="e-flat e-primary" (click)="saveRecord()">Save</button>
-        <button ejs-button cssClass="e-flat" (click)="cancelRecord()">Cancel</button>
-    </ng-template>
-</ejs-dialog>
-
-<!-- Delete Confirmation Dialog -->
-<ejs-dialog #deleteDialog header="Confirm Deletion" [visible]="false" [width]="'400px'" [isModal]="true"
-    [showCloseIcon]="true">
-    <ng-template #content>
-        <div>Are you sure you want to delete this record?</div>
-    </ng-template>
-    <ng-template #footerTemplate>
-        <button ejs-button cssClass="e-flat e-primary" (click)="confirmDelete()">Yes</button>
-        <button ejs-button cssClass="e-flat" (click)="cancelDelete()">No</button>
-    </ng-template>
-</ejs-dialog>
+    </div>
+</ng-template>
