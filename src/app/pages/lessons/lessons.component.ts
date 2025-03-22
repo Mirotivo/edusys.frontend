@@ -16,7 +16,7 @@ import {
     SortService,
     ToolbarService
 } from '@syncfusion/ej2-angular-grids';
-import { NumericTextBoxModule,TextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { NumericTextBoxModule, TextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 import { ConfirmationDialogService } from '../../services/confirmation-dialog.service';
@@ -65,11 +65,10 @@ export class LessonsComponent implements OnInit {
     public gridData: { result: Lesson[]; count: number } = { result: [], count: 0 };
     public pageSettings: PageSettingsModel = { pageSize: 10, pageSizes: [5, 10, 20, 50, 100] };
     lessonFilter: LessonFilter = {
-        status: -1 
-      };
+        status: -1
+    };
 
     // Filtering configuration as a partial of User.
-    public statusDefault: string = 'All';
     public LessonStatus = LessonStatus;
     public LessonType = LessonType;
     public UserRole = UserRole;
@@ -109,14 +108,14 @@ export class LessonsComponent implements OnInit {
     }
 
     statusList = [
-        { text: "All", value: -1 }, 
+        { text: "All", value: -1 },
         ...Object.keys(LessonStatus)
-          .filter(key => isNaN(Number(key)))
-          .map(key => ({
-            text: key,
-            value: LessonStatus[key as keyof typeof LessonStatus]
-          }))
-      ];
+            .filter(key => isNaN(Number(key)))
+            .map(key => ({
+                text: key,
+                value: LessonStatus[key as keyof typeof LessonStatus]
+            }))
+    ];
 
     applyCustomFilter(): void {
         this.loadData();
@@ -145,7 +144,12 @@ export class LessonsComponent implements OnInit {
                 }
             });
     }
-    
+
+    reloadData(): void {
+        this.lessonFilter = { status: -1 };
+        this.loadData();
+    }
+
 
     async cancelLesson(lesson: Lesson) {
         const confirmed = await this.confirmationDialogService.confirm(
@@ -154,11 +158,11 @@ export class LessonsComponent implements OnInit {
             'Yes',
             'No'
         );
-    
+
         if (!confirmed) return;
-    
+
         this.spinnerService.show(); // Show loader
-    
+
         this.lessonService.cancelLesson(lesson.id).pipe(finalize(() => this.spinnerService.hide())) // Hide loader after API call
             .subscribe({
                 next: () => {
@@ -172,7 +176,7 @@ export class LessonsComponent implements OnInit {
                 },
             });
     }
-    
+
     async respondToProposition(lesson: Lesson, accept: boolean) {
         if (!accept) {
             const confirmed = await this.confirmationDialogService.confirm(
@@ -183,9 +187,9 @@ export class LessonsComponent implements OnInit {
             );
             if (!confirmed) return;
         }
-    
+
         this.spinnerService.show(); // Show loader
-    
+
         this.lessonService.respondToProposition(lesson.id, accept).pipe(finalize(() => this.spinnerService.hide())) // Hide loader after API call
             .subscribe({
                 next: () => {
@@ -200,6 +204,6 @@ export class LessonsComponent implements OnInit {
                 }
             });
     }
-    
+
 }
 

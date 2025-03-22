@@ -1,4 +1,4 @@
-<div >
+<div *ngIf="gridData && gridData.result.length > 0; else noDataTemplate">
     <ejs-grid #grid height="auto" width="auto" [dataSource]="gridData" allowResizing='true'
         [pageSettings]="pageSettings" [allowPaging]="true" [allowFiltering]="true" [allowSorting]="true"
         [filterSettings]="{ type: 'FilterBar' }" autoFit='true' (dataStateChange)="onDataStateChange($event)"
@@ -134,7 +134,7 @@
                 <p>There are no lessons available. Try reloading?</p>
             </div>
             <div class="e-card-actions">
-                <button ejs-button cssClass="e-outline e-primary" (click)="loadData()">🔄 Reload</button>
+                <button ejs-button cssClass="e-outline e-primary" (click)="reloadData()">🔄 Reload</button>
             </div>
         </div>
     </div>
