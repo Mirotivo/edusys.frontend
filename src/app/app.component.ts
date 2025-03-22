@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
-import { SpinnerComponent } from './components/spinner/spinner.component';
+import { ConfirmationDialogComponent } from "./components/confirmation-dialog/confirmation-dialog.component";
 
 import { AuthService } from './services/auth.service';
 import { ConfigService } from './services/config.service';
@@ -10,7 +10,7 @@ import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SpinnerComponent],
+  imports: [RouterOutlet, ConfirmationDialogComponent],
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
