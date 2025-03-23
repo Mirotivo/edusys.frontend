@@ -44,18 +44,18 @@ export class ToastService {
   }
 
   showSuccess(message: string) {
-    this.showToast(message, 'Success', 'e-toast-success');
+    this.showToast(message, '', 'e-toast-success');
   }
 
   showError(message: string) {
-    this.showToast(message, 'Error', 'e-toast-danger');
+    this.showToast(message, '', 'e-toast-danger');
   }
 
   showWarning(message: string) {
-    this.showToast(message, 'Warning', 'e-toast-warning');
+    this.showToast(message, '', 'e-toast-warning');
   }
-  
+
   showInfo(message: string) {
-    this.showToast(message, 'Info', 'e-toast-info');
+    this.showToast(message, '', 'e-toast-info');
   }
 }

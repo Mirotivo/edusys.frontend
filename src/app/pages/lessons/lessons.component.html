@@ -6,83 +6,60 @@
         <e-column field="recipientName" headerText="With" textAlign="left" minWidth="100" width="100">
             <ng-template #filterTemplate let-data>
                 <ejs-textbox 
-                    [(value)]="lessonFilter.recipientName" 
-                    (keyup.enter)="applyCustomFilter()"
-                    [showClearButton]="true">
+                [(value)]="lessonFilter.recipientName"  
+                (change)="loadLessons($event)" 
+                [showClearButton]="true">
                 </ejs-textbox>
             </ng-template>
         </e-column>
         <e-column field="topic" headerText="Topic" textAlign="left" minWidth="100">
             <ng-template #filterTemplate let-data>
-                <ejs-textbox 
-                    [(value)]="lessonFilter.topic" 
-                    (keyup.enter)="applyCustomFilter()"
-                    [showClearButton]="true">
+                <ejs-textbox [(value)]="lessonFilter.topic" (change)="loadLessons($event)" [showClearButton]="true">
                 </ejs-textbox>
             </ng-template>
         </e-column>
-        <e-column 
-            field="date" 
-            headerText="Date" 
-            textAlign="left" 
-            format="dd/MM/yyyy" 
-            minWidth="100">
+        <e-column field="date" headerText="Date" textAlign="left" format="dd/MM/yyyy" minWidth="100">
             <ng-template #template let-data>
                 {{ data.date | date: 'dd/MM/yyyy' }}
             </ng-template>
             <ng-template #filterTemplate let-data>
                 <div>
-                    <ejs-daterangepicker 
-                        [(value)]="lessonFilter.dateRange" 
-                        (change)="applyCustomFilter()">
+                    <ejs-daterangepicker [(value)]="lessonFilter.dateRange" (change)="loadLessons($event)">
                     </ejs-daterangepicker>
                 </div>
             </ng-template>
         </e-column>
-        <e-column field="duration" 
-            headerText="Duration" 
-            textAlign="left"
-            minWidth="100">
+        <e-column field="duration" headerText="Duration" textAlign="left" minWidth="100">
             <ng-template #template let-data>
                 {{ data.duration | duration }}
             </ng-template>
             <ng-template #filterTemplate let-data>
-                <div class="price-filter">
-                    <ejs-numerictextbox 
-                        [(value)]="lessonFilter.minDuration" 
-                        placeholder="Min" format="N0" [min]="1"
-                        (keyup.enter)="applyCustomFilter()"></ejs-numerictextbox>
-                    <span>-</span>
+                <div class="filter-container">
+                    <ejs-numerictextbox [(value)]="lessonFilter.minDuration" placeholder="Min" format="N0" [min]="1"
+                        (change)="loadLessons($event)"></ejs-numerictextbox>
                     <ejs-numerictextbox [(value)]="lessonFilter.maxDuration" placeholder="Max" format="N0"
-                        (keyup.enter)="applyCustomFilter()"></ejs-numerictextbox>
+                        (change)="loadLessons($event)"></ejs-numerictextbox>
                 </div>
             </ng-template>
         </e-column>
         <e-column field="price" headerText="Price" textAlign="left" format="C2" minWidth="100">
             <ng-template #filterTemplate let-data>
-                <div class="price-filter">
+                <div class="filter-container">
                     <ejs-numerictextbox [(value)]="lessonFilter.minPrice" placeholder="Min" format="C2" [min]="1"
-                        (keyup.enter)="applyCustomFilter()"></ejs-numerictextbox>
-                    <span>-</span>
+                        (change)="loadLessons($event)"></ejs-numerictextbox>
                     <ejs-numerictextbox [(value)]="lessonFilter.maxPrice" placeholder="Max" format="C2"
-                        (keyup.enter)="applyCustomFilter()"></ejs-numerictextbox>
+                        (change)="loadLessons($event)"></ejs-numerictextbox>
                 </div>
             </ng-template>
         </e-column>
         <e-column field="status" headerText="Status" textAlign="left" minWidth="120">
             <ng-template #filterTemplate let-data>
                 <ejs-dropdownlist [(value)]="lessonFilter.status" [dataSource]="statusList"
-                    [fields]="{ text: 'text', value: 'value' }" (change)="applyCustomFilter()">
+                    [fields]="{ text: 'text', value: 'value' }" (change)="loadLessons($event)">
                 </ejs-dropdownlist>
             </ng-template>
-
             <ng-template #template let-data>
-                <span class="e-badge" [ngClass]="{
-                'badge-Proposed': data.status === LessonStatus.Proposed,
-                'badge-Booked': data.status === LessonStatus.Booked,
-                'badge-Completed': data.status === LessonStatus.Completed,
-                'badge-Canceled': data.status === LessonStatus.Canceled
-            }">
+                <span class="e-badge" [ngClass]="getBadgeClass(data.status)">
                     {{ LessonStatus[data.status] }}
                 </span>
             </ng-template>
@@ -99,12 +76,8 @@
                     </button>
 
                     <!-- Start Call -->
-                    <button 
-                        ejs-button
-                        *ngIf="data.type === LessonType.Lesson && data.status === LessonStatus.Booked" 
-                        cssClass="e-flat e-primary"
-                        iconCss="fa fa-video"
-                        (click)="startCall(data)">
+                    <button ejs-button *ngIf="data.type === LessonType.Lesson && data.status === LessonStatus.Booked"
+                        cssClass="e-flat e-primary" iconCss="fa fa-video" (click)="startCall(data)">
                         Start Call
                     </button>
 

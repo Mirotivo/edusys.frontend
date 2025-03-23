@@ -17,7 +17,6 @@ import {
     ToolbarService
 } from '@syncfusion/ej2-angular-grids';
 import { NumericTextBoxModule, TextBoxModule } from '@syncfusion/ej2-angular-inputs';
-import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 import { ConfirmationDialogService } from '../../services/confirmation-dialog.service';
 import { GridState, GridStateService } from '../../services/grid-state.service.service';
@@ -47,7 +46,6 @@ import { LessonFilter } from '../../models/lesson-filter';
         NumericTextBoxModule,
         DropDownListModule,
         TextBoxModule,
-        DialogModule,
         ButtonModule,
         DurationPipe
     ],
@@ -57,24 +55,18 @@ import { LessonFilter } from '../../models/lesson-filter';
 })
 
 export class LessonsComponent implements OnInit {
-    //#region ViewChild References
     @ViewChild('grid') grid!: GridComponent;
-    //#endregion
 
-    //#region Public Properties
-    // Grid data must follow { result: User[], count: number }
     public gridData: { result: Lesson[]; count: number } = { result: [], count: 0 };
     public pageSettings: PageSettingsModel = { pageSize: 10, pageSizes: [5, 10, 20, 50, 100] };
     lessonFilter: LessonFilter = {
         status: -1
     };
 
-    // Filtering configuration as a partial of User.
     public LessonStatus = LessonStatus;
     public LessonType = LessonType;
     public UserRole = UserRole;
 
-    //#endregion
 
     //#region Internal State
     private currentPage = 1;
@@ -96,9 +88,10 @@ export class LessonsComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.loadData();
-    }
+        this.toastService.showSuccess('Lesson canceled successfully.');
 
+        this.loadLessons();
+    }
 
     onGridCreated(): void {
         if (this.grid) {
@@ -119,20 +112,18 @@ export class LessonsComponent implements OnInit {
             }))
     ];
 
-    applyCustomFilter(): void {
-        this.loadData();
-    }
-
     onDataStateChange(state: DataStateChangeEventArgs): void {
         const gridState: GridState<Lesson> = this.gridStateService.updateState<Lesson>(state);
         this.currentPage = gridState.currentPage;
         this.pageSettings.pageSize = gridState.pageSize;
         this.sortField = gridState.sortField;
         this.sortDirection = gridState.sortDirection || 'Ascending';
-        this.loadData();
+         this.loadLessons();
     }
 
-    loadData(): void {
+    loadLessons(event?: any): void {
+        if (event && event.isInteracted === false) return;
+
         this.spinnerService.show();
         this.lessonService.getAllLessons(this.currentPage, this.pageSettings.pageSize, this.lessonFilter)
             .pipe(finalize(() => this.spinnerService.hide()))
@@ -146,12 +137,6 @@ export class LessonsComponent implements OnInit {
                 }
             });
     }
-
-    reloadData(): void {
-        this.lessonFilter = { status: -1 };
-        this.loadData();
-    }
-
 
     async cancelLesson(lesson: Lesson) {
         const confirmed = await this.confirmationDialogService.confirm(
@@ -214,6 +199,21 @@ export class LessonsComponent implements OnInit {
             },
             error: (err) => console.error('Failed to fetch user:', err)
         });
+    }
+
+    getBadgeClass(status: LessonStatus): string {
+        switch (status) {
+            case LessonStatus.Proposed:
+                return 'badge-Proposed';
+            case LessonStatus.Booked:
+                return 'badge-Booked';
+            case LessonStatus.Completed:
+                return 'badge-Completed';
+            case LessonStatus.Canceled:
+                return 'badge-Canceled';
+            default:
+                return '';
+        }
     }
 }
 
