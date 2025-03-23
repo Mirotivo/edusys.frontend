@@ -21,6 +21,7 @@ import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 import { ConfirmationDialogService } from '../../services/confirmation-dialog.service';
 import { GridState, GridStateService } from '../../services/grid-state.service.service';
+import { JitsiService } from '../../services/jitsi.service';
 import { LessonService } from '../../services/lesson.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { ToastService } from '../../services/toast.service';
@@ -90,6 +91,7 @@ export class LessonsComponent implements OnInit {
         private userService: UserService,
         private gridStateService: GridStateService,
         private confirmationDialogService: ConfirmationDialogService,
+        private jitsiService: JitsiService,
     ) { }
 
 
@@ -205,5 +207,13 @@ export class LessonsComponent implements OnInit {
             });
     }
 
+    startCall(lesson: Lesson) {
+        this.userService.getUser().subscribe({
+            next: (user) => {
+                this.jitsiService.startVideoCall(lesson, user);
+            },
+            error: (err) => console.error('Failed to fetch user:', err)
+        });
+    }
 }
 

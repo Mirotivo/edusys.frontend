@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { VideoCallWindowComponent } from './components/video-call-window/video-call-window.component';
 import { FooterLayoutComponent } from './layout/footer-layout/footer-layout.component';
 import { HeaderLayoutComponent } from './layout/header-layout/header-layout.component';
 import { SidebarLayoutComponent } from './layout/sidebar-layout/sidebar-layout.component';
@@ -26,6 +27,7 @@ import { TermsComponent } from './pages/terms/terms.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  { path: 'video-call-window', component: VideoCallWindowComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'forget-password', component: ForgotPasswordComponent },
