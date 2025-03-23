@@ -54,4 +54,8 @@ export class ToastService {
   showWarning(message: string) {
     this.showToast(message, 'Warning', 'e-toast-warning');
   }
+  
+  showInfo(message: string) {
+    this.showToast(message, 'Info', 'e-toast-info');
+  }
 }
