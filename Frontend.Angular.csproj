@@ -14,4 +14,9 @@
     <None Remove="**\*" />
   </ItemGroup>
 
+  <Target Name="StartAngularDevServer" BeforeTargets="Run">
+    <Exec Command="npm install" WorkingDirectory="." />
+    <Exec Command="npm run start" WorkingDirectory="." />
+  </Target>
+
 </Project>
